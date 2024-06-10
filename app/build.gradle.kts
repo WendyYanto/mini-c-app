@@ -42,4 +42,6 @@ dependencies {
     implementation(libs.dagger.core)
     implementation(libs.material.component)
     kapt(libs.dagger.compiler)
+
+    implementation(project(":core"))
 }
