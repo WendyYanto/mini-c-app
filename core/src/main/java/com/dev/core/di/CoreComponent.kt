@@ -1,5 +1,6 @@
-package com.dev.core
+package com.dev.core.di
 
+import com.dev.core.CoreTextProvider
 import dagger.Component
 import javax.inject.Singleton
 
@@ -7,17 +8,17 @@ import javax.inject.Singleton
     modules = [CoreTextModule::class]
 )
 @Singleton
-interface MainCoreComponent {
+interface CoreComponent {
 
     @Component.Factory
     interface Factory {
 
-        fun build(): MainCoreComponent
+        fun build(): CoreComponent
     }
 
     companion object Initializer {
 
-        fun init() = DaggerMainCoreComponent.factory().build()
+        fun init() = DaggerCoreComponent.factory().build()
     }
 
     fun provideCoreTextProvider(): CoreTextProvider

@@ -1,4 +1,4 @@
-package com.dev.wenn.main
+package com.dev.wenn.main.screen
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

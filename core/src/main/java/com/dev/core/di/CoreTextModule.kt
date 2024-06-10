@@ -1,5 +1,7 @@
-package com.dev.core
+package com.dev.core.di
 
+import com.dev.core.CoreTextProvider
+import com.dev.core.CoreTextProviderImpl
 import dagger.Module
 import dagger.Provides
 
