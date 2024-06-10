@@ -8,7 +8,7 @@ ktx = "1.13.1"
 materialComponent = "1.12.0"
 
 #Dependency Injection
-dagger = "2.42"
+dagger = "2.48"
 
 [libraries]
 ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
