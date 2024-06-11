@@ -4,11 +4,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dev.core.CoreComponentInjector
 import com.dev.core.di.CoreComponent
 import com.dev.core.scope.FeatureScope
+import com.dev.data.user.di.DataUserComponent
+import com.dev.data.user.di.DataUserComponentProvider
 import dagger.Component
 
 @FeatureScope
 @Component(
-    dependencies = [CoreComponent::class]
+    dependencies = [
+        CoreComponent::class,
+        DataUserComponent::class
+    ]
 )
 interface MainComponent {
 
@@ -18,7 +23,8 @@ interface MainComponent {
     interface Factory {
 
         fun build(
-            coreComponent: CoreComponent
+            coreComponent: CoreComponent,
+            dataUserComponent: DataUserComponent
         ): MainComponent
     }
 
@@ -26,7 +32,8 @@ interface MainComponent {
 
         fun init(activity: AppCompatActivity) = DaggerMainComponent.factory()
             .build(
-                coreComponent = CoreComponentInjector.getCoreComponent(activity)
+                coreComponent = CoreComponentInjector.getCoreComponent(activity),
+                dataUserComponent = (activity.applicationContext as DataUserComponentProvider).getDataUserComponent()
             )
     }
 }

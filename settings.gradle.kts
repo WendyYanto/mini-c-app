@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 rootProject.name = "Mini c-app"
 include(":app")
 include(":core")
+include(":data_user")

@@ -9,6 +9,9 @@ materialComponent = "1.12.0"
 
 #Dependency Injection
 dagger = "2.48"
+junit = "4.13.2"
+androidx-test-ext-junit = "1.1.5"
+espresso-core = "3.5.1"
 
 [libraries]
 ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
@@ -20,6 +23,9 @@ dagger-core = { group = "com.google.dagger", name = "dagger", version.ref = "dag
 dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
 
 material-component = { group = "com.google.android.material", name = "material", version.ref = "materialComponent" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
