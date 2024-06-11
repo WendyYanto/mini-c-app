@@ -1,6 +1,7 @@
 package com.dev.wenn.main.di
 
 import com.dev.core.di.CoreComponent
+import com.dev.data.product.di.DataProductComponent
 import com.dev.data.user.di.DataUserComponent
 import com.dev.wenn.main.App
 
@@ -9,6 +10,8 @@ object ComponentsRegistry : ComponentProvider {
     private lateinit var app: App
     private lateinit var coreComponent: CoreComponent
     private lateinit var dataUserComponent: DataUserComponent
+    private lateinit var dataProductComponent: DataProductComponent
+
 
     fun init(app: App) {
         this.app = app
@@ -27,4 +30,12 @@ object ComponentsRegistry : ComponentProvider {
         }
         return dataUserComponent
     }
+
+    override fun getDataProductComponent(): DataProductComponent {
+        if (!::dataProductComponent.isInitialized) {
+            dataProductComponent = DataProductComponent.Initializer.init(app)
+        }
+        return dataProductComponent
+    }
+
 }

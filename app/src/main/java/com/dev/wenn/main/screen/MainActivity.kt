@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.core.CoreTextProvider
+import com.dev.data.product.DataProductTextProvider
 import com.dev.data.user.DataUserTextProvider
 import com.dev.wenn.R
 import javax.inject.Inject
@@ -16,6 +17,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var dataUserTextProvider: DataUserTextProvider
 
+    @Inject
+    lateinit var dataProductTextProvider: DataProductTextProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MainComponent.init(this).inject(this)
@@ -26,5 +30,8 @@ class MainActivity : AppCompatActivity() {
 
         val userTextView = findViewById<TextView>(R.id.tv_data_user)
         userTextView.text = dataUserTextProvider.getUserText()
+
+        val productTextView = findViewById<TextView>(R.id.tv_data_product)
+        productTextView.text = dataProductTextProvider.getProductText()
     }
 }

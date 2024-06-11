@@ -2,6 +2,7 @@ package com.dev.wenn.main.di
 
 import com.dev.core.di.CoreComponent
 import com.dev.core.scope.ApplicationScope
+import com.dev.data.product.di.DataProductComponent
 import com.dev.data.user.di.DataUserComponent
 import com.dev.wenn.main.App
 import dagger.Component
@@ -10,10 +11,14 @@ import dagger.Component
 @Component(
     dependencies = [
         CoreComponent::class,
-        DataUserComponent::class
+        DataUserComponent::class,
+        DataProductComponent::class
     ]
 )
-interface AppComponent : CoreComponent, DataUserComponent {
+interface AppComponent :
+    CoreComponent,
+    DataUserComponent,
+    DataProductComponent {
 
     companion object Initializer {
 
@@ -21,6 +26,7 @@ interface AppComponent : CoreComponent, DataUserComponent {
             return DaggerAppComponent.builder()
                 .coreComponent(app.getCoreComponent())
                 .dataUserComponent(app.getDataUserComponent())
+                .dataProductComponent(app.getDataProductComponent())
                 .build()
         }
     }

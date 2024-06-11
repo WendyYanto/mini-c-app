@@ -22,3 +22,4 @@ rootProject.name = "Mini c-app"
 include(":app")
 include(":core")
 include(":data_user")
+include(":data_product")

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.dev.core"
+    namespace = "com.dev.data.user"
     compileSdk = 34
 
     defaultConfig {
