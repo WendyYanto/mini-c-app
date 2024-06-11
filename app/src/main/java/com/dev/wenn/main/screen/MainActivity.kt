@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.core.CoreTextProvider
+import com.dev.data.order.DataOrderTextProvider
 import com.dev.data.product.DataProductTextProvider
 import com.dev.data.user.DataUserTextProvider
 import com.dev.wenn.R
@@ -20,6 +21,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var dataProductTextProvider: DataProductTextProvider
 
+    @Inject
+    lateinit var dataOrderTextProvider: DataOrderTextProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MainComponent.init(this).inject(this)
@@ -33,5 +37,8 @@ class MainActivity : AppCompatActivity() {
 
         val productTextView = findViewById<TextView>(R.id.tv_data_product)
         productTextView.text = dataProductTextProvider.getProductText()
+
+        val orderTextView = findViewById<TextView>(R.id.tv_data_order)
+        orderTextView.text = dataOrderTextProvider.getOrderText()
     }
 }

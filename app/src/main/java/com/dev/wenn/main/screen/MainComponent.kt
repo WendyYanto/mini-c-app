@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dev.core.CoreComponentInjector
 import com.dev.core.di.CoreComponent
 import com.dev.core.scope.FeatureScope
+import com.dev.data.order.di.DataOrderComponent
+import com.dev.data.order.di.DataOrderComponentProvider
 import com.dev.data.product.di.DataProductComponent
 import com.dev.data.product.di.DataProductComponentProvider
 import com.dev.data.user.di.DataUserComponent
@@ -15,7 +17,8 @@ import dagger.Component
     dependencies = [
         CoreComponent::class,
         DataUserComponent::class,
-        DataProductComponent::class
+        DataProductComponent::class,
+        DataOrderComponent::class
     ]
 )
 interface MainComponent {
@@ -28,7 +31,8 @@ interface MainComponent {
         fun build(
             coreComponent: CoreComponent,
             dataUserComponent: DataUserComponent,
-            dataProductComponent: DataProductComponent
+            dataProductComponent: DataProductComponent,
+            dataOrderComponent: DataOrderComponent
         ): MainComponent
     }
 
@@ -38,7 +42,8 @@ interface MainComponent {
             .build(
                 coreComponent = CoreComponentInjector.getCoreComponent(activity),
                 dataUserComponent = (activity.applicationContext as DataUserComponentProvider).getDataUserComponent(),
-                dataProductComponent = (activity.applicationContext as DataProductComponentProvider).getDataProductComponent()
+                dataProductComponent = (activity.applicationContext as DataProductComponentProvider).getDataProductComponent(),
+                dataOrderComponent = (activity.applicationContext as DataOrderComponentProvider).getDataOrderComponent(),
             )
     }
 }
