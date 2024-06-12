@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.core.CoreTextProvider
+import com.dev.data.misc.DataMiscTextProvider
+import com.dev.data.misc.di.DataMiscComponentProvider
 import com.dev.data.order.DataOrderTextProvider
 import com.dev.data.product.DataProductTextProvider
 import com.dev.data.user.DataUserTextProvider
@@ -24,6 +26,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var dataOrderTextProvider: DataOrderTextProvider
 
+    @Inject
+    lateinit var dataMiscTextProvider: DataMiscTextProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MainComponent.init(this).inject(this)
@@ -40,5 +45,8 @@ class MainActivity : AppCompatActivity() {
 
         val orderTextView = findViewById<TextView>(R.id.tv_data_order)
         orderTextView.text = dataOrderTextProvider.getOrderText()
+
+        val miscTextView = findViewById<TextView>(R.id.tv_data_misc)
+        miscTextView.text = dataMiscTextProvider.getMiscText()
     }
 }

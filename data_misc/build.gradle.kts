@@ -1,21 +1,15 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
 }
 
 android {
-    namespace = "com.dev.wenn"
+    namespace = "com.dev.data.misc"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.dev.wenn"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -37,6 +31,7 @@ android {
 }
 
 dependencies {
+
     implementation(libs.ktx)
     implementation(libs.appcompact)
     implementation(libs.dagger.core)
@@ -44,8 +39,4 @@ dependencies {
     kapt(libs.dagger.compiler)
 
     implementation(project(":core"))
-    implementation(project(":data_user"))
-    implementation(project(":data_product"))
-    implementation(project(":data_order"))
-    implementation(project(":data_misc"))
 }
