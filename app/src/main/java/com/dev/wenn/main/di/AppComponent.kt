@@ -26,6 +26,7 @@ interface AppComponent :
     companion object Initializer {
 
         fun init(app: App): AppComponent {
+            ComponentsRegistry.init(app)
             return DaggerAppComponent.builder()
                 .coreComponent(app.getCoreComponent())
                 .dataUserComponent(app.getDataUserComponent())

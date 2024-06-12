@@ -9,7 +9,6 @@ class App : Application(), ComponentProvider by ComponentsRegistry {
 
     override fun onCreate() {
         super.onCreate()
-        ComponentsRegistry.init(this)
         AppComponent.Initializer.init(this)
     }
 }
