@@ -49,4 +49,6 @@ dependencies {
     implementation(project(":data_order"))
     implementation(project(":data_misc"))
     implementation(project(":domain_cart"))
+
+    implementation(project(":feature_cart"))
 }

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.dev.domain.cart"
+    namespace = "com.dev.feature.cart"
     compileSdk = 34
 
     defaultConfig {
@@ -39,6 +39,8 @@ dependencies {
     kapt(libs.dagger.compiler)
 
     implementation(project(":core"))
+    implementation(project(":domain_cart"))
+
     implementation(project(":data_product"))
     implementation(project(":data_order"))
 }

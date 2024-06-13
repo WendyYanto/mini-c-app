@@ -1,5 +1,6 @@
 package com.dev.wenn.main.screen
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -52,5 +53,10 @@ class MainActivity : AppCompatActivity() {
 
         val domainCartTextView = findViewById<TextView>(R.id.tv_domain_cart)
         domainCartTextView.text = domainCartTextProvider.getDomainCartText()
+
+        domainCartTextView.setOnClickListener {
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
