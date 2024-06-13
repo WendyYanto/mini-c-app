@@ -5,6 +5,7 @@ import com.dev.data.misc.di.DataMiscComponent
 import com.dev.data.order.di.DataOrderComponent
 import com.dev.data.product.di.DataProductComponent
 import com.dev.data.user.di.DataUserComponent
+import com.dev.domain.cart.di.DomainCartComponent
 import com.dev.wenn.main.App
 
 object ComponentsRegistry : ComponentProvider {
@@ -15,6 +16,7 @@ object ComponentsRegistry : ComponentProvider {
     private lateinit var dataProductComponent: DataProductComponent
     private lateinit var dataOrderComponent: DataOrderComponent
     private lateinit var dataMiscComponent: DataMiscComponent
+    private lateinit var domainCartComponent: DomainCartComponent
 
     fun init(app: App) {
         this.app = app
@@ -53,5 +55,12 @@ object ComponentsRegistry : ComponentProvider {
             dataMiscComponent = DataMiscComponent.Initializer.init(app)
         }
         return dataMiscComponent
+    }
+
+    override fun getDomainCartComponent(): DomainCartComponent {
+        if (!::domainCartComponent.isInitialized) {
+            domainCartComponent = DomainCartComponent.Initializer.init(app)
+        }
+        return domainCartComponent
     }
 }

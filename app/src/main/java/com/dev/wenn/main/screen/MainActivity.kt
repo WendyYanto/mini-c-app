@@ -9,6 +9,7 @@ import com.dev.data.misc.di.DataMiscComponentProvider
 import com.dev.data.order.DataOrderTextProvider
 import com.dev.data.product.DataProductTextProvider
 import com.dev.data.user.DataUserTextProvider
+import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.wenn.R
 import javax.inject.Inject
 
@@ -29,6 +30,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var dataMiscTextProvider: DataMiscTextProvider
 
+    @Inject
+    lateinit var domainCartTextProvider: DomainCartTextProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MainComponent.init(this).inject(this)
@@ -46,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         val orderTextView = findViewById<TextView>(R.id.tv_data_order)
         orderTextView.text = dataOrderTextProvider.getOrderText()
 
-        val miscTextView = findViewById<TextView>(R.id.tv_data_misc)
-        miscTextView.text = dataMiscTextProvider.getMiscText()
+        val domainCartTextView = findViewById<TextView>(R.id.tv_domain_cart)
+        domainCartTextView.text = domainCartTextProvider.getDomainCartText()
     }
 }

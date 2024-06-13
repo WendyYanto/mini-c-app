@@ -12,6 +12,8 @@ import com.dev.data.product.di.DataProductComponent
 import com.dev.data.product.di.DataProductComponentProvider
 import com.dev.data.user.di.DataUserComponent
 import com.dev.data.user.di.DataUserComponentProvider
+import com.dev.domain.cart.di.DomainCartComponent
+import com.dev.domain.cart.di.DomainCartComponentProvider
 import dagger.Component
 
 @FeatureScope
@@ -21,7 +23,8 @@ import dagger.Component
         DataUserComponent::class,
         DataProductComponent::class,
         DataOrderComponent::class,
-        DataMiscComponent::class
+        DataMiscComponent::class,
+        DomainCartComponent::class
     ]
 )
 interface MainComponent {
@@ -36,7 +39,8 @@ interface MainComponent {
             dataUserComponent: DataUserComponent,
             dataProductComponent: DataProductComponent,
             dataOrderComponent: DataOrderComponent,
-            dataMiscComponent: DataMiscComponent
+            dataMiscComponent: DataMiscComponent,
+            domainCartComponent: DomainCartComponent
         ): MainComponent
     }
 
@@ -48,7 +52,8 @@ interface MainComponent {
                 dataUserComponent = (activity.applicationContext as DataUserComponentProvider).getDataUserComponent(),
                 dataProductComponent = (activity.applicationContext as DataProductComponentProvider).getDataProductComponent(),
                 dataOrderComponent = (activity.applicationContext as DataOrderComponentProvider).getDataOrderComponent(),
-                dataMiscComponent = (activity.applicationContext as DataMiscComponentProvider).getDataMiscComponent()
+                dataMiscComponent = (activity.applicationContext as DataMiscComponentProvider).getDataMiscComponent(),
+                domainCartComponent = (activity.applicationContext as DomainCartComponentProvider).getDomainCartComponent(),
             )
     }
 }

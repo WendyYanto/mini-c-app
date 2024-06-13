@@ -6,6 +6,7 @@ import com.dev.data.misc.di.DataMiscComponent
 import com.dev.data.order.di.DataOrderComponent
 import com.dev.data.product.di.DataProductComponent
 import com.dev.data.user.di.DataUserComponent
+import com.dev.domain.cart.di.DomainCartComponent
 import com.dev.wenn.main.App
 import dagger.Component
 
@@ -16,7 +17,8 @@ import dagger.Component
         DataUserComponent::class,
         DataProductComponent::class,
         DataOrderComponent::class,
-        DataMiscComponent::class
+        DataMiscComponent::class,
+        DomainCartComponent::class
     ]
 )
 interface AppComponent :
@@ -24,7 +26,8 @@ interface AppComponent :
     DataUserComponent,
     DataProductComponent,
     DataOrderComponent,
-    DataMiscComponent {
+    DataMiscComponent,
+    DomainCartComponent {
 
     companion object Initializer {
 
@@ -36,6 +39,7 @@ interface AppComponent :
                 .dataProductComponent(app.getDataProductComponent())
                 .dataOrderComponent(app.getDataOrderComponent())
                 .dataMiscComponent(app.getDataMiscComponent())
+                .domainCartComponent(app.getDomainCartComponent())
                 .build()
         }
     }
