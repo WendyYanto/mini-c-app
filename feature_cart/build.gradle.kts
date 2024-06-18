@@ -28,12 +28,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
-    kapt {
-        javacOptions {
-            option("-Adagger.validateTransitiveComponentDependencies=DISABLED")
-        }
-    }
 }
 
 dependencies {
@@ -46,4 +40,7 @@ dependencies {
 
     implementation(project(":core"))
     implementation(project(":domain_cart"))
+
+    implementation(project(":data_product"))
+    implementation(project(":data_order"))
 }
