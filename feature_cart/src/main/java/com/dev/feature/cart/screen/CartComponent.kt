@@ -12,7 +12,7 @@ import dagger.Component
 @Component(
     dependencies = [
         CoreComponent::class,
-        DomainCartComponent::class
+        DomainCartComponent::class,
     ]
 )
 interface CartComponent {
