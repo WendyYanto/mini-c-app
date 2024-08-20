@@ -11,7 +11,7 @@ import dagger.Component
     dependencies = [CoreComponent::class],
     modules = [DataUserModule::class]
 )
-@DataScope
+@DataUserScope
 interface DataUserComponent {
 
     @Component.Factory

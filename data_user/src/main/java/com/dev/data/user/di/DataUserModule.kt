@@ -8,6 +8,7 @@ import dagger.Module
 @Module
 interface DataUserModule {
 
+    @DataUserScope
     @Binds
     fun bindDataUserTextProvider(
         impl: DataUserTextProviderImpl
