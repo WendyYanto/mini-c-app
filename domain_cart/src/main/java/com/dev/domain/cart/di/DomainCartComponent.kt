@@ -3,6 +3,7 @@ package com.dev.domain.cart.di
 import android.content.Context
 import com.dev.core.CoreComponentInjector
 import com.dev.core.di.CoreComponent
+import com.dev.core.di.CoreComponentApi
 import com.dev.core.scope.DomainScope
 import com.dev.data.order.di.DataOrderComponent
 import com.dev.data.order.di.DataOrderComponentProvider
@@ -12,7 +13,7 @@ import com.dev.domain.cart.DomainCartTextProvider
 import dagger.Component
 
 @Component(
-    dependencies = [CoreComponent::class,
+    dependencies = [CoreComponentApi::class,
         DataProductComponent::class,
         DataOrderComponent::class],
     modules = [DomainCartModule::class]
@@ -24,7 +25,7 @@ interface DomainCartComponent {
     interface Factory {
 
         fun build(
-            coreComponent: CoreComponent,
+            coreComponent: CoreComponentApi,
             dataProductComponent: DataProductComponent,
             dataOrderComponent: DataOrderComponent
         ): DomainCartComponent

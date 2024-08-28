@@ -1,8 +1,8 @@
-package com.dev.wenn.main.screen
+package com.dev.feature.cart.screen
 
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.core.CoreComponentInjector
-import com.dev.core.di.CoreComponent
+import com.dev.core.di.CoreComponentApi
 import com.dev.core.scope.FeatureScope
 import com.dev.domain.cart.di.DomainCartComponent
 import com.dev.domain.cart.di.DomainCartComponentProvider
@@ -11,7 +11,7 @@ import dagger.Component
 @FeatureScope
 @Component(
     dependencies = [
-        CoreComponent::class,
+        CoreComponentApi::class,
         DomainCartComponent::class,
     ]
 )
@@ -23,7 +23,7 @@ interface CartComponent {
     interface Factory {
 
         fun build(
-            coreComponent: CoreComponent,
+            coreComponent: CoreComponentApi,
             domainCartComponent: DomainCartComponent
         ): CartComponent
     }

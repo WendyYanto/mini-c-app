@@ -2,7 +2,8 @@ package com.dev.wenn.main.screen
 
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.core.CoreComponentInjector
-import com.dev.core.di.CoreComponent
+import com.dev.core.di.CoreComponentApi
+import com.dev.core.scope.AppFeatureScope
 import com.dev.core.scope.FeatureScope
 import com.dev.data.misc.di.DataMiscComponent
 import com.dev.data.misc.di.DataMiscComponentProvider
@@ -19,7 +20,7 @@ import dagger.Component
 @FeatureScope
 @Component(
     dependencies = [
-        CoreComponent::class,
+        CoreComponentApi::class,
         DataUserComponent::class,
         DataProductComponent::class,
         DataOrderComponent::class,
@@ -35,7 +36,7 @@ interface MainComponent {
     interface Factory {
 
         fun build(
-            coreComponent: CoreComponent,
+            coreComponent: CoreComponentApi,
             dataUserComponent: DataUserComponent,
             dataProductComponent: DataProductComponent,
             dataOrderComponent: DataOrderComponent,

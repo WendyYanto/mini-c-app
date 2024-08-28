@@ -3,13 +3,14 @@ package com.dev.data.order.di
 import android.content.Context
 import com.dev.core.CoreComponentInjector
 import com.dev.core.di.CoreComponent
+import com.dev.core.di.CoreComponentApi
 import com.dev.core.scope.DataScope
 import com.dev.core.scope.FeatureScope
 import com.dev.data.order.DataOrderTextProvider
 import dagger.Component
 
 @Component(
-    dependencies = [CoreComponent::class],
+    dependencies = [CoreComponentApi::class],
     modules = [DataOrderModule::class]
 )
 @DataScope
@@ -19,7 +20,7 @@ interface DataOrderComponent {
     interface Factory {
 
         fun build(
-            coreComponent: CoreComponent
+            coreComponent: CoreComponentApi
         ): DataOrderComponent
     }
 

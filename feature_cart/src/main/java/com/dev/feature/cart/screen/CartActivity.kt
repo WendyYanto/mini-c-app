@@ -1,4 +1,4 @@
-package com.dev.wenn.main.screen
+package com.dev.feature.cart.screen
 
 import android.os.Bundle
 import android.widget.TextView
@@ -16,7 +16,6 @@ class CartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         CartComponent.init(this).inject(this)
         setContentView(R.layout.activity_cart)
-
         val domainCartTextView = findViewById<TextView>(R.id.tv_domain_cart)
         domainCartTextView.text = domainCartTextProvider.getDomainCartText()
     }

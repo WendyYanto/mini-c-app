@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    id("com.squareup.anvil") version "2.4.9"
 }
 
 android {
@@ -43,4 +44,5 @@ dependencies {
 
     implementation(project(":data_product"))
     implementation(project(":data_order"))
+    implementation(project(":data_misc"))
 }
