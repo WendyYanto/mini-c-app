@@ -8,7 +8,7 @@ object CoreComponentInjector {
     @JvmStatic
     fun getCoreComponent(context: Context) = context.applicationContext.run {
         if (this is CoreComponentApiProvider) {
-            getCoreComponent()
+            getCoreComponentApi()
         } else {
             throw RuntimeException("Cannot find CoreComponent - the Application class must implement CoreComponentProvider")
         }

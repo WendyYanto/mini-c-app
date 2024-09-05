@@ -7,7 +7,6 @@ import com.squareup.anvil.compiler.api.CodeGenerator
 import com.squareup.anvil.compiler.api.GeneratedFile
 import com.squareup.anvil.compiler.api.createGeneratedFile
 import com.squareup.anvil.compiler.internal.decapitalize
-import com.squareup.anvil.compiler.internal.reference.AnnotationArgumentReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.argumentAt
 import com.squareup.anvil.compiler.internal.reference.classAndInnerClassReferences
@@ -18,14 +17,10 @@ import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.joinToCode
 import dagger.Component
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.psi.KtClassLiteralExpression
-import org.jetbrains.kotlin.psi.KtCollectionLiteralExpression
 import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.psi.KtNameReferenceExpression
 import java.io.File
 
 @OptIn(ExperimentalAnvilApi::class)
@@ -46,47 +41,6 @@ class AnvilComponentGenerator : CodeGenerator {
                     packageName = clazz.packageFqName.asString(),
                     fileName = "${clazz.shortName}Component",
                     content = generateComponent(clazz)
-//                    """
-//                        package com.dev.feature.cart.screen
-//
-//                        import androidx.appcompat.app.AppCompatActivity
-//                        import com.dev.core.CoreComponentInjector
-//                        import com.dev.core.di.CoreComponentApi
-//                        import com.dev.core.scope.FeatureScope
-//                        import com.dev.domain.cart.di.DomainCartComponent
-//                        import com.dev.domain.cart.di.DomainCartComponentProvider
-//                        import dagger.Component
-//
-//                        @FeatureScope
-//                        @Component(
-//                            dependencies = [
-//                                CoreComponentApi::class,
-//                                DomainCartComponent::class,
-//                            ]
-//                        )
-//                        interface CartComponent {
-//
-//                            fun inject(activity: CartActivity)
-//
-//                            @Component.Factory
-//                            interface Factory {
-//
-//                                fun build(
-//                                    coreComponent: CoreComponentApi,
-//                                    domainCartComponent: DomainCartComponent
-//                                ): CartComponent
-//                            }
-//
-//                            companion object Initializer {
-//
-//                                fun init(activity: AppCompatActivity) = DaggerCartComponent.factory()
-//                                    .build(
-//                                        coreComponent = CoreComponentInjector.getCoreComponent(activity),
-//                                        domainCartComponent = (activity.applicationContext as DomainCartComponentProvider).getDomainCartComponent(),
-//                                    )
-//                            }
-//                        }
-//                    """.trimIndent()
                 )
             }.toList()
     }
@@ -121,6 +75,28 @@ class AnvilComponentGenerator : CodeGenerator {
         componentClazzDependencies.forEach {
             fileBuilder.addImport(it.packageName, "${it.clazzName}Provider")
         }
+
+        val stringBuilder = StringBuilder()
+        stringBuilder.append("return Dagger$componentName.factory().build(\n")
+        componentClazzDependencies.forEach {
+            stringBuilder.append(
+                "${it.clazzName.decapitalize()} = (activity.applicationContext as \n${it.clazzName}Provider).get${it.clazzName}(),\n"
+            )
+        }
+        stringBuilder.append(")")
+
+        val initializerFunCode = FunSpec.builder("init")
+            .returns(ClassName("", componentName))
+            .addParameter(
+                ParameterSpec.builder(
+                    "activity",
+                    ClassName(
+                        clazz.packageFqName.asString(),
+                        clazz.shortName
+                    ),
+                ).build()
+            )
+            .addStatement(stringBuilder.toString())
 
         return fileBuilder
             .addImport("dagger", "Component")
@@ -158,6 +134,7 @@ class AnvilComponentGenerator : CodeGenerator {
                             )
                             .addFunction(
                                 FunSpec.builder("build")
+                                    .returns(ClassName("", componentName))
                                     .addModifiers(KModifier.ABSTRACT)
                                     .addParameters(componentClazzDependencies.map {
                                         ParameterSpec.builder(
@@ -167,6 +144,13 @@ class AnvilComponentGenerator : CodeGenerator {
                                             .build()
                                     })
                                     .build()
+                            )
+                            .build()
+                    )
+                    .addType(
+                        TypeSpec.companionObjectBuilder("Initializer")
+                            .addFunction(
+                                initializerFunCode.build()
                             )
                             .build()
                     )

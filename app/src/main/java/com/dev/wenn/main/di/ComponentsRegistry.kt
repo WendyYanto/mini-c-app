@@ -24,7 +24,7 @@ object ComponentsRegistry : ComponentProvider {
         this.app = app
     }
 
-    override fun getCoreComponent(): CoreComponentApi {
+    override fun getCoreComponentApi(): CoreComponentApi {
         if (!::coreComponent.isInitialized) {
             coreComponent = CoreComponent.Initializer.init()
         }

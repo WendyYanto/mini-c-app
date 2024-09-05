@@ -2,5 +2,5 @@ package com.dev.core.di
 
 interface CoreComponentApiProvider {
 
-    fun getCoreComponent(): CoreComponentApi
+    fun getCoreComponentApi(): CoreComponentApi
 }

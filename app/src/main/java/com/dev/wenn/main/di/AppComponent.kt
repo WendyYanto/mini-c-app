@@ -35,7 +35,7 @@ interface AppComponent :
         fun init(app: App): AppComponent {
             ComponentsRegistry.init(app)
             return DaggerAppComponent.builder()
-                .coreComponentApi(app.getCoreComponent())
+                .coreComponentApi(app.getCoreComponentApi())
                 .dataUserComponent(app.getDataUserComponent())
                 .dataProductComponent(app.getDataProductComponent())
                 .dataOrderComponent(app.getDataOrderComponent())
