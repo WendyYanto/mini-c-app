@@ -29,6 +29,14 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    sourceSets {
+        getByName("main") {
+            java {
+                srcDirs("build/anvil/")
+            }
+        }
+    }
 }
 
 dependencies {
@@ -45,4 +53,7 @@ dependencies {
     implementation(project(":data_product"))
     implementation(project(":data_order"))
     implementation(project(":data_misc"))
+
+    implementation(project(":annotation"))
+    anvil(project(":anvil_compiler_api"))
 }

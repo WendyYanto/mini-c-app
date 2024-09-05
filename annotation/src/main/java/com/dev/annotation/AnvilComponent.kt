@@ -6,7 +6,6 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 @Repeatable
 public annotation class AnvilComponent(
-    val componentName: String,
     val modules: Array<KClass<*>> = [],
     val dependencies: Array<KClass<*>> = [],
 )

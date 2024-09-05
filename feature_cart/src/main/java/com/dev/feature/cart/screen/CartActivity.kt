@@ -3,10 +3,15 @@ package com.dev.feature.cart.screen
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.dev.annotation.AnvilComponent
+import com.dev.core.di.CoreComponentApi
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.R
 import javax.inject.Inject
 
+@AnvilComponent(
+    dependencies = [CoreComponentApi::class]
+)
 class CartActivity : AppCompatActivity() {
 
     @Inject
