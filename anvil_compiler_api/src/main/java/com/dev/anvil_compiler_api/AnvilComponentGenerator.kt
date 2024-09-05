@@ -6,6 +6,7 @@ import com.squareup.anvil.compiler.api.AnvilContext
 import com.squareup.anvil.compiler.api.CodeGenerator
 import com.squareup.anvil.compiler.api.GeneratedFile
 import com.squareup.anvil.compiler.api.createGeneratedFile
+import com.squareup.anvil.compiler.internal.decapitalize
 import com.squareup.anvil.compiler.internal.reference.AnnotationArgumentReference
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.argumentAt
@@ -13,6 +14,9 @@ import com.squareup.anvil.compiler.internal.reference.classAndInnerClassReferenc
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.joinToCode
 import dagger.Component
@@ -135,23 +139,41 @@ class AnvilComponentGenerator : CodeGenerator {
                         )
                             .build()
                     )
+                    .addFunction(
+                        FunSpec.builder("inject")
+                            .addModifiers(KModifier.ABSTRACT)
+                            .addParameter(
+                                ParameterSpec.builder(
+                                    "activity",
+                                    ClassName(clazz.packageFqName.asString(), clazz.shortName),
+                                ).build(),
+                            )
+                            .build()
+                    )
+                    .addType(
+                        TypeSpec.interfaceBuilder("Factory")
+                            .addAnnotation(
+                                AnnotationSpec.builder(Component.Factory::class)
+                                    .build()
+                            )
+                            .addFunction(
+                                FunSpec.builder("build")
+                                    .addModifiers(KModifier.ABSTRACT)
+                                    .addParameters(componentClazzDependencies.map {
+                                        ParameterSpec.builder(
+                                            it.clazzName.decapitalize(),
+                                            ClassName(it.packageName, it.clazzName)
+                                        )
+                                            .build()
+                                    })
+                                    .build()
+                            )
+                            .build()
+                    )
                     .build()
             )
             .build()
             .toString()
-    }
-
-    private fun getAnnotationValues(annotation: AnnotationArgumentReference.Psi?): List<String> {
-        val argumentChildren = annotation?.argument?.children.orEmpty()
-        val literalExpressions = argumentChildren.firstOrNull {
-            it is KtCollectionLiteralExpression
-        }?.children?.filterIsInstance<KtClassLiteralExpression>().orEmpty()
-
-
-        return literalExpressions.flatMap {
-            it.children.filterIsInstance<KtNameReferenceExpression>()
-        }
-            .map { "${it.text}::class" }
     }
 }
 
