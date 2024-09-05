@@ -10,4 +10,6 @@ dependencies {
     kapt("com.google.auto.service:auto-service:1.0")
 
     implementation(project(":annotation"))
+    implementation("com.squareup:kotlinpoet:1.18.1")
+    implementation(libs.dagger.core)
 }

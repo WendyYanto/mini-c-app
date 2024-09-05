@@ -6,11 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dev.annotation.AnvilComponent
 import com.dev.core.di.CoreComponentApi
 import com.dev.domain.cart.DomainCartTextProvider
+import com.dev.domain.cart.di.DomainCartComponent
+import com.dev.domain.cart.di.DomainCartModule
 import com.dev.feature.cart.R
 import javax.inject.Inject
 
 @AnvilComponent(
-    dependencies = [CoreComponentApi::class]
+    dependencies = [CoreComponentApi::class, DomainCartComponent::class],
+    modules = [DomainCartModule::class]
 )
 class CartActivity : AppCompatActivity() {
 
@@ -19,7 +22,7 @@ class CartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        CartComponent.init(this).inject(this)
+        CartActivityComponent.init(this).inject(this)
         setContentView(R.layout.activity_cart)
         val domainCartTextView = findViewById<TextView>(R.id.tv_domain_cart)
         domainCartTextView.text = domainCartTextProvider.getDomainCartText()

@@ -1,6 +1,6 @@
 package com.dev.core.di
 
-interface CoreComponentProvider {
+interface CoreComponentApiProvider {
 
     fun getCoreComponent(): CoreComponentApi
 }
