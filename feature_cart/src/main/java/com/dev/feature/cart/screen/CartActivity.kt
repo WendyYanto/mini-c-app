@@ -8,6 +8,7 @@ import com.dev.core.DynamicTextProvider
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.R
 import com.dev.feature.cart.screen.DataArgsProvider
+import com.dev.feature.cart.screen.ToastLoader
 import javax.inject.Inject
 
 class CartActivity : AppCompatActivity() {
@@ -21,11 +22,15 @@ class CartActivity : AppCompatActivity() {
     @Inject
     lateinit var dynamicTextProvider: DynamicTextProvider
 
+    @Inject
+    lateinit var toastLoader: ToastLoader
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         ComponentHolder.component<CartComponent.ParentComponent>()
             .createCartComponent()
+            .create(this)
             .inject(this)
 
         setContentView(R.layout.activity_cart)
@@ -33,5 +38,7 @@ class CartActivity : AppCompatActivity() {
         val domainCartTextView = findViewById<TextView>(R.id.tv_domain_cart)
         domainCartTextView.text =
             "${domainCartTextProvider.getDomainCartText()} ${dataArgsProvider.loadArgs().hi} , ${dynamicTextProvider.loadText()}"
+
+        toastLoader.show()
     }
 }

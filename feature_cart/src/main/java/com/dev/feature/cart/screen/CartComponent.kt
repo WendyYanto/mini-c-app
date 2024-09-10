@@ -1,13 +1,17 @@
 package com.dev.wenn.main.screen
 
+import androidx.appcompat.app.AppCompatActivity
 import com.dev.core.scope.ActivityScope
 import com.dev.core.scope.AppScope
-import com.squareup.anvil.annotations.ContributesSubcomponent
+import com.dev.core.scope.FeatureScope
 import com.squareup.anvil.annotations.ContributesTo
+import com.squareup.anvil.annotations.MergeSubcomponent
+import dagger.BindsInstance
+import dagger.Subcomponent
 
-@ContributesSubcomponent(
-    scope = ActivityScope::class,
-    parentScope = AppScope::class
+@FeatureScope
+@MergeSubcomponent(
+    scope = ActivityScope::class
 )
 interface CartComponent {
 
@@ -16,6 +20,13 @@ interface CartComponent {
     @ContributesTo(AppScope::class)
     interface ParentComponent {
 
-        fun createCartComponent(): CartComponent
+        fun createCartComponent(): Factory
+    }
+
+    @Subcomponent.Factory
+    interface Factory {
+        fun create(
+            @BindsInstance activity: AppCompatActivity
+        ): CartComponent
     }
 }

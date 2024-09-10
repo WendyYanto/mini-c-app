@@ -11,14 +11,14 @@ import javax.inject.Inject
 
 class App : Application(), ComponentProvider by ComponentsRegistry {
 
-    @Inject
-    lateinit var dynamicTextProvider: DynamicTextProvider
+//    @Inject
+//    lateinit var dynamicTextProvider: DynamicTextProvider
 
     override fun onCreate() {
         super.onCreate()
         val appComponent = AppComponent.init(this)
         appComponent.inject(this)
         ComponentHolder.components += appComponent
-        Toast.makeText(this, "Hi: ${dynamicTextProvider.loadText()}", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "Hi: ${dynamicTextProvider.loadText()}", Toast.LENGTH_SHORT).show()
     }
 }

@@ -11,9 +11,11 @@ interface DataArgsProvider {
 @ContributesBinding(
     scope = ActivityScope::class
 )
-class DataArgsProviderImpl @Inject constructor() : DataArgsProvider {
+class DataArgsProviderImpl @Inject constructor(
+    private val innerProvider: DataInnerArgsProvider
+) : DataArgsProvider {
     override fun loadArgs(): DataArgs {
-        return DataArgs("hello")
+        return DataArgs("hello - ${innerProvider.loadArgs()}")
     }
 }
 
