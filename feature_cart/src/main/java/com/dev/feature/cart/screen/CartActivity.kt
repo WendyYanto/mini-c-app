@@ -7,6 +7,7 @@ import com.dev.core.ComponentHolder
 import com.dev.core.DynamicTextProvider
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.R
+import com.dev.feature.cart.screen.CartCallback
 import com.dev.feature.cart.screen.DataArgsProvider
 import com.dev.feature.cart.screen.ToastLoader
 import javax.inject.Inject
@@ -25,13 +26,17 @@ class CartActivity : AppCompatActivity() {
     @Inject
     lateinit var toastLoader: ToastLoader
 
+    @Inject
+    lateinit var cartCallback: CartCallback
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ComponentHolder.component<CartComponent.ParentComponent>()
+        val component = ComponentHolder.component<CartComponent.ParentComponent>()
             .createCartComponent()
             .create(this)
-            .inject(this)
+
+        component.inject(this)
 
         setContentView(R.layout.activity_cart)
 
@@ -39,6 +44,6 @@ class CartActivity : AppCompatActivity() {
         domainCartTextView.text =
             "${domainCartTextProvider.getDomainCartText()} ${dataArgsProvider.loadArgs().hi} , ${dynamicTextProvider.loadText()}"
 
-        toastLoader.show()
+        toastLoader.show(cartCallback.loadText())
     }
 }

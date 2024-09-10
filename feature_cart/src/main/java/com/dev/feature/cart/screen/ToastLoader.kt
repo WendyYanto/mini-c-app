@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 interface ToastLoader {
 
-    fun show()
+    fun show(text: String)
 }
 
 @ContributesBinding(ActivityScope::class)
@@ -16,7 +16,7 @@ class ToastLoaderImpl @Inject constructor(
     private val appCompatActivity: AppCompatActivity
 ) : ToastLoader {
 
-    override fun show() {
-        Toast.makeText(appCompatActivity, "Toast loader", Toast.LENGTH_SHORT).show()
+    override fun show(text: String) {
+        Toast.makeText(appCompatActivity, text, Toast.LENGTH_SHORT).show()
     }
 }
