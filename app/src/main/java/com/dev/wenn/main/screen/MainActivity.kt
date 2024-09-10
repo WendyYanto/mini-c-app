@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.dev.core.ComponentHolder
 import com.dev.core.CoreTextProvider
 import com.dev.data.misc.DataMiscTextProvider
-import com.dev.data.misc.di.DataMiscComponentProvider
 import com.dev.data.order.DataOrderTextProvider
 import com.dev.data.product.DataProductTextProvider
 import com.dev.data.user.DataUserTextProvider
@@ -36,7 +36,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MainComponent.init(this).inject(this)
+
+        ComponentHolder.component<MainComponent.ParentComponent>()
+            .createMainComponent()
+            .inject(this)
+
         setContentView(R.layout.activity_main)
 
         val textView = findViewById<TextView>(R.id.tv_core_text)
