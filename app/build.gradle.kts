@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     id("scabbard.gradle") version "0.5.0"
+    id("com.squareup.anvil") version "2.4.9"
 }
 
 android {
