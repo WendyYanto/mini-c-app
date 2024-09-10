@@ -10,7 +10,6 @@ import com.dev.data.user.di.DataUserComponent
 import com.dev.domain.cart.di.DomainCartComponent
 import com.dev.wenn.main.App
 import com.squareup.anvil.annotations.MergeComponent
-import dagger.Component
 
 @ApplicationScope
 @MergeComponent(
@@ -31,6 +30,8 @@ interface AppComponent :
     DataOrderComponent,
     DataMiscComponent,
     DomainCartComponent {
+
+    fun inject(app: App)
 
     companion object Initializer {
 

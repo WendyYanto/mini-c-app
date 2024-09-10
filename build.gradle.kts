@@ -4,22 +4,22 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.android.library) apply false
-    id("scabbard.gradle") version "0.5.0"
+//    id("scabbard.gradle") version "0.5.0"
     id("com.squareup.anvil") version "2.4.9" apply false
 }
 
-scabbard {
-    enabled = true
-    fullBindingGraphValidation = true
-}
+//scabbard {
+//    enabled = true
+//    fullBindingGraphValidation = true
+//}
 
-allprojects {
-    configurations.all {
-        resolutionStrategy.eachDependency {
-            if (requested.group == "com.github.kittinunf.result" && requested.name == "result" && requested.version == "3.0.0") {
-                useVersion("3.0.1")
-                because("Transitive dependency of Scabbard, currently not available on mavenCentral()")
-            }
-        }
-    }
-}
+//allprojects {
+//    configurations.all {
+//        resolutionStrategy.eachDependency {
+//            if (requested.group == "com.github.kittinunf.result" && requested.name == "result" && requested.version == "3.0.0") {
+//                useVersion("3.0.1")
+//                because("Transitive dependency of Scabbard, currently not available on mavenCentral()")
+//            }
+//        }
+//    }
+//}
