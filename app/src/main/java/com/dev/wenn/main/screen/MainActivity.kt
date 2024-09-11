@@ -11,6 +11,7 @@ import com.dev.data.order.DataOrderTextProvider
 import com.dev.data.product.DataProductTextProvider
 import com.dev.data.user.DataUserTextProvider
 import com.dev.domain.cart.DomainCartTextProvider
+import com.dev.feature.cart.screen.CartActivity
 import com.dev.wenn.R
 import javax.inject.Inject
 

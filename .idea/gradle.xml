@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/data_user" />
             <option value="$PROJECT_DIR$/domain_cart" />
             <option value="$PROJECT_DIR$/feature_cart" />
+            <option value="$PROJECT_DIR$/feature_cart_app" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

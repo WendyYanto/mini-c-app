@@ -6,6 +6,7 @@ import com.dev.core.mvvm.viewModel
 import com.dev.core.scope.ActivityScope
 import com.dev.core.scope.AppScope
 import com.dev.core.scope.FeatureScope
+import com.dev.feature.cart.screen.CartActivity
 import com.dev.feature.cart.screen.CartCallback
 import com.dev.feature.cart.screen.CartViewModel
 import com.dev.feature.cart.screen.DataArgsProvider

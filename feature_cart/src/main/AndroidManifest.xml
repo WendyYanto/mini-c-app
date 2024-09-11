@@ -2,6 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
-        <activity android:name="com.dev.wenn.main.screen.CartActivity" />
+        <activity android:name=".screen.CartActivity" />
     </application>
 </manifest>
