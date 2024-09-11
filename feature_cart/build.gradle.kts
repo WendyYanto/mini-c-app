@@ -31,13 +31,16 @@ android {
     }
 }
 
+anvil {
+    generateDaggerFactories = true // default is false
+}
+
 dependencies {
 
     implementation(libs.ktx)
     implementation(libs.appcompact)
     implementation(libs.dagger.core)
     implementation(libs.material.component)
-    kapt(libs.dagger.compiler)
 
     implementation(project(":core"))
     implementation(project(":domain_cart"))

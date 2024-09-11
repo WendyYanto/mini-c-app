@@ -41,9 +41,9 @@ interface CartComponent {
 
 @Module
 @ContributesTo(ActivityScope::class)
-interface ComponentModule {
+class ComponentModule {
 
-    companion object {
+//    companion object {
         @Provides
         @FeatureScope
         fun provideViewModel(
@@ -61,5 +61,5 @@ interface ComponentModule {
         @Provides
         @FeatureScope
         fun provideCallbacks(viewModel: CartViewModel): CartCallback = viewModel.callback
-    }
+//    }
 }

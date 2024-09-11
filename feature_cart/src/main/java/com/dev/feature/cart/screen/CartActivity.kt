@@ -31,7 +31,6 @@ class CartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.v("FEATURE_CART", "activity created and loading components")
         val component = ComponentHolder.component<CartComponent.ParentComponent>()
             .createCartComponent()
             .create(this)
