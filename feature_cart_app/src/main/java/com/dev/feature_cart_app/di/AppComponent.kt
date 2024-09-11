@@ -13,17 +13,10 @@ import com.squareup.anvil.annotations.MergeComponent
 @MergeComponent(
     scope = AppScope::class,
     dependencies = [
-        CoreComponent::class,
-        DataProductComponent::class,
-        DataOrderComponent::class,
-        DomainCartComponent::class
+        CoreComponent::class
     ]
 )
-interface AppComponent :
-    CoreComponent,
-    DataProductComponent,
-    DataOrderComponent,
-    DomainCartComponent {
+interface AppComponent : CoreComponent {
 
     fun inject(app: App)
 
@@ -33,9 +26,6 @@ interface AppComponent :
             ComponentsRegistry.init(app)
             return DaggerAppComponent.builder()
                 .coreComponent(app.getCoreComponent())
-                .dataProductComponent(app.getDataProductComponent())
-                .dataOrderComponent(app.getDataOrderComponent())
-                .domainCartComponent(app.getDomainCartComponent())
                 .build()
         }
     }

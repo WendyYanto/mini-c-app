@@ -3,33 +3,14 @@ package com.dev.data.product.di
 import android.content.Context
 import com.dev.core.CoreComponentInjector
 import com.dev.core.di.CoreComponent
+import com.dev.core.scope.AppScope
 import com.dev.core.scope.DataScope
 import com.dev.data.product.DataProductTextProvider
+import com.squareup.anvil.annotations.ContributesTo
 import dagger.Component
 
-@Component(
-    dependencies = [CoreComponent::class],
-    modules = [DataProductModule::class]
-)
-@DataScope
+@ContributesTo(AppScope::class)
 interface DataProductComponent {
-
-    @Component.Factory
-    interface Factory {
-
-        fun build(
-            coreComponent: CoreComponent
-        ): DataProductComponent
-    }
-
-    companion object Initializer {
-
-        fun init(context: Context): DataProductComponent =
-            DaggerDataProductComponent.factory()
-                .build(
-                    coreComponent = CoreComponentInjector.getCoreComponent(context)
-                )
-    }
 
     fun getDataProductTextProvider(): DataProductTextProvider
 }

@@ -1,18 +1,19 @@
 package com.dev.wenn.main.di
 
+import com.dev.core.ComponentHolder
 import com.dev.core.di.CoreComponent
 import com.dev.data.order.di.DataOrderComponent
+import com.dev.data.order.di.DataOrderComponentProvider
 import com.dev.data.product.di.DataProductComponent
+import com.dev.data.product.di.DataProductComponentProvider
 import com.dev.domain.cart.di.DomainCartComponent
+import com.dev.domain.cart.di.DomainCartComponentProvider
 import com.dev.feature_cart_app.App
 
 object ComponentsRegistry : ComponentProvider {
 
     private lateinit var app: App
     private lateinit var coreComponent: CoreComponent
-    private lateinit var dataProductComponent: DataProductComponent
-    private lateinit var dataOrderComponent: DataOrderComponent
-    private lateinit var domainCartComponent: DomainCartComponent
 
     fun init(app: App) {
         this.app = app
@@ -26,23 +27,17 @@ object ComponentsRegistry : ComponentProvider {
     }
 
     override fun getDataProductComponent(): DataProductComponent {
-        if (!::dataProductComponent.isInitialized) {
-            dataProductComponent = DataProductComponent.Initializer.init(app)
-        }
-        return dataProductComponent
+        return ComponentHolder.component<DataProductComponentProvider>()
+            .getDataProductComponent()
     }
 
     override fun getDataOrderComponent(): DataOrderComponent {
-        if (!::dataOrderComponent.isInitialized) {
-            dataOrderComponent = DataOrderComponent.Initializer.init(app)
-        }
-        return dataOrderComponent
+        return ComponentHolder.component<DataOrderComponentProvider>()
+            .getDataOrderComponent()
     }
 
     override fun getDomainCartComponent(): DomainCartComponent {
-        if (!::domainCartComponent.isInitialized) {
-            domainCartComponent = DomainCartComponent.Initializer.init(app)
-        }
-        return domainCartComponent
+        return ComponentHolder.component<DomainCartComponentProvider>()
+            .getDomainCartComponent()
     }
 }
