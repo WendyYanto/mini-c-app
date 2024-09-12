@@ -28,6 +28,9 @@ class CartActivity : AppCompatActivity() {
     @Inject
     lateinit var cartCallback: CartCallback
 
+    @Inject
+    lateinit var cartOtherCallback: CartOtherCallback
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,5 +47,6 @@ class CartActivity : AppCompatActivity() {
             "${domainCartTextProvider.getDomainCartText()} ${dataArgsProvider.loadArgs().hi} , ${dynamicTextProvider.loadText()}"
 
         toastLoader.show(cartCallback.loadText())
+        toastLoader.show(cartOtherCallback.loadOtherText())
     }
 }

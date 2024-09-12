@@ -7,7 +7,6 @@ import com.dev.core.scope.ActivityScope
 import com.dev.core.scope.AppScope
 import com.dev.core.scope.FeatureScope
 import com.dev.feature.cart.screen.CartActivity
-import com.dev.feature.cart.screen.CartCallback
 import com.dev.feature.cart.screen.CartViewModel
 import com.dev.feature.cart.screen.DataArgsProvider
 import com.squareup.anvil.annotations.ContributesTo
@@ -41,9 +40,9 @@ interface CartComponent {
 
 @Module
 @ContributesTo(ActivityScope::class)
-class ComponentModule {
+interface ComponentModule {
 
-//    companion object {
+    companion object {
         @Provides
         @FeatureScope
         fun provideViewModel(
@@ -56,10 +55,5 @@ class ComponentModule {
                 dataArgsProvider = dataArgsProvider
             )
         }
-
-        // this feels useless
-        @Provides
-        @FeatureScope
-        fun provideCallbacks(viewModel: CartViewModel): CartCallback = viewModel.callback
-//    }
+    }
 }
