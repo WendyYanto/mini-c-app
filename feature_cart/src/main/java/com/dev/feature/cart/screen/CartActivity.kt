@@ -1,12 +1,21 @@
-package com.dev.wenn.main.screen
+package com.dev.feature.cart.screen
 
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.dev.annotation.AnvilComponent
+import com.dev.core.di.CoreComponentApi
 import com.dev.domain.cart.DomainCartTextProvider
+import com.dev.domain.cart.di.DomainCartComponent
+import com.dev.domain.cart.di.DomainCartModule
 import com.dev.feature.cart.R
 import javax.inject.Inject
 
+@AnvilComponent(
+    dependencies = [CoreComponentApi::class, DomainCartComponent::class],
+    modules = [DomainCartModule::class],
+    viewModels = [CartViewModel::class]
+)
 class CartActivity : AppCompatActivity() {
 
     @Inject
@@ -14,9 +23,8 @@ class CartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        CartComponent.init(this).inject(this)
+        CartActivityComponent.init(this).inject(this)
         setContentView(R.layout.activity_cart)
-
         val domainCartTextView = findViewById<TextView>(R.id.tv_domain_cart)
         domainCartTextView.text = domainCartTextProvider.getDomainCartText()
     }

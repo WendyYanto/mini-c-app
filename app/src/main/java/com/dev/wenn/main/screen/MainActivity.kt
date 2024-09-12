@@ -6,11 +6,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.core.CoreTextProvider
 import com.dev.data.misc.DataMiscTextProvider
-import com.dev.data.misc.di.DataMiscComponentProvider
 import com.dev.data.order.DataOrderTextProvider
 import com.dev.data.product.DataProductTextProvider
 import com.dev.data.user.DataUserTextProvider
 import com.dev.domain.cart.DomainCartTextProvider
+import com.dev.feature.cart.screen.CartActivity
 import com.dev.wenn.R
 import javax.inject.Inject
 

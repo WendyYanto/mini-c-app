@@ -3,12 +3,13 @@ package com.dev.data.product.di
 import android.content.Context
 import com.dev.core.CoreComponentInjector
 import com.dev.core.di.CoreComponent
+import com.dev.core.di.CoreComponentApi
 import com.dev.core.scope.DataScope
 import com.dev.data.product.DataProductTextProvider
 import dagger.Component
 
 @Component(
-    dependencies = [CoreComponent::class],
+    dependencies = [CoreComponentApi::class],
     modules = [DataProductModule::class]
 )
 @DataScope
@@ -18,7 +19,7 @@ interface DataProductComponent {
     interface Factory {
 
         fun build(
-            coreComponent: CoreComponent
+            coreComponent: CoreComponentApi
         ): DataProductComponent
     }
 

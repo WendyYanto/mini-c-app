@@ -3,12 +3,13 @@ package com.dev.data.misc.di
 import android.content.Context
 import com.dev.core.CoreComponentInjector
 import com.dev.core.di.CoreComponent
+import com.dev.core.di.CoreComponentApi
 import com.dev.core.scope.DataScope
 import com.dev.data.misc.DataMiscTextProvider
 import dagger.Component
 
 @Component(
-    dependencies = [CoreComponent::class],
+    dependencies = [CoreComponentApi::class],
     modules = [DataMiscModule::class]
 )
 @DataScope
@@ -18,7 +19,7 @@ interface DataMiscComponent {
     interface Factory {
 
         fun build(
-            coreComponent: CoreComponent
+            coreComponent: CoreComponentApi
         ): DataMiscComponent
     }
 

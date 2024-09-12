@@ -3,12 +3,13 @@ package com.dev.data.user.di
 import android.content.Context
 import com.dev.core.CoreComponentInjector
 import com.dev.core.di.CoreComponent
+import com.dev.core.di.CoreComponentApi
 import com.dev.core.scope.DataScope
 import com.dev.data.user.DataUserTextProvider
 import dagger.Component
 
 @Component(
-    dependencies = [CoreComponent::class],
+    dependencies = [CoreComponentApi::class],
     modules = [DataUserModule::class]
 )
 @DataUserScope
@@ -18,7 +19,7 @@ interface DataUserComponent {
     interface Factory {
 
         fun build(
-            coreComponent: CoreComponent
+            coreComponent: CoreComponentApi
         ): DataUserComponent
     }
 
