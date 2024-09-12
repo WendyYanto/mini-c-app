@@ -13,7 +13,8 @@ import javax.inject.Inject
 
 @AnvilComponent(
     dependencies = [CoreComponentApi::class, DomainCartComponent::class],
-    modules = [DomainCartModule::class]
+    modules = [DomainCartModule::class],
+    viewModels = [CartViewModel::class]
 )
 class CartActivity : AppCompatActivity() {
 

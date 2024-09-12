@@ -10,6 +10,7 @@ import com.squareup.anvil.compiler.internal.decapitalize
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.argumentAt
 import com.squareup.anvil.compiler.internal.reference.classAndInnerClassReferences
+import com.squareup.anvil.compiler.internal.reference.toClassReference
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
@@ -20,6 +21,7 @@ import com.squareup.kotlinpoet.TypeSpec
 import dagger.Component
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
 
@@ -49,6 +51,20 @@ class AnvilComponentGenerator : CodeGenerator {
 
     private fun generateComponent(clazz: ClassReference.Psi): String {
         val annotation = clazz.annotations[0]
+        val ktClass = clazz.clazz.getSuperTypeList()?.text
+
+        val viewModelDependencies = annotation.argumentAt("viewModels", -1)?.value<List<ClassReference>>()
+            .orEmpty().map {
+                it.constructors.flatMap {
+                    it.parameters.map { parameter ->
+                        "${parameter.name}:${
+                            parameter.type().asClassReference().packageFqName.asString()
+                        }.${
+                            parameter.type().asClassReference().shortName
+                        }"
+                    }
+                }
+            }
 
         val componentName = "${clazz.shortName}Component"
         val fileBuilder = FileSpec.builder(clazz.packageFqName.asString(), componentName)
@@ -96,6 +112,8 @@ class AnvilComponentGenerator : CodeGenerator {
                     ),
                 ).build()
             )
+            .addComment("$ktClass")
+            .addComment("$viewModelDependencies")
             .addStatement(stringBuilder.toString())
 
         return fileBuilder

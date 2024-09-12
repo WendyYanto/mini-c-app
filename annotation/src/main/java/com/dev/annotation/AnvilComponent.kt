@@ -8,4 +8,5 @@ import kotlin.reflect.KClass
 public annotation class AnvilComponent(
     val modules: Array<KClass<*>> = [],
     val dependencies: Array<KClass<*>> = [],
+    val viewModels: Array<KClass<*>> = []
 )
