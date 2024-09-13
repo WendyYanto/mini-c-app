@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.android.library) apply false
 //    id("scabbard.gradle") version "0.5.0"
     id("com.squareup.anvil") version "2.4.9" apply false
+    alias(libs.plugins.kotlin.jvm) apply false
 }
 
 //scabbard {
