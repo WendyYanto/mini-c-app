@@ -3,7 +3,7 @@ package com.dev.core.injector
 import com.dev.core.ComponentHolder
 
 @Suppress("UNCHECKED_CAST")
-inline fun <reified T, reified U> T.injectFeatureWithDependency(
+inline fun <reified T, reified U> T.injectComponentWithDependency(
     noinline dependencyFactory: () -> U
 ) {
     val injector = ComponentHolder
@@ -14,7 +14,7 @@ inline fun <reified T, reified U> T.injectFeatureWithDependency(
 }
 
 @Suppress("UNCHECKED_CAST")
-inline fun <reified T> T.injectFeature() {
+inline fun <reified T> T.injectComponent() {
     val injector = ComponentHolder
         .component<FeatureInjectorComponent>()
         .featureInjectors()[T::class.java] as? FeatureInjector<T, Unit>
