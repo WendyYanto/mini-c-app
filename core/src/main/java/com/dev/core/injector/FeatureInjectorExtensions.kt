@@ -8,7 +8,7 @@ inline fun <reified T, reified U> T.injectComponentWithDependency(
 ) {
     val injector = ComponentHolder
         .component<FeatureInjectorComponent>()
-        .featureInjectors()[T::class.java] as? FeatureInjector<T, U>
+        .featureInjectors()[T::class.java]?.get() as? FeatureInjector<T, U>
 
     injector?.inject(this, dependencyFactory)
 }
@@ -17,7 +17,7 @@ inline fun <reified T, reified U> T.injectComponentWithDependency(
 inline fun <reified T> T.injectComponent() {
     val injector = ComponentHolder
         .component<FeatureInjectorComponent>()
-        .featureInjectors()[T::class.java] as? FeatureInjector<T, Unit>
+        .featureInjectors()[T::class.java]?.get() as? FeatureInjector<T, Unit>
 
     injector?.inject(this) { }
 }
