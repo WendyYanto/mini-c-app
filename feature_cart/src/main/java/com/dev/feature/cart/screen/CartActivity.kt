@@ -1,14 +1,12 @@
 package com.dev.feature.cart.screen
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.dev.core.ComponentHolder
 import com.dev.core.DynamicTextProvider
+import com.dev.core.injector.injectFeature
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.R
-import com.dev.wenn.main.screen.CartComponent
 import javax.inject.Inject
 
 class CartActivity : AppCompatActivity() {
@@ -34,11 +32,7 @@ class CartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val component = ComponentHolder.component<CartComponent.ParentComponent>()
-            .createCartComponent()
-            .create(this)
-
-        component.inject(this)
+        injectFeature()
 
         setContentView(R.layout.activity_cart)
 
