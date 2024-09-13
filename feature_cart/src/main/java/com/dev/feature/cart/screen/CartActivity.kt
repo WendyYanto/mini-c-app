@@ -5,13 +5,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.annotation.InjectWith
 import com.dev.core.DynamicTextProvider
-import com.dev.core.injector.injectComponent
+import com.dev.core.injector.injectComponentWithDependency
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.R
 import javax.inject.Inject
 
 @InjectWith(
-    viewModels = [CartViewModel::class]
+    viewModels = [CartViewModel::class],
+    dependency = CartDependency::class
 )
 class CartActivity : AppCompatActivity() {
 
@@ -35,9 +36,7 @@ class CartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        injectComponent()
-
+        injectComponentWithDependency { CartDependency("hi from cart dependency") }
         setContentView(R.layout.activity_cart)
 
         val domainCartTextView = findViewById<TextView>(R.id.tv_domain_cart)

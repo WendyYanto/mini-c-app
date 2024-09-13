@@ -195,22 +195,35 @@ class InjectWithProcessor : CodeGenerator {
         clazz: ClassReference.Psi,
         componentName: String
     ): TypeSpec.Builder {
+        val componentDependency = getComponentDependency(clazz)
+        val functionBuilder = FunSpec.builder("create")
+            .returns(ClassName("", componentName))
+            .addModifiers(KModifier.ABSTRACT)
+            .addParameter(
+                ParameterSpec.builder(
+                    clazz.shortName.decapitalize(),
+                    resolveComponent.poetClassName
+                )
+                    .addAnnotation(BindsInstance::class)
+                    .build()
+            )
+
+        if (componentDependency.isUnit.not()) {
+            functionBuilder.addParameter(
+                ParameterSpec.builder(
+                    componentDependency.clazzName.decapitalize(),
+                    componentDependency.poetClassName
+                )
+                    .addAnnotation(BindsInstance::class)
+                    .build()
+            )
+        }
+
         addType(
             TypeSpec.interfaceBuilder("Factory")
                 .addAnnotation(Subcomponent.Factory::class)
                 .addFunction(
-                    FunSpec.builder("create")
-                        .returns(ClassName("", componentName))
-                        .addModifiers(KModifier.ABSTRACT)
-                        .addParameter(
-                            ParameterSpec.builder(
-                                clazz.shortName.decapitalize(),
-                                resolveComponent.poetClassName
-                            )
-                                .addAnnotation(BindsInstance::class)
-                                .build()
-                        )
-                        .build()
+                    functionBuilder.build()
                 )
                 .build()
         )
@@ -234,25 +247,30 @@ class InjectWithProcessor : CodeGenerator {
         return this
     }
 
+    private fun getComponentDependency(
+        clazz: ClassReference.Psi
+    ): ClazzReference {
+        val annotation = clazz.annotations[0]
+        return annotation
+            .argumentAt("dependency", -1)
+            ?.value<ClassReference>()
+            ?.takeIf { it.shortName != "Unit" }
+            ?.let {
+                ClazzReference(
+                    clazzName = it.shortName,
+                    packageName = it.packageFqName.asString()
+                )
+            } ?: ClazzReference(
+            clazzName = "Unit",
+            packageName = clazz.packageFqName.asString()
+        )
+    }
+
     private fun FileSpec.Builder.addInjectorClass(
         clazz: ClassReference.Psi,
         componentName: String,
     ): FileSpec.Builder {
-        val annotation = clazz.annotations[0]
-        val componentDependency =
-            annotation
-                .argumentAt("dependency", -1)?.value<List<ClassReference>>()
-                .orEmpty()
-                .filter { it.shortName != "Unit" }
-                .map {
-                    ClazzReference(
-                        clazzName = it.shortName,
-                        packageName = it.packageFqName.asString()
-                    )
-                }.firstOrNull() ?: ClazzReference(
-                clazzName = "Unit",
-                packageName = clazz.packageFqName.asString()
-            )
+        val componentDependency = getComponentDependency(clazz)
 
         val dependency = componentDependency.poetClassName
         val injectTarget = ClassName(clazz.packageFqName.asString(), clazz.shortName)

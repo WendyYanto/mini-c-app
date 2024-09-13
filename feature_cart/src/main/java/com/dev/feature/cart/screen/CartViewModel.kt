@@ -16,11 +16,12 @@ import com.squareup.anvil.annotations.ContributesTo
 )
 class CartViewModel(
     private val coreTextProvider: CoreTextProvider,
-    private val dataArgsProvider: DataArgsProvider
+    private val dataArgsProvider: DataArgsProvider,
+    private val cartDependency: CartDependency
 ) : ViewModel(), CartCallback, CartOtherCallback {
 
     override val loadText: () -> String = {
-        "cartViewModel: ${coreTextProvider.getText()} & ${dataArgsProvider.loadArgs()}"
+        "${cartDependency.text}: ${coreTextProvider.getText()} & ${dataArgsProvider.loadArgs()}"
     }
     override val loadOtherText: () -> String = {
         "otherText - cartViewModel: ${coreTextProvider.getText()} & ${dataArgsProvider.loadArgs()}"
