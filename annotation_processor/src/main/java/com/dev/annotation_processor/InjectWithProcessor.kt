@@ -6,7 +6,7 @@ import com.squareup.anvil.annotations.ExperimentalAnvilApi
 import com.squareup.anvil.annotations.MergeSubcomponent
 import com.squareup.anvil.compiler.api.AnvilContext
 import com.squareup.anvil.compiler.api.CodeGenerator
-import com.squareup.anvil.compiler.api.GeneratedFile
+import com.squareup.anvil.compiler.api.GeneratedFileWithSources
 import com.squareup.anvil.compiler.api.createGeneratedFile
 import com.squareup.anvil.compiler.internal.decapitalize
 import com.squareup.anvil.compiler.internal.reference.ClassReference
@@ -110,7 +110,7 @@ class InjectWithProcessor : CodeGenerator {
         codeGenDir: File,
         module: ModuleDescriptor,
         projectFiles: Collection<KtFile>
-    ): List<GeneratedFile> {
+    ): List<GeneratedFileWithSources> {
         return projectFiles
             .classAndInnerClassReferences(module)
             .filter { it.isAnnotatedWith(FqName(INJECT_WITH_ANNOTATION)) }
@@ -119,12 +119,13 @@ class InjectWithProcessor : CodeGenerator {
                     codeGenDir = codeGenDir,
                     packageName = clazz.packageFqName.asString(),
                     fileName = "${clazz.shortName}Component",
-                    content = generateComponentContent(clazz)
+                    content = generateComponentContent(clazz).toString(),
+                    sourceFiles = setOf()
                 )
             }.toList()
     }
 
-    private fun generateComponentContent(clazz: ClassReference.Psi): String {
+    private fun generateComponentContent(clazz: ClassReference.Psi): FileSpec {
         val componentName = "${clazz.shortName}Component"
         val fileBuilder = FileSpec.builder(clazz.packageFqName.asString(), componentName)
 
@@ -137,7 +138,6 @@ class InjectWithProcessor : CodeGenerator {
             .addInjectorContributor(clazz, componentName)
             .addViewModelModule(clazz, componentName)
             .build()
-            .toString()
     }
 
     private fun resolveInjectorComponent(

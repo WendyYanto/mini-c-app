@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.dev.core.CoreTextProvider
 import com.dev.core.scope.ActivityScope
 import com.squareup.anvil.annotations.ContributesBinding
-import com.squareup.anvil.annotations.ContributesTo
 
 @ContributesBinding(
     scope = ActivityScope::class,
@@ -16,12 +15,11 @@ import com.squareup.anvil.annotations.ContributesTo
 )
 class CartViewModel(
     private val coreTextProvider: CoreTextProvider,
-    private val dataArgsProvider: DataArgsProvider,
-    private val cartDependency: CartDependency
+    private val dataArgsProvider: DataArgsProvider
 ) : ViewModel(), CartCallback, CartOtherCallback {
 
     override val loadText: () -> String = {
-        "${cartDependency.text}: ${coreTextProvider.getText()} & ${dataArgsProvider.loadArgs()}"
+        "Hi ${coreTextProvider.getText()} & ${dataArgsProvider.loadArgs()}"
     }
     override val loadOtherText: () -> String = {
         "otherText - cartViewModel: ${coreTextProvider.getText()} & ${dataArgsProvider.loadArgs()}"

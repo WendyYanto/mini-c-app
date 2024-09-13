@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("com.squareup.anvil") version "2.4.9"
+    id("com.squareup.anvil") version "2.5.0-beta11"
 }
 
 android {
