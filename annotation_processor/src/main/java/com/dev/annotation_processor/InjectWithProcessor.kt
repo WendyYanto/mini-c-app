@@ -12,6 +12,7 @@ import com.squareup.anvil.compiler.api.createGeneratedFile
 import com.squareup.anvil.compiler.internal.decapitalize
 import com.squareup.anvil.compiler.internal.reference.ClassReference
 import com.squareup.anvil.compiler.internal.reference.argumentAt
+import com.squareup.anvil.compiler.internal.reference.asClassName
 import com.squareup.anvil.compiler.internal.reference.classAndInnerClassReferences
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
@@ -125,22 +126,27 @@ class InjectWithProcessor : CodeGenerator {
             .addType(createSubcomponent(clazz, componentName))
             .addInjectorClass(clazz, componentName)
             .addInjectorContributor(clazz, componentName)
+            .addViewModelModule(clazz, componentName)
             .build()
             .toString()
+    }
+
+    private fun resolveInjectorComponent(
+        clazz: ClassReference.Psi
+    ): ClazzReference {
+        return when (val clazzParent = clazz.clazz.getSuperTypeList()?.text) {
+            appCompatActivity.superClassName -> appCompatActivity
+            // ToDo: add fragment
+            // ToDo: add bottomSheetDialog
+            else -> throw Exception("cannot resolve parent $clazzParent")
+        }
     }
 
     private fun createSubcomponent(
         clazz: ClassReference.Psi,
         componentName: String
     ): TypeSpec {
-        val clazzParent = clazz.clazz.getSuperTypeList()?.text
-        val resolveComponent = when (clazzParent) {
-            appCompatActivity.superClassName -> appCompatActivity
-            // ToDo: add fragment
-            // ToDo: add bottomSheetDialog
-            else -> throw Exception("cannot resolve parent $clazzParent")
-        }
-
+        val resolveComponent = resolveInjectorComponent(clazz)
         return TypeSpec.interfaceBuilder(componentName)
             // add @FeatureScope
             .addAnnotation(
@@ -161,9 +167,9 @@ class InjectWithProcessor : CodeGenerator {
                     .addModifiers(KModifier.ABSTRACT)
                     .addParameter(
                         ParameterSpec.builder(
-                            clazz.shortName,
+                            clazz.shortName.decapitalize(),
                             ClassName(
-                                clazz.packageFqName.asString().decapitalize(),
+                                clazz.packageFqName.asString(),
                                 clazz.shortName
                             ),
                         ).build()
@@ -300,8 +306,8 @@ class InjectWithProcessor : CodeGenerator {
                         .addStatement(
                             """
                             componentFactory
-                                .${factoryCreateFunction}
-                                .inject(injectTarget)
+                            .${factoryCreateFunction}
+                            .inject(injectTarget)
                         """.trimIndent()
                         )
                         .build()
@@ -343,6 +349,66 @@ class InjectWithProcessor : CodeGenerator {
                                 .parameterizedBy(STAR, STAR)
                         )
                         .addModifiers(KModifier.ABSTRACT)
+                        .build()
+                )
+                .build()
+        )
+        return this
+    }
+
+    private fun FileSpec.Builder.addViewModelModule(
+        clazz: ClassReference.Psi,
+        componentName: String
+    ): FileSpec.Builder {
+        val annotation = clazz.annotations.firstOrNull()
+        val viewModel = annotation
+            ?.argumentAt("viewModels", -1)?.value<List<ClassReference>>()
+            ?.firstOrNull()
+
+        if (viewModel == null) return this
+
+        val viewModelDependencies =
+            viewModel.constructors
+                .flatMap { it.parameters }
+                .map { parameter ->
+                    val classReference = parameter.type().asClassReference()
+                    ClazzReference(
+                        packageName = classReference.packageFqName.asString(),
+                        clazzName = classReference.shortName
+                    )
+                }
+
+        val resolveComponent = resolveInjectorComponent(clazz)
+        val dependenciesParameters = viewModelDependencies.map { dependency ->
+            ParameterSpec(dependency.clazzName.decapitalize(), dependency.poetClassName)
+        }
+        val dependenciesFunction = dependenciesParameters.map { dependency ->
+            "${dependency.name} = ${dependency.name}"
+        }.joinToString(",")
+        val dependencyCodeBlock = """
+            return ${resolveComponent.clazzName.decapitalize()}.viewModel {
+              ${viewModel.shortName}(
+                $dependenciesFunction
+              )
+            }""".trimIndent()
+
+        addType(
+            TypeSpec.classBuilder("${componentName}ViewModelModule")
+//                .addAnnotation(contributesToAppAnnotation)
+                .addAnnotation(Module::class)
+                .addFunction(
+                    FunSpec.builder("provideViewModel")
+                        .addParameter(
+                            ParameterSpec(
+                                resolveComponent.clazzName.decapitalize(),
+                                resolveComponent.poetClassName
+                            )
+                        )
+                        .addParameters(dependenciesParameters)
+                        .returns(viewModel.asClassName())
+                        .addStatement(
+                            dependencyCodeBlock
+                        )
                         .build()
                 )
                 .build()

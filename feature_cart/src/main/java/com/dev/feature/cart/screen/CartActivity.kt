@@ -10,7 +10,9 @@ import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.R
 import javax.inject.Inject
 
-@InjectWith
+@InjectWith(
+    viewModels = [CartViewModel::class]
+)
 class CartActivity : AppCompatActivity() {
 
     @Inject
