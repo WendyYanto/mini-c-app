@@ -1,6 +1,5 @@
 package com.dev.annotation_processor
 
-import com.dev.annotation.InjectWith
 import com.google.auto.service.AutoService
 import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
@@ -28,6 +27,7 @@ import com.squareup.kotlinpoet.TypeSpec
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Module
+import dagger.Provides
 import dagger.Subcomponent
 import dagger.multibindings.ClassKey
 import dagger.multibindings.IntoMap
@@ -89,6 +89,14 @@ class InjectWithProcessor : CodeGenerator {
             .build()
     }
 
+    private val contributesToSubcomponent by lazy {
+        AnnotationSpec.builder(
+            ContributesTo::class
+        )
+            .addMember("scope = ${subcomponentScope.clazzName}::class")
+            .build()
+    }
+
     private val featureInjectorClass by lazy {
         ClazzReference(
             clazzName = "FeatureInjector",
@@ -123,6 +131,7 @@ class InjectWithProcessor : CodeGenerator {
         return fileBuilder
             .addImport(lifecycleExtensionImport.packageName, lifecycleExtensionImport.functionName)
             .addImport(appScope.packageName, appScope.clazzName)
+            .addImport(subcomponentScope.packageName, subcomponentScope.clazzName)
             .addType(createSubcomponent(clazz, componentName))
             .addInjectorClass(clazz, componentName)
             .addInjectorContributor(clazz, componentName)
@@ -159,7 +168,7 @@ class InjectWithProcessor : CodeGenerator {
                 AnnotationSpec.builder(
                     MergeSubcomponent::class
                 )
-                    .addMember("scope = ${appScope.clazzName}::class")
+                    .addMember("scope = ${subcomponentScope.clazzName}::class")
                     .build()
             )
             .addFunction(
@@ -213,7 +222,7 @@ class InjectWithProcessor : CodeGenerator {
     ): TypeSpec.Builder {
         addType(
             TypeSpec.interfaceBuilder("ParentComponent")
-//                .addAnnotation(contributesToAppAnnotation)
+                .addAnnotation(contributesToAppAnnotation)
                 .addFunction(
                     FunSpec.builder("create${componentName}")
                         .addModifiers(KModifier.ABSTRACT)
@@ -325,7 +334,7 @@ class InjectWithProcessor : CodeGenerator {
         addType(
             TypeSpec.interfaceBuilder(injectComponent)
                 .addAnnotation(Module::class)
-//                .addAnnotation(contributesToAppAnnotation)
+                .addAnnotation(contributesToAppAnnotation)
                 .addFunction(
                     FunSpec.builder("bind${injectComponent}")
                         .addAnnotation(IntoMap::class)
@@ -394,7 +403,7 @@ class InjectWithProcessor : CodeGenerator {
 
         addType(
             TypeSpec.classBuilder("${componentName}ViewModelModule")
-//                .addAnnotation(contributesToAppAnnotation)
+                .addAnnotation(contributesToSubcomponent)
                 .addAnnotation(Module::class)
                 .addFunction(
                     FunSpec.builder("provideViewModel")
@@ -404,6 +413,8 @@ class InjectWithProcessor : CodeGenerator {
                                 resolveComponent.poetClassName
                             )
                         )
+                        .addAnnotation(Provides::class)
+                        .addAnnotation(featureScope.className)
                         .addParameters(dependenciesParameters)
                         .returns(viewModel.asClassName())
                         .addStatement(
