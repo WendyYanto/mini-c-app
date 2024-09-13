@@ -46,4 +46,7 @@ dependencies {
 
     implementation(project(":data_product"))
     implementation(project(":data_order"))
+
+    implementation(project(":annotation"))
+    anvil(project(":annotation_processor"))
 }

@@ -3,12 +3,14 @@ package com.dev.feature.cart.screen
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.dev.annotation.InjectWith
 import com.dev.core.DynamicTextProvider
 import com.dev.core.injector.injectComponent
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.R
 import javax.inject.Inject
 
+@InjectWith
 class CartActivity : AppCompatActivity() {
 
     @Inject
