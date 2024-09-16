@@ -91,7 +91,7 @@ class InjectWithProcessor : CodeGenerator {
 
     private val fragment by lazy {
         ClazzReference(
-            clazzName = "BottomSheetDialogFragment",
+            clazzName = "Fragment",
             packageName = "androidx.fragment.app"
         )
     }
