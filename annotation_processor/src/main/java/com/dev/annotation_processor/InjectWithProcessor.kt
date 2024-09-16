@@ -10,6 +10,7 @@ import com.squareup.anvil.compiler.api.GeneratedFileWithSources
 import com.squareup.anvil.compiler.api.createGeneratedFile
 import com.squareup.anvil.compiler.internal.decapitalize
 import com.squareup.anvil.compiler.internal.reference.ClassReference
+import com.squareup.anvil.compiler.internal.reference.TypeReference
 import com.squareup.anvil.compiler.internal.reference.argumentAt
 import com.squareup.anvil.compiler.internal.reference.asClassName
 import com.squareup.anvil.compiler.internal.reference.classAndInnerClassReferences
@@ -81,6 +82,20 @@ class InjectWithProcessor : CodeGenerator {
         )
     }
 
+    private val bottomSheetDialogFragment by lazy {
+        ClazzReference(
+            clazzName = "BottomSheetDialogFragment",
+            packageName = "com.google.android.material.bottomsheet"
+        )
+    }
+
+    private val fragment by lazy {
+        ClazzReference(
+            clazzName = "BottomSheetDialogFragment",
+            packageName = "androidx.fragment.app"
+        )
+    }
+
     private val contributesToAppAnnotation by lazy {
         AnnotationSpec.builder(
             ContributesTo::class
@@ -128,66 +143,89 @@ class InjectWithProcessor : CodeGenerator {
     private fun generateComponentContent(clazz: ClassReference.Psi): FileSpec {
         val componentName = "${clazz.shortName}Component"
         val fileBuilder = FileSpec.builder(clazz.packageFqName.asString(), componentName)
+        val resolveComponent = resolveInjectorComponent(clazz)
 
         return fileBuilder
             .addImport(lifecycleExtensionImport.packageName, lifecycleExtensionImport.functionName)
             .addImport(appScope.packageName, appScope.clazzName)
             .addImport(subcomponentScope.packageName, subcomponentScope.clazzName)
-            .addType(createSubcomponent(clazz, componentName))
+            .addSubcomponent(clazz, componentName, resolveComponent)
             .addInjectorClass(clazz, componentName)
             .addInjectorContributor(clazz, componentName)
-            .addViewModelModule(clazz, componentName)
+            .addViewModelModule(clazz, componentName, resolveComponent)
             .build()
+    }
+
+    private fun getClazzParents(
+        parentReferences: List<TypeReference>
+    ): Set<String> {
+        val parents: MutableSet<String> = mutableSetOf()
+
+        parentReferences.forEach { parent ->
+            val parentClazz = parent.asClassReference()
+            parents.add(parentClazz.shortName)
+            parents.addAll(getClazzParents(parentClazz.directSuperTypeReferences()))
+        }
+
+        return parents
     }
 
     private fun resolveInjectorComponent(
         clazz: ClassReference.Psi
     ): ClazzReference {
-        return when (val clazzParent = clazz.clazz.getSuperTypeList()?.text) {
-            appCompatActivity.superClassName -> appCompatActivity
-            // ToDo: add fragment
-            // ToDo: add bottomSheetDialog
-            else -> throw Exception("cannot resolve parent $clazzParent")
+        val clazzParents = getClazzParents(clazz.directSuperTypeReferences())
+
+        return when {
+            clazzParents.contains(appCompatActivity.clazzName) -> appCompatActivity
+            clazzParents.contains(bottomSheetDialogFragment.clazzName) -> bottomSheetDialogFragment
+            clazzParents.contains(fragment.clazzName) -> fragment
+            else -> throw Exception(
+                "cannot find mappings of $clazzParents"
+            )
         }
     }
 
-    private fun createSubcomponent(
+    private fun FileSpec.Builder.addSubcomponent(
         clazz: ClassReference.Psi,
-        componentName: String
-    ): TypeSpec {
-        val resolveComponent = resolveInjectorComponent(clazz)
-        return TypeSpec.interfaceBuilder(componentName)
-            // add @FeatureScope
-            .addAnnotation(
-                AnnotationSpec.builder(
-                    featureScope.className
-                ).build()
-            )
-            // @MergeSubcomponent
-            .addAnnotation(
-                AnnotationSpec.builder(
-                    MergeSubcomponent::class
+        componentName: String,
+        resolveComponent: ClazzReference
+    ): FileSpec.Builder {
+        addType(
+            TypeSpec.interfaceBuilder(componentName)
+                // add @FeatureScope
+                .addAnnotation(
+                    AnnotationSpec.builder(
+                        featureScope.className
+                    ).build()
                 )
-                    .addMember("scope = ${subcomponentScope.clazzName}::class")
-                    .build()
-            )
-            .addFunction(
-                FunSpec.builder("inject")
-                    .addModifiers(KModifier.ABSTRACT)
-                    .addParameter(
-                        ParameterSpec.builder(
-                            clazz.shortName.decapitalize(),
-                            ClassName(
-                                clazz.packageFqName.asString(),
-                                clazz.shortName
-                            ),
-                        ).build()
+                // @MergeSubcomponent
+                .addAnnotation(
+                    AnnotationSpec.builder(
+                        MergeSubcomponent::class
                     )
-                    .build()
-            )
-            .addSubcomponentFactory(resolveComponent, clazz, componentName)
-            .addParentComponent(componentName)
-            .build()
+                        .addMember("scope = ${subcomponentScope.clazzName}::class")
+                        .build()
+                )
+                .addFunction(
+                    FunSpec.builder("inject")
+                        .addModifiers(KModifier.ABSTRACT)
+                        .addParameter(
+                            ParameterSpec.builder(
+                                clazz.shortName.decapitalize(),
+                                ClassName(
+                                    clazz.packageFqName.asString(),
+                                    clazz.shortName
+                                ),
+                            ).build()
+                        )
+                        .build()
+                )
+                .addSubcomponentFactory(resolveComponent, clazz, componentName)
+                .addParentComponent(componentName)
+                .build()
+        )
+
+        return this
     }
 
     private fun TypeSpec.Builder.addSubcomponentFactory(
@@ -385,7 +423,8 @@ class InjectWithProcessor : CodeGenerator {
 
     private fun FileSpec.Builder.addViewModelModule(
         clazz: ClassReference.Psi,
-        componentName: String
+        componentName: String,
+        resolveComponent: ClazzReference
     ): FileSpec.Builder {
         val annotation = clazz.annotations.firstOrNull()
         val viewModel = annotation
@@ -405,7 +444,6 @@ class InjectWithProcessor : CodeGenerator {
                     )
                 }
 
-        val resolveComponent = resolveInjectorComponent(clazz)
         val dependenciesParameters = viewModelDependencies.map { dependency ->
             ParameterSpec(dependency.clazzName.decapitalize(), dependency.poetClassName)
         }
@@ -452,9 +490,6 @@ class InjectWithProcessor : CodeGenerator {
 
         val poetClassName
             get() = ClassName(packageName, clazzName)
-
-        val superClassName
-            get() = "$clazzName()"
 
         val isUnit =
             clazzName == "Unit"
