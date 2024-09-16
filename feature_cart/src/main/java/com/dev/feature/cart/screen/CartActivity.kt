@@ -8,6 +8,7 @@ import com.dev.core.DynamicTextProvider
 import com.dev.core.injector.injectComponentWithDependency
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.R
+import com.dev.feature.cart.bottomsheet.CartBottomSheet
 import javax.inject.Inject
 
 @InjectWith(
@@ -45,5 +46,10 @@ class CartActivity : AppCompatActivity() {
 
         toastLoader.show(cartCallback.loadText())
         toastLoader.show(cartOtherCallback.loadOtherText())
+
+        findViewById<TextView>(R.id.tv_domain_cart).setOnClickListener {
+            val bottomSheet = CartBottomSheet()
+            bottomSheet.show(supportFragmentManager, "CartBottomSheet")
+        }
     }
 }
