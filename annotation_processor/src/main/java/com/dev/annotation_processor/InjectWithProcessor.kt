@@ -221,7 +221,7 @@ class InjectWithProcessor : CodeGenerator {
                         .build()
                 )
                 .addSubcomponentFactory(resolveComponent, clazz, componentName)
-                .addParentComponent(componentName)
+                .addParentComponent(clazz, componentName)
                 .build()
         )
 
@@ -235,7 +235,7 @@ class InjectWithProcessor : CodeGenerator {
     ): TypeSpec.Builder {
         val componentDependency = getComponentDependency(clazz)
         val functionBuilder = FunSpec.builder("create")
-            .returns(ClassName("", componentName))
+            .returns(ClassName(clazz.packageFqName.asString(), componentName))
             .addModifiers(KModifier.ABSTRACT)
             .addParameter(
                 ParameterSpec.builder(
@@ -269,6 +269,7 @@ class InjectWithProcessor : CodeGenerator {
     }
 
     private fun TypeSpec.Builder.addParentComponent(
+        clazz: ClassReference.Psi,
         componentName: String
     ): TypeSpec.Builder {
         addType(
@@ -277,7 +278,7 @@ class InjectWithProcessor : CodeGenerator {
                 .addFunction(
                     FunSpec.builder("create${componentName}")
                         .addModifiers(KModifier.ABSTRACT)
-                        .returns(ClassName("", "Factory"))
+                        .returns(ClassName(clazz.packageFqName.asString(), "Factory"))
                         .build()
                 )
                 .build()
@@ -321,7 +322,7 @@ class InjectWithProcessor : CodeGenerator {
 
         addType(
             TypeSpec.classBuilder(
-                ClassName("", "${componentName}Injector")
+                ClassName(clazz.packageFqName.asString(), "${componentName}Injector")
             )
                 .primaryConstructor(
                     FunSpec.constructorBuilder()
