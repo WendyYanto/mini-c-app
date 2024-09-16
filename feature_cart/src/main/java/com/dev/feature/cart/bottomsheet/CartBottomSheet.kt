@@ -3,12 +3,13 @@ package com.dev.feature.cart.bottomsheet
 import android.os.Bundle
 import android.widget.Toast
 import com.dev.annotation.InjectWith
-import com.dev.core.injector.injectComponent
+import com.dev.core.injector.injectComponentWithDependency
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import javax.inject.Inject
 
 @InjectWith(
-    viewModels = [CartBottomSheetViewModel::class]
+    viewModels = [CartBottomSheetViewModel::class],
+    dependency = CartBottomSheetArg::class
 )
 class CartBottomSheet : BottomSheetDialogFragment() {
 
@@ -17,7 +18,9 @@ class CartBottomSheet : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        injectComponent()
+        injectComponentWithDependency {
+            CartBottomSheetArg("CartBottomSheetArg")
+        }
         context?.let {
             Toast.makeText(context, viewModel.loadText(), Toast.LENGTH_SHORT).show()
         }
