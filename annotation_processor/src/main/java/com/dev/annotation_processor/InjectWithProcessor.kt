@@ -440,16 +440,17 @@ class InjectWithProcessor : CodeGenerator {
                     val classReference = parameter.type().asClassReference()
                     ClazzReference(
                         packageName = classReference.packageFqName.asString(),
-                        clazzName = classReference.shortName
+                        clazzName = classReference.shortName,
+                        propertyName = parameter.name
                     )
                 }
 
         val dependenciesParameters = viewModelDependencies.map { dependency ->
-            ParameterSpec(dependency.clazzName.decapitalize(), dependency.poetClassName)
+            ParameterSpec(dependency.propertyName.decapitalize(), dependency.poetClassName)
         }
-        val dependenciesFunction = dependenciesParameters.map { dependency ->
+        val dependenciesFunction = dependenciesParameters.joinToString(",") { dependency ->
             "${dependency.name} = ${dependency.name}"
-        }.joinToString(",")
+        }
         val dependencyCodeBlock = """
             return ${resolveComponent.clazzName.decapitalize()}.viewModel {
               ${viewModel.shortName}(
@@ -485,7 +486,8 @@ class InjectWithProcessor : CodeGenerator {
 
     data class ClazzReference(
         val clazzName: String,
-        val packageName: String
+        val packageName: String,
+        val propertyName: String = ""
     ) {
 
         val poetClassName

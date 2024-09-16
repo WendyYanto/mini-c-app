@@ -9,10 +9,10 @@ import com.squareup.anvil.annotations.ContributesBinding
     scope = ActivityScope::class
 )
 class CartBottomSheetViewModel(
-    private val domainCartTextProvider: DomainCartTextProvider
+    private val textProvider: DomainCartTextProvider
 ) : ViewModel() {
 
     fun loadText(): String {
-        return "viewModel - ${domainCartTextProvider.getDomainCartText()}"
+        return "viewModel - ${textProvider.getDomainCartText()}"
     }
 }
