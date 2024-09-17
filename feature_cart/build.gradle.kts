@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+    id("com.squareup.anvil") version "2.5.0-beta11"
 }
 
 android {
@@ -30,17 +30,23 @@ android {
     }
 }
 
+anvil {
+    generateDaggerFactories = true // default is false
+}
+
 dependencies {
 
     implementation(libs.ktx)
     implementation(libs.appcompact)
     implementation(libs.dagger.core)
     implementation(libs.material.component)
-    kapt(libs.dagger.compiler)
 
     implementation(project(":core"))
     implementation(project(":domain_cart"))
 
     implementation(project(":data_product"))
     implementation(project(":data_order"))
+
+    implementation(project(":annotation"))
+    anvil(project(":annotation_processor"))
 }
