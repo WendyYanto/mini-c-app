@@ -4,9 +4,9 @@ plugins {
 }
 
 dependencies {
-    api(libs.compiler.api)
+    implementation(libs.compiler.api)
     implementation(libs.compiler.utils)
-    compileOnly(libs.auto.service.annotations)
+    implementation(libs.auto.service)
     kapt(libs.auto.service)
 
     implementation(project(":annotation"))

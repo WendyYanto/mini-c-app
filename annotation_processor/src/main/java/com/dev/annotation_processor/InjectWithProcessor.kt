@@ -278,7 +278,7 @@ class InjectWithProcessor : CodeGenerator {
                 .addFunction(
                     FunSpec.builder("create${componentName}")
                         .addModifiers(KModifier.ABSTRACT)
-                        .returns(ClassName(clazz.packageFqName.asString(), "Factory"))
+                        .returns(ClassName("", "Factory"))
                         .build()
                 )
                 .build()

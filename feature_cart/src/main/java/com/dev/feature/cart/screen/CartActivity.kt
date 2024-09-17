@@ -49,7 +49,7 @@ class CartActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.tv_domain_cart).setOnClickListener {
             val bottomSheet = CartBottomSheet()
-//            bottomSheet.show(supportFragmentManager, "CartBottomSheet")
+            bottomSheet.show(supportFragmentManager, "CartBottomSheet")
         }
     }
 }
