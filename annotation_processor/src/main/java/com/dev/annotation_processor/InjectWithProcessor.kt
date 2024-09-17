@@ -221,7 +221,7 @@ class InjectWithProcessor : CodeGenerator {
                         .build()
                 )
                 .addSubcomponentFactory(resolveComponent, clazz, componentName)
-                .addParentComponent(clazz, componentName)
+                .addParentComponent(componentName)
                 .build()
         )
 
@@ -269,7 +269,6 @@ class InjectWithProcessor : CodeGenerator {
     }
 
     private fun TypeSpec.Builder.addParentComponent(
-        clazz: ClassReference.Psi,
         componentName: String
     ): TypeSpec.Builder {
         addType(
