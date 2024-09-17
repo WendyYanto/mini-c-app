@@ -240,7 +240,7 @@ class InjectWithProcessor : CodeGenerator {
             .addParameter(
                 ParameterSpec.builder(
                     clazz.shortName.decapitalize(),
-                    resolveComponent.poetClassName
+                    resolveComponent.className
                 )
                     .addAnnotation(BindsInstance::class)
                     .build()
@@ -250,7 +250,7 @@ class InjectWithProcessor : CodeGenerator {
             functionBuilder.addParameter(
                 ParameterSpec.builder(
                     componentDependency.clazzName.decapitalize(),
-                    componentDependency.poetClassName
+                    componentDependency.className
                 )
                     .addAnnotation(BindsInstance::class)
                     .build()
@@ -310,7 +310,7 @@ class InjectWithProcessor : CodeGenerator {
     ): FileSpec.Builder {
         val componentDependency = getComponentDependency(clazz)
 
-        val dependency = componentDependency.poetClassName
+        val dependency = componentDependency.className
         val injectTarget = ClassName(clazz.packageFqName.asString(), clazz.shortName)
 
         val factoryCreateFunction = if (componentDependency.isUnit) {
@@ -350,7 +350,7 @@ class InjectWithProcessor : CodeGenerator {
                         .build()
                 )
                 .addSuperinterface(
-                    featureInjectorClass.poetClassName
+                    featureInjectorClass.className
                         .parameterizedBy(
                             injectTarget,
                             dependency
@@ -410,7 +410,7 @@ class InjectWithProcessor : CodeGenerator {
                                 .build()
                         )
                         .returns(
-                            featureInjectorClass.poetClassName
+                            featureInjectorClass.className
                                 .parameterizedBy(STAR, STAR)
                         )
                         .addModifiers(KModifier.ABSTRACT)
@@ -446,7 +446,7 @@ class InjectWithProcessor : CodeGenerator {
                 }
 
         val dependenciesParameters = viewModelDependencies.map { dependency ->
-            ParameterSpec(dependency.propertyName.decapitalize(), dependency.poetClassName)
+            ParameterSpec(dependency.propertyName.decapitalize(), dependency.className)
         }
         val dependenciesFunction = dependenciesParameters.joinToString(",") { dependency ->
             "${dependency.name} = ${dependency.name}"
@@ -467,7 +467,7 @@ class InjectWithProcessor : CodeGenerator {
                         .addParameter(
                             ParameterSpec(
                                 resolveComponent.clazzName.decapitalize(),
-                                resolveComponent.poetClassName
+                                resolveComponent.className
                             )
                         )
                         .addAnnotation(Provides::class)
@@ -490,7 +490,7 @@ class InjectWithProcessor : CodeGenerator {
         val propertyName: String = ""
     ) {
 
-        val poetClassName
+        val className
             get() = ClassName(packageName, clazzName)
 
         val isUnit =
