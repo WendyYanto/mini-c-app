@@ -135,7 +135,7 @@ class InjectWithProcessor : CodeGenerator {
                     packageName = clazz.packageFqName.asString(),
                     fileName = "${clazz.shortName}Component",
                     content = generateComponentContent(clazz).toString(),
-                    sourceFiles = setOf()
+                    sourceFile = clazz.containingFileAsJavaFile
                 )
             }.toList()
     }
