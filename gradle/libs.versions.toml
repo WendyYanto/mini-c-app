@@ -5,6 +5,7 @@ appcompact = "1.7.0"
 kotlin = "2.2.21"
 ktx = "1.13.1"
 metro = "0.6.6"
+anvil = "2.5.1"
 
 materialComponent = "1.12.0"
 
@@ -27,6 +28,7 @@ material-component = { group = "com.google.android.material", name = "material",
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+anvil-annotations = { group = "com.squareup.anvil", name = "annotations", version.ref = "anvil" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

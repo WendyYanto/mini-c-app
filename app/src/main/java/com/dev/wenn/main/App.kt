@@ -7,7 +7,6 @@ import com.dev.wenn.main.di.AppComponent
 import com.dev.wenn.main.di.ComponentProvider
 import com.dev.wenn.main.di.ComponentsRegistry
 import com.dev.wenn.main.di.MetroAppComponent
-import dev.zacsweers.metro.createGraph
 import dev.zacsweers.metro.createGraphFactory
 
 class App : Application(), ComponentProvider by ComponentsRegistry {

@@ -49,6 +49,8 @@ dependencies {
     implementation(libs.material.component)
     kapt(libs.dagger.compiler)
 
+    implementation(libs.anvil.annotations)
+
     implementation(project(":core"))
     implementation(project(":data_user"))
     implementation(project(":data_product"))
