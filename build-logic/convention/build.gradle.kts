@@ -20,6 +20,7 @@ dependencies {
     compileOnly(libs.anvil.gradle.plugin)
     compileOnly(libs.android.gradle.plugin)
     compileOnly(libs.kotlin.gradle.plugin)
+    compileOnly(libs.ksp.gradle.plugin)
 }
 
 gradlePlugin {
@@ -27,6 +28,10 @@ gradlePlugin {
         register("anvilConvention") {
             id = "minicapp.anvil"
             implementationClass = "AnvilConventionPlugin"
+        }
+        register("kspConvention") {
+            id = "minicapp.ksp"
+            implementationClass = "KspConventionPlugin"
         }
     }
 }

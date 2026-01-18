@@ -42,3 +42,7 @@ internal fun DependencyHandlerScope.implementation(dependency: Project) {
 internal fun DependencyHandlerScope.anvil(dependency: Project) {
     add("anvil", dependency)
 }
+
+internal fun DependencyHandlerScope.ksp(dependency: Project) {
+    add("ksp", dependency)
+}
