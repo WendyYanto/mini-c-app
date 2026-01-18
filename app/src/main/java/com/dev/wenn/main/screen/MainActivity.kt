@@ -12,6 +12,7 @@ import com.dev.data.product.DataProductTextProvider
 import com.dev.data.user.DataUserTextProvider
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.wenn.R
+import com.dev.wenn.main.screen.metro_main.MetroMainActivity
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {

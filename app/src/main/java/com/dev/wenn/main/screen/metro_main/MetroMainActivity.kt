@@ -1,4 +1,4 @@
-package com.dev.wenn.main.screen
+package com.dev.wenn.main.screen.metro_main
 
 import android.os.Bundle
 import android.widget.TextView
@@ -23,8 +23,10 @@ class MetroMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_metro_main)
 
-        ComponentHolder.component<MetroAppComponent>()
-            .injectMetroMainActivity(this)
+        ComponentHolder.component<MetroMainGraph.ParentComponent>()
+            .getMetroMainGraphFactory()
+            .create(this)
+            .inject(this)
 
         val metroMain = findViewById<TextView>(R.id.tv_metro_main)
         metroMain.text =
