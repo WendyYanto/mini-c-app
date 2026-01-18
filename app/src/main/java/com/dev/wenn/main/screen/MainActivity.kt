@@ -58,5 +58,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, CartActivity::class.java)
             startActivity(intent)
         }
+
+        val metroMain = findViewById<TextView>(R.id.tv_metro_main)
+
+        metroMain.setOnClickListener {
+            val intent = Intent(this, MetroMainActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
