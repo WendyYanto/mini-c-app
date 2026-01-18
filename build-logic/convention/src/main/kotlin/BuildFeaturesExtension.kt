@@ -1,27 +1,33 @@
 import com.squareup.anvil.plugin.AnvilExtension
-import org.gradle.api.Plugin
+import org.gradle.api.Action
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.create
+import org.gradle.api.model.ObjectFactory
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.internal.KaptGenerateStubsTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import javax.inject.Inject
 
-class AnvilConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) {
-        with(target) {
-            pluginManager.apply("com.squareup.anvil")
+abstract class BuildFeaturesExtension @Inject constructor(
+    val objectFactory: ObjectFactory,
+    val project: Project
+) {
+
+    private fun Project.configureDi(
+        buildFeatures: BuildFeatures
+    ) {
+        if (buildFeatures.useMetro) {
+            pluginManager.apply(pluginFromVersionCatalog("metro"))
+            return
+        }
+
+        if (buildFeatures.useAnvil) {
+            pluginManager.apply(pluginFromVersionCatalog("anvil"))
 
             val anvilExtension = project.extensions.getByType(AnvilExtension::class.java)
             anvilExtension.trackSourceFiles.set(true)
-
-            val anvilConfigExtension = extensions.create<AnvilConfigExtension>("anvilConfig")
-            anvilConfigExtension.generateDaggerFactories.convention(false)
-
-            afterEvaluate {
-                anvilExtension.generateDaggerFactories.set(anvilConfigExtension.generateDaggerFactories)
-            }
+            anvilExtension.generateDaggerFactories.set(buildFeatures.generateDaggerFactories)
 
             // Reference #1: https://github.com/square/anvil/issues/733
             // Reference #2: https://www.zacsweers.dev/preparing-for-k2/
@@ -47,4 +53,17 @@ class AnvilConventionPlugin : Plugin<Project> {
             }
         }
     }
+
+    fun include(action: Action<BuildFeatures>) {
+        val buildFeatures = objectFactory.newInstance(BuildFeatures::class.java)
+        action.execute(buildFeatures)
+
+        project.configureDi(buildFeatures)
+    }
+}
+
+abstract class BuildFeatures {
+    abstract var generateDaggerFactories: Boolean
+    abstract var useAnvil: Boolean
+    abstract var useMetro: Boolean
 }

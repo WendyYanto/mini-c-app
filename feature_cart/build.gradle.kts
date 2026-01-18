@@ -1,12 +1,15 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("minicapp.anvil")
+    id("minicapp.common")
     id("minicapp.ksp")
 }
 
-anvilConfig {
-    generateDaggerFactories = true
+buildFeatures {
+    include {
+        useAnvil = true
+        generateDaggerFactories = true
+    }
 }
 
 android {
@@ -36,7 +39,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.ktx)
     implementation(libs.appcompact)
     implementation(libs.dagger.core)

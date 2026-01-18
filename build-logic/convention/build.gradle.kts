@@ -26,9 +26,9 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        register("anvilConvention") {
-            id = "minicapp.anvil"
-            implementationClass = "AnvilConventionPlugin"
+        register("projectConvention") {
+            id = "minicapp.common"
+            implementationClass = "ProjectConventionPlugin"
         }
         register("kspConvention") {
             id = "minicapp.ksp"

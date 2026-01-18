@@ -2,7 +2,13 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
-    id("minicapp.anvil")
+    id("minicapp.common")
+}
+
+buildFeatures {
+    include {
+        useAnvil = true
+    }
 }
 
 android {
