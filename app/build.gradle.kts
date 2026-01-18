@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.metro)
 }
 
 android {
@@ -36,12 +37,25 @@ android {
     }
 }
 
+metro {
+    enabled = true
+    debug = true
+
+    interop {
+        // given that we have existing dagger co-exists, we cannot have dagger interop enable
+        // as this means we need migrate existing dagger component to metro convention
+        // includeDagger()
+    }
+}
+
 dependencies {
     implementation(libs.ktx)
     implementation(libs.appcompact)
     implementation(libs.dagger.core)
     implementation(libs.material.component)
     kapt(libs.dagger.compiler)
+
+    implementation(libs.anvil.annotations)
 
     implementation(project(":core"))
     implementation(project(":data_user"))

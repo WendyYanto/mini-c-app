@@ -12,6 +12,7 @@ import com.dev.data.product.DataProductTextProvider
 import com.dev.data.user.DataUserTextProvider
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.wenn.R
+import com.dev.wenn.main.screen.metro_main.MetroMainActivity
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -56,6 +57,13 @@ class MainActivity : AppCompatActivity() {
 
         domainCartTextView.setOnClickListener {
             val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
+
+        val metroMain = findViewById<TextView>(R.id.tv_metro_main)
+
+        metroMain.setOnClickListener {
+            val intent = Intent(this, MetroMainActivity::class.java)
             startActivity(intent)
         }
     }

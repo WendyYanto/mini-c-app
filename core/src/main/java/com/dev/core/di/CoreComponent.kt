@@ -2,6 +2,7 @@ package com.dev.core.di
 
 import com.dev.core.CoreTextProvider
 import dagger.Component
+import dev.zacsweers.metro.BindingContainer
 import javax.inject.Singleton
 
 @Component(
