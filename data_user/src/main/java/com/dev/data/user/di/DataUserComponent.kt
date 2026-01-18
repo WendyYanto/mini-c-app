@@ -13,9 +13,9 @@ import dagger.Component
 //    dependencies = [CoreComponent::class],
 ////    modules = [DataUserModule::class]
 //)
-@DataUserScope
-@ContributesTo(AppScope::class)
-interface DataUserComponent {
+//@DataUserScope
+//@ContributesTo(AppScope::class)
+//interface DataUserComponent {
 
 //    @Component.Factory
 //    interface Factory {
@@ -34,5 +34,5 @@ interface DataUserComponent {
 //                )
 //    }
 
-    fun getDataUserTextProvider(): DataUserTextProvider
-}
+//    fun getDataUserTextProvider(): DataUserTextProvider
+//}

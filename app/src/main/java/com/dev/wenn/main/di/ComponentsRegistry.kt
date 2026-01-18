@@ -7,8 +7,6 @@ import com.dev.data.order.di.DataOrderComponent
 import com.dev.data.order.di.DataOrderComponentProvider
 import com.dev.data.product.di.DataProductComponent
 import com.dev.data.product.di.DataProductComponentProvider
-import com.dev.data.user.di.DataUserComponent
-import com.dev.data.user.di.DataUserComponentProvider
 import com.dev.domain.cart.di.DomainCartComponent
 import com.dev.domain.cart.di.DomainCartComponentProvider
 import com.dev.wenn.main.App
@@ -17,7 +15,7 @@ object ComponentsRegistry : ComponentProvider {
 
     private lateinit var app: App
     private lateinit var coreComponent: CoreComponent
-    private lateinit var dataUserComponent: DataUserComponent
+//    private lateinit var dataUserComponent: DataUserComponent
     private lateinit var dataProductComponent: DataProductComponent
     private lateinit var dataOrderComponent: DataOrderComponent
     private lateinit var dataMiscComponent: DataMiscComponent
@@ -33,11 +31,11 @@ object ComponentsRegistry : ComponentProvider {
         }
         return coreComponent
     }
-
-    override fun getDataUserComponent(): DataUserComponent {
-        return ComponentHolder.component<DataUserComponentProvider>()
-            .getDataUserComponent()
-    }
+//
+//    override fun getDataUserComponent(): DataUserComponent {
+//        return ComponentHolder.component<DataUserComponentProvider>()
+//            .getDataUserComponent()
+//    }
 
     override fun getDataProductComponent(): DataProductComponent {
         return ComponentHolder.component<DataProductComponentProvider>()

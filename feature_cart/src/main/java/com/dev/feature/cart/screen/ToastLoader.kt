@@ -2,6 +2,7 @@ package com.dev.feature.cart.screen
 
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.dev.annotation.MetroInject
 import com.dev.core.scope.ActivityScope
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
@@ -12,7 +13,7 @@ interface ToastLoader {
 }
 
 @ContributesBinding(ActivityScope::class)
-@dev.zacsweers.metro.Inject
+@MetroInject
 class ToastLoaderImpl @Inject constructor(
     private val appCompatActivity: AppCompatActivity
 ) : ToastLoader {

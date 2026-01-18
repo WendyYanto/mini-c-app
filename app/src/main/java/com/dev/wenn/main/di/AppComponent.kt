@@ -4,7 +4,7 @@ import com.dev.core.di.CoreComponent
 import com.dev.core.scope.AppScope
 import com.dev.core.scope.ApplicationScope
 import com.dev.data.misc.di.DataMiscComponent
-import com.dev.data.user.di.DataUserComponent
+//import com.dev.data.user.di.DataUserComponent
 import com.dev.wenn.main.App
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.Component
@@ -14,20 +14,13 @@ import dagger.Component
     scope = AppScope::class,
     dependencies = [
         CoreComponent::class,
-        DataUserComponent::class,
-        DataMiscComponent::class
-    ]
-)
-@Component(
-    dependencies = [
-        CoreComponent::class,
-        DataUserComponent::class,
+//        DataUserComponent::class,
         DataMiscComponent::class
     ]
 )
 interface AppComponent :
     CoreComponent,
-    DataUserComponent,
+//    DataUserComponent,
     DataMiscComponent {
 
     fun inject(app: App)
@@ -38,7 +31,7 @@ interface AppComponent :
             ComponentsRegistry.init(app)
             return DaggerAppComponent.builder()
                 .coreComponent(app.getCoreComponent())
-                .dataUserComponent(app.getDataUserComponent())
+//                .dataUserComponent(app.getDataUserComponent())
                 .dataMiscComponent(app.getDataMiscComponent())
                 .build()
         }

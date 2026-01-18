@@ -1,5 +1,6 @@
 package com.dev.domain.cart
 
+import com.dev.annotation.MetroInject
 import com.dev.core.CoreTextProvider
 import com.dev.core.scope.AppScope
 import com.dev.data.order.DataOrderTextProvider
@@ -8,7 +9,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
 @ContributesBinding(AppScope::class)
-@dev.zacsweers.metro.Inject
+@MetroInject
 class DomainCartTextProviderImpl @Inject constructor(
     private val coreTextProvider: CoreTextProvider,
     private val dataOrderTextProvider: DataOrderTextProvider,

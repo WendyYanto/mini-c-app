@@ -18,7 +18,7 @@ abstract class BuildFeaturesExtension @Inject constructor(
     private fun Project.configureDi(
         buildFeatures: BuildFeatures
     ) {
-        if (buildFeatures.useAnvil) {
+        if (buildFeatures.useMetro) {
             pluginManager.apply(pluginFromVersionCatalog("metro"))
             val metroExtension = project.extensions.getByType(MetroPluginExtension::class.java)
 
@@ -31,6 +31,9 @@ abstract class BuildFeaturesExtension @Inject constructor(
                     contributesBinding.add("com/squareup/anvil/annotations/ContributesBinding")
 
                     mapKey.add("dagger/MapKey")
+
+                    // custom
+                    inject.add("com/dev/annotation/MetroInject")
                 }
             }
 

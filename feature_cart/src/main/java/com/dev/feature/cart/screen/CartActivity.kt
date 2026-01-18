@@ -4,23 +4,21 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.annotation.InjectWith
-import com.dev.annotation.MetroInjectWith
 import com.dev.core.DynamicTextProvider
 import com.dev.core.injector.injectComponentWithDependency
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.R
 import com.dev.feature.cart.bottomsheet.CartBottomSheet
-import dev.zacsweers.metro.MapKey
 import javax.inject.Inject
 
 @InjectWith(
     viewModels = [CartViewModel::class],
     dependency = CartDependency::class
 )
-@MetroInjectWith(
-    viewModels = [CartViewModel::class],
-    dependency = CartDependency::class
-)
+//@MetroInjectWith(
+//    viewModels = [CartViewModel::class],
+//    dependency = CartDependency::class
+//)
 class CartActivity : AppCompatActivity() {
 
     @Inject

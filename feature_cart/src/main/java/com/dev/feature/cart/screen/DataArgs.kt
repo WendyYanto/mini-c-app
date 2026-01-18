@@ -1,5 +1,6 @@
 package com.dev.feature.cart.screen
 
+import com.dev.annotation.MetroInject
 import com.dev.core.scope.ActivityScope
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
@@ -11,7 +12,7 @@ interface DataArgsProvider {
 @ContributesBinding(
     scope = ActivityScope::class
 )
-@dev.zacsweers.metro.Inject
+@MetroInject
 class DataArgsProviderImpl @Inject constructor(
     private val innerProvider: DataInnerArgsProvider
 ) : DataArgsProvider {

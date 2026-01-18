@@ -1,6 +1,7 @@
 package com.dev.data.user
 
 import android.util.Log
+import com.dev.annotation.MetroInject
 import com.dev.core.CoreTextProvider
 import com.dev.core.DynamicTextProvider
 import com.dev.core.scope.AppScope
@@ -10,7 +11,7 @@ import javax.inject.Inject
 
 @ApplicationScope
 @ContributesBinding(AppScope::class)
-@dev.zacsweers.metro.Inject
+@MetroInject
 class DynamicUserTextProvider @Inject constructor(
     private val coreTextProvider: CoreTextProvider
 ) : DynamicTextProvider {
