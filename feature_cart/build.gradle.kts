@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     id("minicapp.anvil")
-//    id("minicapp.ksp")
+    id("minicapp.ksp")
 }
 
 anvilConfig {

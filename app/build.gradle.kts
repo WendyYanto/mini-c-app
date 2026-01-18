@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     id("minicapp.anvil")
+    id("minicapp.ksp")
 }
 
 android {

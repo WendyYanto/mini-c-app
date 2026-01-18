@@ -28,13 +28,9 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 anvil-gradle-plugin = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvilcompiler" }
 ksp-gradle-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
 
-auto-service = { module = "com.google.auto.service:auto-service", version.ref = "autoService" }
-auto-service-ksp = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "autoServiceKsp" }
 compiler-api = { module = "com.squareup.anvil:compiler-api", version.ref = "anvilcompiler" }
 compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "anvilcompiler" }
 kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
-kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoetKsp" }
-ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 androidx-core = { group = "androidx.core", name = "core", version.ref = "ktx" }
 appcompact = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompact" }
@@ -47,6 +43,12 @@ material-component = { group = "com.google.android.material", name = "material",
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+
+# KSP libraries
+ksp-api = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+google-auto-service = { group = "com.google.auto.service", name = "auto-service", version.ref = "autoService" }
+auto-service-ksp = { group = "dev.zacsweers.autoservice", name = "auto-service-ksp", version.ref = "autoServiceKsp" }
+kotlin-poet-ksp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref = "kotlinpoetKsp" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

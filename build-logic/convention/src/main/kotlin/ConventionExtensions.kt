@@ -46,3 +46,7 @@ internal fun DependencyHandlerScope.anvil(dependency: Project) {
 internal fun DependencyHandlerScope.ksp(dependency: Project) {
     add("ksp", dependency)
 }
+
+internal fun DependencyHandlerScope.ksp(dependency: Optional<Provider<MinimalExternalModuleDependency>>) {
+    add("ksp", dependency.get())
+}

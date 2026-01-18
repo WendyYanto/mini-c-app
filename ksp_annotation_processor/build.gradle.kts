@@ -6,8 +6,8 @@ plugins {
 dependencies {
     implementation(libs.ksp.api)
     implementation(libs.kotlinpoet)
-    implementation(libs.kotlinpoet.ksp)
-    implementation(libs.auto.service)
+    implementation(libs.kotlin.poet.ksp)
+    implementation(libs.google.auto.service)
     ksp(libs.auto.service.ksp)
 
     implementation(project(":annotation"))

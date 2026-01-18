@@ -6,8 +6,8 @@ plugins {
 dependencies {
     implementation(libs.compiler.api)
     implementation(libs.compiler.utils)
-    implementation(libs.auto.service)
-    kapt(libs.auto.service)
+    implementation(libs.google.auto.service)
+    kapt(libs.google.auto.service)
 
     implementation(project(":annotation"))
     implementation(libs.kotlinpoet)
