@@ -1,7 +1,11 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("com.squareup.anvil") version "2.5.0-beta11"
+    id("minicapp.anvil")
+}
+
+anvilConfig {
+    generateDaggerFactories = true
 }
 
 android {
@@ -30,10 +34,6 @@ android {
     }
 }
 
-anvil {
-    generateDaggerFactories = true // default is false
-}
-
 dependencies {
 
     implementation(libs.ktx)
@@ -46,7 +46,4 @@ dependencies {
 
     implementation(project(":data_product"))
     implementation(project(":data_order"))
-
-    implementation(project(":annotation"))
-    anvil(project(":annotation_processor"))
 }
