@@ -8,3 +8,10 @@ annotation class InjectWith(
     val dependency: KClass<*> = Unit::class,
     val viewModels: Array<KClass<*>> = []
 )
+
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class MetroInjectWith(
+    val dependency: KClass<*> = Unit::class,
+    val viewModels: Array<KClass<*>> = []
+)

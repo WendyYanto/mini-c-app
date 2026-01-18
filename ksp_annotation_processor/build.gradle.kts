@@ -8,6 +8,8 @@ dependencies {
     implementation(libs.kotlinpoet)
     implementation(libs.kotlin.poet.ksp)
     implementation(libs.google.auto.service)
+    implementation(libs.dagger.core)
+
     ksp(libs.auto.service.ksp)
 
     implementation(project(":annotation"))
