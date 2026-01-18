@@ -15,6 +15,7 @@ interface DataInnerArgsProvider {
 @ContributesBinding(
     scope = ActivityScope::class
 )
+@dev.zacsweers.metro.Inject
 class DataInnerArgsProviderImpl @Inject constructor() : DataInnerArgsProvider {
     override fun loadArgs(): DataInnerArgs {
         return DataInnerArgs("Lorem11112312313")

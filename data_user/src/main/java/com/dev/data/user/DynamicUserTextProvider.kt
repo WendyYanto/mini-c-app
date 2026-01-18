@@ -10,6 +10,7 @@ import javax.inject.Inject
 
 @ApplicationScope
 @ContributesBinding(AppScope::class)
+@dev.zacsweers.metro.Inject
 class DynamicUserTextProvider @Inject constructor(
     private val coreTextProvider: CoreTextProvider
 ) : DynamicTextProvider {

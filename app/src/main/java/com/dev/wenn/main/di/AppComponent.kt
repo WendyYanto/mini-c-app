@@ -4,16 +4,21 @@ import com.dev.core.di.CoreComponent
 import com.dev.core.scope.AppScope
 import com.dev.core.scope.ApplicationScope
 import com.dev.data.misc.di.DataMiscComponent
-import com.dev.data.order.di.DataOrderComponent
-import com.dev.data.product.di.DataProductComponent
 import com.dev.data.user.di.DataUserComponent
-import com.dev.domain.cart.di.DomainCartComponent
 import com.dev.wenn.main.App
 import com.squareup.anvil.annotations.MergeComponent
+import dagger.Component
 
 @ApplicationScope
 @MergeComponent(
     scope = AppScope::class,
+    dependencies = [
+        CoreComponent::class,
+        DataUserComponent::class,
+        DataMiscComponent::class
+    ]
+)
+@Component(
     dependencies = [
         CoreComponent::class,
         DataUserComponent::class,

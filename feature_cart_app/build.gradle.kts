@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
 //    id("scabbard.gradle") version "0.5.0"
     id("minicapp.common")
+    id("minicapp.ksp")
 }
 
 buildFeatures {

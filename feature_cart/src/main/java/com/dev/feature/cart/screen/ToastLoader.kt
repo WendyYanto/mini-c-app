@@ -12,6 +12,7 @@ interface ToastLoader {
 }
 
 @ContributesBinding(ActivityScope::class)
+@dev.zacsweers.metro.Inject
 class ToastLoaderImpl @Inject constructor(
     private val appCompatActivity: AppCompatActivity
 ) : ToastLoader {

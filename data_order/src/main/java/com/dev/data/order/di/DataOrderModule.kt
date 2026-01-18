@@ -8,13 +8,13 @@ import com.squareup.anvil.annotations.ContributesTo
 import dagger.Binds
 import dagger.Module
 
-@ContributesTo(AppScope::class)
-@Module
-interface DataOrderModule {
-
-    @Binds
-    @ApplicationScope
-    fun bindDataOrderTextProvider(
-        impl: DataOrderTextProviderImpl
-    ): DataOrderTextProvider
-}
+//@ContributesTo(AppScope::class)
+//@Module
+//interface DataOrderModule {
+//
+//    @Binds
+//    @ApplicationScope
+//    fun bindDataOrderTextProvider(
+//        impl: DataOrderTextProviderImpl
+//    ): DataOrderTextProvider
+//}

@@ -1,4 +1,5 @@
 import com.squareup.anvil.plugin.AnvilExtension
+import dev.zacsweers.metro.gradle.MetroPluginExtension
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
@@ -17,8 +18,28 @@ abstract class BuildFeaturesExtension @Inject constructor(
     private fun Project.configureDi(
         buildFeatures: BuildFeatures
     ) {
-        if (buildFeatures.useMetro) {
+        if (buildFeatures.useAnvil) {
             pluginManager.apply(pluginFromVersionCatalog("metro"))
+            val metroExtension = project.extensions.getByType(MetroPluginExtension::class.java)
+
+            with(metroExtension) {
+                enabled.set(true)
+                debug.set(true)
+
+                interop {
+                    contributesTo.add("com/squareup/anvil/annotations/ContributesTo")
+                    contributesBinding.add("com/squareup/anvil/annotations/ContributesBinding")
+
+                    mapKey.add("dagger/MapKey")
+                }
+            }
+
+            dependencies {
+                ksp(project(":annotation_processor"))
+                implementation(project(":annotation"))
+                implementation(libs.findLibrary("dagger.core"))
+                implementation(libs.findLibrary("anvil.annotations"))
+            }
             return
         }
 

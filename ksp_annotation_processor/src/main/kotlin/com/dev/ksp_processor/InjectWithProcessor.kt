@@ -29,14 +29,10 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toAnnotationSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
-import dagger.Binds
-import dagger.BindsInstance
-import dagger.Module
-import dagger.Provides
-import dagger.Subcomponent
-import dagger.multibindings.ClassKey
-import dagger.multibindings.IntoMap
-import javax.inject.Inject
+import dev.zacsweers.metro.Binds
+import dev.zacsweers.metro.ClassKey
+import dev.zacsweers.metro.GraphExtension
+import dev.zacsweers.metro.Provides
 
 class InjectWithProcessor(
     private val codeGenerator: CodeGenerator,
@@ -74,35 +70,35 @@ class InjectWithVisitor(
     // Carousell core annotation
     private val featureScope by lazy {
         ClassName(
-            "com.thecarousell.core.di",
+            "com.dev.core.scope",
             "FeatureScope",
         )
     }
 
     private val subcomponentScope by lazy {
         ClassName(
-            "com.thecarousell.core.di.injector",
+            "com.dev.core.scope",
             "ActivityScope"
         )
     }
 
     private val appScope by lazy {
         ClassName(
-            "com.thecarousell.core.di.injector",
+            "com.dev.core.scope",
             "AppScope",
         )
     }
 
     private val lifecycleExtensionImport by lazy {
         ClassName(
-            "com.thecarousell.base.architecture.mvvm",
+            "com.dev.core.mvvm",
             "viewModel"
         )
     }
 
     private val featureInjectorClass by lazy {
         ClassName(
-            "com.thecarousell.core.di.injector",
+            "com.dev.core.injector",
             "FeatureInjector"
         )
     }
@@ -110,14 +106,14 @@ class InjectWithVisitor(
     // metro annotations
     private val anvilMergeSubcomponent by lazy {
         ClassName(
-            "com.squareup.anvil.annotations",
-            "MergeSubcomponent",
+            "dev.zacsweers.metro",
+            "GraphExtension",
         )
     }
 
     private val anvilContributesTo by lazy {
         ClassName(
-            "com.squareup.anvil.annotations",
+            "dev.zacsweers.metro",
             "ContributesTo"
         )
     }
@@ -197,9 +193,10 @@ class InjectWithVisitor(
             .addImport(lifecycleExtensionImport.packageName, lifecycleExtensionImport.simpleName)
             .addImport(appScope.packageName, appScope.simpleName)
             .addImport(subcomponentScope.packageName, subcomponentScope.simpleName)
+            .addImport("dev.zacsweers.metro", "binding")
             .addSubcomponent(classDeclaration, componentName, resolveComponent)
             .addInjectorClass(classDeclaration, componentName)
-            .addInjectorContributor(classDeclaration, componentName)
+//            .addInjectorContributor(classDeclaration, componentName)
             .addViewModelModule(classDeclaration, componentName, resolveComponent)
             .build()
     }
@@ -224,6 +221,26 @@ class InjectWithVisitor(
             TypeSpec.classBuilder(
                 ClassName(clazz.packageName.asString(), "${componentName}Injector")
             )
+                .addAnnotation(
+                    AnnotationSpec.builder(
+                        ClassName(
+                            "dev.zacsweers.metro",
+                            "ContributesIntoMap"
+                        )
+                    )
+                        .addMember("scope = ${appScope.simpleName}::class")
+                        .addMember("binding = binding<FeatureInjector<$injectTarget,$dependency>>()")
+                        .build()
+                )
+                .addAnnotation(
+                    AnnotationSpec.builder(ClassKey::class)
+                        .addMember("value = ${clazz.simpleName.getShortName()}::class")
+                        .build()
+                )
+                .addAnnotation(
+                    AnnotationSpec.builder(dev.zacsweers.metro.Inject::class)
+                        .build()
+                )
                 .primaryConstructor(
                     FunSpec.constructorBuilder()
                         .addParameter(
@@ -236,7 +253,6 @@ class InjectWithVisitor(
                             )
                                 .build()
                         )
-                        .addAnnotation(Inject::class)
                         .build()
                 )
                 .addProperty(
@@ -291,26 +307,22 @@ class InjectWithVisitor(
         val injectComponent = "${componentName}InjectorComponent"
         addType(
             TypeSpec.interfaceBuilder(injectComponent)
-                .addAnnotation(dagger.Module::class)
                 .addAnnotation(contributesToAppAnnotation)
                 .addFunction(
                     FunSpec.builder("bind$injectComponent")
-                        .addAnnotation(IntoMap::class)
+
                         .addAnnotation(Binds::class)
+                        .addAnnotation(dev.zacsweers.metro.IntoMap::class)
                         .addAnnotation(
                             AnnotationSpec.builder(ClassKey::class)
                                 .addMember("value = ${clazz.simpleName.getShortName()}::class")
                                 .build()
                         )
-                        .addParameter(
-                            ParameterSpec.builder(
-                                "injector",
-                                ClassName(
-                                    clazz.packageName.asString(),
-                                    "${componentName}Injector"
-                                )
+                        .receiver(
+                            ClassName(
+                                clazz.packageName.asString(),
+                                "${componentName}Injector"
                             )
-                                .build()
                         )
                         .returns(
                             featureInjectorClass
@@ -334,9 +346,8 @@ class InjectWithVisitor(
 
         if (viewModels.isEmpty()) return this
 
-        val viewModelModule = TypeSpec.classBuilder("${componentName}ViewModelModule")
+        val viewModelModule = TypeSpec.interfaceBuilder("${componentName}ViewModelModule")
             .addAnnotation(contributesToSubcomponent)
-            .addAnnotation(Module::class)
 
         viewModels.forEach { viewModel ->
             viewModelModule
@@ -467,7 +478,7 @@ class InjectWithVisitor(
                         anvilMergeSubcomponent
                     )
                         .addMember("scope = ${subcomponentScope.simpleName}::class")
-                        .addMember("modules = $moduleValues")
+//                        .addMember("modules = $moduleValues")
                         .build()
                 )
                 .addFunction(
@@ -520,7 +531,7 @@ class InjectWithVisitor(
                     clazz.simpleName.getShortName().decapitalize(),
                     resolveComponent
                 )
-                    .addAnnotation(BindsInstance::class)
+                    .addAnnotation(dev.zacsweers.metro.Provides::class)
                     .build()
             )
 
@@ -530,14 +541,14 @@ class InjectWithVisitor(
                     componentDependency.clazzName.decapitalize(),
                     componentDependency.className
                 )
-                    .addAnnotation(BindsInstance::class)
+                    .addAnnotation(dev.zacsweers.metro.Provides::class)
                     .build()
             )
         }
 
         addType(
             TypeSpec.interfaceBuilder("Factory")
-                .addAnnotation(Subcomponent.Factory::class)
+                .addAnnotation(GraphExtension.Factory::class)
                 .addFunction(
                     functionBuilder.build()
                 )

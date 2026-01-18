@@ -5,14 +5,14 @@ import com.dev.core.CoreTextProvider
 import com.dev.core.scope.ActivityScope
 import com.squareup.anvil.annotations.ContributesBinding
 
-@ContributesBinding(
-    scope = ActivityScope::class,
-    boundType = CartCallback::class
-)
-@ContributesBinding(
-    scope = ActivityScope::class,
-    boundType = CartOtherCallback::class
-)
+//@ContributesBinding(
+//    scope = ActivityScope::class,
+//    boundType = CartCallback::class
+//)
+//@ContributesBinding(
+//    scope = ActivityScope::class,
+//    boundType = CartOtherCallback::class
+//)
 class CartViewModel(
     private val coreTextProvider: CoreTextProvider,
     private val dataArgsProvider: DataArgsProvider

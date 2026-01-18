@@ -5,12 +5,12 @@ import com.dev.data.user.DataUserTextProviderImpl
 import dagger.Binds
 import dagger.Module
 
-@Module
-interface DataUserModule {
-
-    @DataUserScope
-    @Binds
-    fun bindDataUserTextProvider(
-        impl: DataUserTextProviderImpl
-    ): DataUserTextProvider
-}
+//@Module
+//interface DataUserModule {
+//
+//    @DataUserScope
+//    @Binds
+//    fun bindDataUserTextProvider(
+//        impl: DataUserTextProviderImpl
+//    ): DataUserTextProvider
+//}

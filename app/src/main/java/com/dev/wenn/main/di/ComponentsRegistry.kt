@@ -8,6 +8,7 @@ import com.dev.data.order.di.DataOrderComponentProvider
 import com.dev.data.product.di.DataProductComponent
 import com.dev.data.product.di.DataProductComponentProvider
 import com.dev.data.user.di.DataUserComponent
+import com.dev.data.user.di.DataUserComponentProvider
 import com.dev.domain.cart.di.DomainCartComponent
 import com.dev.domain.cart.di.DomainCartComponentProvider
 import com.dev.wenn.main.App
@@ -34,10 +35,8 @@ object ComponentsRegistry : ComponentProvider {
     }
 
     override fun getDataUserComponent(): DataUserComponent {
-        if (!::dataUserComponent.isInitialized) {
-            dataUserComponent = DataUserComponent.Initializer.init(app)
-        }
-        return dataUserComponent
+        return ComponentHolder.component<DataUserComponentProvider>()
+            .getDataUserComponent()
     }
 
     override fun getDataProductComponent(): DataProductComponent {

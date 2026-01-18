@@ -11,6 +11,7 @@ interface DataArgsProvider {
 @ContributesBinding(
     scope = ActivityScope::class
 )
+@dev.zacsweers.metro.Inject
 class DataArgsProviderImpl @Inject constructor(
     private val innerProvider: DataInnerArgsProvider
 ) : DataArgsProvider {

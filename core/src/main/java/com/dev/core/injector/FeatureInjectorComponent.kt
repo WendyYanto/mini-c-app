@@ -7,5 +7,5 @@ import javax.inject.Provider
 @ContributesTo(AppScope::class)
 interface FeatureInjectorComponent {
 
-    fun featureInjectors(): Map<Class<*>, Provider<FeatureInjector<*, *>>>
+    fun featureInjectors(): Map<Class<*>, FeatureInjector<*, *>>
 }
