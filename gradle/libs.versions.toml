@@ -14,7 +14,7 @@ androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 
 [libraries]
-ktx = { group = "androidx.core", name = n "core-ktx", version.ref = "ktx" }
+ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 androidx-core = { group = "androidx.core", name = "core", version.ref = "ktx" }
 appcompact = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompact" }
 
