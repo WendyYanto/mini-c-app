@@ -40,6 +40,12 @@ android {
 metro {
     enabled = true
     debug = true
+
+    interop {
+        // given that we have existing dagger co-exists, we cannot have dagger interop enable
+        // as this means we need migrate existing dagger component to metro convention
+        // includeDagger()
+    }
 }
 
 dependencies {
