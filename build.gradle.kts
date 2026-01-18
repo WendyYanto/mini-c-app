@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.android.library) apply false
-    id("com.squareup.anvil") version "2.5.0-beta11" apply false
+    alias(libs.plugins.anvil) apply false
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.metro) apply false
 }
