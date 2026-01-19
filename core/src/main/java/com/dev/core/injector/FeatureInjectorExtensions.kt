@@ -6,26 +6,30 @@ import com.dev.core.ComponentHolder
 inline fun <reified T, reified U> T.injectComponentWithDependency(
     noinline dependencyFactory: () -> U
 ) {
-    val injector = ComponentHolder
-        .component<FeatureInjectorComponent>()
-        .featureInjectors()[T::class.java] as? FeatureInjector<T, U>
+//    val injector = ComponentHolder
+//        .component<FeatureInjectorComponent>()
+//        .featureInjectors()[T::class.java] as? FeatureInjector<T, U>
+//
+//    injector?.inject(this, dependencyFactory)
 
     val kClassInjector = ComponentHolder
         .component<FeatureInjectorComponent>()
         .kClassFeatureInjectors()[T::class] as? FeatureInjector<T, U>
 
-    injector?.inject(this, dependencyFactory)
+    kClassInjector?.inject(this, dependencyFactory)
 }
 
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T> T.injectComponent() {
-    val injector = ComponentHolder
-        .component<FeatureInjectorComponent>()
-        .featureInjectors()[T::class.java] as? FeatureInjector<T, Unit>
+//    val injector = ComponentHolder
+//        .component<FeatureInjectorComponent>()
+//        .featureInjectors()[T::class.java] as? FeatureInjector<T, Unit>
+//
+//    injector?.inject(this) { }
 
     val kClassInjector = ComponentHolder
         .component<FeatureInjectorComponent>()
         .kClassFeatureInjectors()[T::class] as? FeatureInjector<T, Unit>
 
-    injector?.inject(this) { }
+    kClassInjector?.inject(this) { }
 }

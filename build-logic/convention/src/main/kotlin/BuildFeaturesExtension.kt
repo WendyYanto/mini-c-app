@@ -1,3 +1,4 @@
+import com.google.devtools.ksp.gradle.KspExtension
 import com.squareup.anvil.plugin.AnvilExtension
 import dev.zacsweers.metro.gradle.MetroPluginExtension
 import org.gradle.api.Action
@@ -18,7 +19,9 @@ abstract class BuildFeaturesExtension @Inject constructor(
     private fun Project.configureDi(
         buildFeatures: BuildFeatures
     ) {
-        if (buildFeatures.useMetro) {
+        val kspExtension = project.extensions.getByType(KspExtension::class.java)
+
+        if (buildFeatures.useAnvil) {
             pluginManager.apply(pluginFromVersionCatalog("metro"))
             val metroExtension = project.extensions.getByType(MetroPluginExtension::class.java)
 
@@ -35,6 +38,10 @@ abstract class BuildFeaturesExtension @Inject constructor(
                     // custom
                     includeJavax()
                 }
+            }
+
+            with(kspExtension) {
+                arg("useMetro", "true")
             }
 
             dependencies {
@@ -64,6 +71,10 @@ abstract class BuildFeaturesExtension @Inject constructor(
                     progressiveMode.set(false)
                     languageVersion.set(KotlinVersion.KOTLIN_1_9)
                 }
+            }
+
+            with(kspExtension) {
+                arg("useMetro", "false")
             }
 
             dependencies {

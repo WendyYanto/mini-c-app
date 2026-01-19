@@ -36,15 +36,16 @@ import dev.zacsweers.metro.Provides
 
 class InjectWithProcessor(
     private val codeGenerator: CodeGenerator,
-    private val logger: KSPLogger
+    private val logger: KSPLogger,
+    private val useMetro: Boolean
 ) : SymbolProcessor {
 
     private val annotationName = InjectWith::class.qualifiedName.toString()
     private val visitedSymbols = mutableSetOf<Any>()
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        // if metro is disabled return empty
-        return emptyList()
+//        // if metro is disabled return empty
+        if (!useMetro) return emptyList()
 
         visitedSymbols.clear()
         val (resolvedSymbols, unresolvedSymbols) = resolver.getSymbolsWithAnnotation(annotationName)

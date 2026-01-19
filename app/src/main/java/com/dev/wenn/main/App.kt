@@ -22,12 +22,12 @@ class App : Application(), ComponentProvider by ComponentsRegistry {
         appComponent.inject(this)
         ComponentHolder.components += appComponent
 
-        registerMetroDi(appComponent)
+         registerMetroDi(appComponent)
 //        Toast.makeText(this, "Hi: ${dynamicTextProvider.loadText()}", Toast.LENGTH_SHORT).show()
     }
 
     private fun registerMetroDi(appComponent: AppComponent) {
-//        ComponentHolder.components += createGraphFactory<MetroAppComponent.Factory>()
-//            .create(appComponent)
+        ComponentHolder.components += createGraphFactory<MetroAppComponent.Factory>()
+            .create(appComponent)
     }
 }

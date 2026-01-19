@@ -22,13 +22,13 @@ import kotlin.reflect.KClass
         DataMiscComponent::class
     ]
 )
-//@Component(
-//    dependencies = [
-//        CoreComponent::class,
-////        DataUserComponent::class,
-//        DataMiscComponent::class
-//    ]
-//)
+@Component(
+    dependencies = [
+        CoreComponent::class,
+//        DataUserComponent::class,
+        DataMiscComponent::class
+    ]
+)
 interface AppComponent :
     CoreComponent,
 //    DataUserComponent,
@@ -42,7 +42,7 @@ interface AppComponent :
         fun build(
             coreComponent: CoreComponent,
             dataMiscComponent: DataMiscComponent,
-            @BindsInstance featureInjectorMap: Map<KClass<*>,  @JvmSuppressWildcards FeatureInjector<*, *>>
+//            @BindsInstance featureInjectorMap: Map<KClass<*>,  @JvmSuppressWildcards FeatureInjector<*, *>>
         ): AppComponent
     }
 
@@ -54,7 +54,7 @@ interface AppComponent :
                 .build(
                     coreComponent = app.getCoreComponent(),
                     dataMiscComponent = app.getDataMiscComponent(),
-                    featureInjectorMap = emptyMap()
+//                    featureInjectorMap = emptyMap()
                 )
 //                .dataUserComponent(app.getDataUserComponent())
         }

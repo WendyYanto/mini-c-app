@@ -10,7 +10,9 @@ class InjectWithProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
         return InjectWithProcessor(
             codeGenerator = environment.codeGenerator,
-            logger = environment.logger
+            logger = environment.logger,
+            // set from BuildFeaturesExtensions
+            useMetro = environment.options["useMetro"]?.toBoolean() ?: false
         )
     }
 }
