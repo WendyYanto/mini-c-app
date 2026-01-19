@@ -19,9 +19,10 @@ abstract class BuildFeaturesExtension @Inject constructor(
     private fun Project.configureDi(
         buildFeatures: BuildFeatures
     ) {
+        val useMetro = findProperty("com.dev.config.useMetro") == "true"
         val kspExtension = project.extensions.getByType(KspExtension::class.java)
 
-        if (buildFeatures.useAnvil) {
+        if (useMetro) {
             pluginManager.apply(pluginFromVersionCatalog("metro"))
             val metroExtension = project.extensions.getByType(MetroPluginExtension::class.java)
 
@@ -100,5 +101,4 @@ abstract class BuildFeaturesExtension @Inject constructor(
 abstract class BuildFeatures {
     abstract var generateDaggerFactories: Boolean
     abstract var useAnvil: Boolean
-    abstract var useMetro: Boolean
 }

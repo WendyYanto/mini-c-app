@@ -15,7 +15,6 @@ object ComponentsRegistry : ComponentProvider {
 
     private lateinit var app: App
     private lateinit var coreComponent: CoreComponent
-//    private lateinit var dataUserComponent: DataUserComponent
     private lateinit var dataProductComponent: DataProductComponent
     private lateinit var dataOrderComponent: DataOrderComponent
     private lateinit var dataMiscComponent: DataMiscComponent
@@ -31,11 +30,6 @@ object ComponentsRegistry : ComponentProvider {
         }
         return coreComponent
     }
-//
-//    override fun getDataUserComponent(): DataUserComponent {
-//        return ComponentHolder.component<DataUserComponentProvider>()
-//            .getDataUserComponent()
-//    }
 
     override fun getDataProductComponent(): DataProductComponent {
         return ComponentHolder.component<DataProductComponentProvider>()
