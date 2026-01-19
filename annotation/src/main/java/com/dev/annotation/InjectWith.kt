@@ -9,9 +9,10 @@ annotation class InjectWith(
     val viewModels: Array<KClass<*>> = []
 )
 
-@Target(AnnotationTarget.CLASS)
-@Retention(AnnotationRetention.RUNTIME)
-annotation class MetroInjectWith(
-    val dependency: KClass<*> = Unit::class,
-    val viewModels: Array<KClass<*>> = []
-)
+// use only one InjectWith for backward compatible
+//@Target(AnnotationTarget.CLASS)
+//@Retention(AnnotationRetention.RUNTIME)
+//annotation class MetroInjectWith(
+//    val dependency: KClass<*> = Unit::class,
+//    val viewModels: Array<KClass<*>> = []
+//)

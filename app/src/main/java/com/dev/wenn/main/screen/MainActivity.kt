@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.dev.core.ComponentHolder
+import com.dev.annotation.InjectWith
+import com.dev.annotation.MetroInject
 import com.dev.core.CoreTextProvider
+import com.dev.core.injector.injectComponent
 import com.dev.data.misc.DataMiscTextProvider
 import com.dev.data.order.DataOrderTextProvider
 import com.dev.data.product.DataProductTextProvider
@@ -15,6 +17,7 @@ import com.dev.feature.cart.screen.CartActivity
 import com.dev.wenn.R
 import javax.inject.Inject
 
+@InjectWith
 class MainActivity : AppCompatActivity() {
 
     @Inject
@@ -38,9 +41,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ComponentHolder.component<MainComponent.ParentComponent>()
-            .createMainComponent()
-            .inject(this)
+        injectComponent()
 
         setContentView(R.layout.activity_main)
 

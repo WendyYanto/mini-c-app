@@ -7,4 +7,4 @@ package com.dev.annotation
     AnnotationTarget.FUNCTION,
     AnnotationTarget.FIELD,
 )
-public annotation class MetroInject
+annotation class MetroInject

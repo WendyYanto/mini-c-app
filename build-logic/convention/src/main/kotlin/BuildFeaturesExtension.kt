@@ -33,20 +33,16 @@ abstract class BuildFeaturesExtension @Inject constructor(
                     mapKey.add("dagger/MapKey")
 
                     // custom
-                    inject.add("com/dev/annotation/MetroInject")
+                    includeJavax()
                 }
             }
 
             dependencies {
                 ksp(project(":annotation_processor"))
-                implementation(project(":annotation"))
-                implementation(libs.findLibrary("dagger.core"))
+                // backward compatible support
                 implementation(libs.findLibrary("anvil.annotations"))
             }
-            return
-        }
-
-        if (buildFeatures.useAnvil) {
+        } else if (buildFeatures.useAnvil) {
             pluginManager.apply(pluginFromVersionCatalog("anvil"))
 
             val anvilExtension = project.extensions.getByType(AnvilExtension::class.java)
@@ -72,9 +68,13 @@ abstract class BuildFeaturesExtension @Inject constructor(
 
             dependencies {
                 anvil(project(":annotation_processor"))
-                implementation(project(":annotation"))
-                implementation(libs.findLibrary("dagger.core"))
             }
+        }
+
+        dependencies {
+            implementation(project(":annotation"))
+            implementation(libs.findLibrary("dagger.core"))
+            implementation(libs.findLibrary("metro.runtime"))
         }
     }
 

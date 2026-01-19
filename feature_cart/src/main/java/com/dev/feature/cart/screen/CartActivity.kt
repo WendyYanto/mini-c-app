@@ -15,10 +15,6 @@ import javax.inject.Inject
     viewModels = [CartViewModel::class],
     dependency = CartDependency::class
 )
-//@MetroInjectWith(
-//    viewModels = [CartViewModel::class],
-//    dependency = CartDependency::class
-//)
 class CartActivity : AppCompatActivity() {
 
     @Inject

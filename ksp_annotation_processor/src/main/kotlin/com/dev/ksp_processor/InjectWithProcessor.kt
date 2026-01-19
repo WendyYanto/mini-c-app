@@ -1,6 +1,6 @@
 package com.dev.ksp_processor
 
-import com.dev.annotation.MetroInjectWith
+import com.dev.annotation.InjectWith
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.getDeclaredFunctions
 import com.google.devtools.ksp.isAnnotationPresent
@@ -39,10 +39,13 @@ class InjectWithProcessor(
     private val logger: KSPLogger
 ) : SymbolProcessor {
 
-    private val annotationName = MetroInjectWith::class.qualifiedName.toString()
+    private val annotationName = InjectWith::class.qualifiedName.toString()
     private val visitedSymbols = mutableSetOf<Any>()
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
+        // if metro is disabled return empty
+        return emptyList()
+
         visitedSymbols.clear()
         val (resolvedSymbols, unresolvedSymbols) = resolver.getSymbolsWithAnnotation(annotationName)
             .partition { it.validate() }
@@ -164,7 +167,7 @@ class InjectWithVisitor(
         if (isVisited(classDeclaration)) return
 
         val packageName = classDeclaration.packageName.asString()
-        if (!classDeclaration.isAnnotationPresent(MetroInjectWith::class)) return
+        if (!classDeclaration.isAnnotationPresent(InjectWith::class)) return
 
         val fileSpec = FileSpec.builder(
             packageName,
@@ -229,7 +232,7 @@ class InjectWithVisitor(
                         )
                     )
                         .addMember("scope = ${appScope.simpleName}::class")
-                        .addMember("binding = binding<FeatureInjector<$injectTarget,$dependency>>()")
+                        .addMember("binding = binding<FeatureInjector<*,*>>()")
                         .build()
                 )
                 .addAnnotation(

@@ -3,7 +3,9 @@ package com.dev.feature.cart.screen
 import androidx.lifecycle.ViewModel
 import com.dev.core.CoreTextProvider
 import com.dev.core.scope.ActivityScope
+import com.dev.core.scope.AppScope
 import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.binding
 
 //@ContributesBinding(
 //    scope = ActivityScope::class,
@@ -15,7 +17,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 //)
 class CartViewModel(
     private val coreTextProvider: CoreTextProvider,
-    private val dataArgsProvider: DataArgsProvider
+    private val dataArgsProvider: DataArgsProvider,
 ) : ViewModel(), CartCallback, CartOtherCallback {
 
     override val loadText: () -> String = {
