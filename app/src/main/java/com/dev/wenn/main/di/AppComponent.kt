@@ -19,12 +19,12 @@ import kotlin.reflect.KClass
         DataMiscComponent::class
     ]
 )
-@Component(
-    dependencies = [
-        CoreComponent::class,
-        DataMiscComponent::class
-    ]
-)
+//@Component(
+//    dependencies = [
+//        CoreComponent::class,
+//        DataMiscComponent::class
+//    ]
+//)
 interface AppComponent :
     CoreComponent,
     DataMiscComponent {

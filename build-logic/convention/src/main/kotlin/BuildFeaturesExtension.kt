@@ -1,3 +1,4 @@
+import com.android.build.gradle.BaseExtension
 import com.google.devtools.ksp.gradle.KspExtension
 import com.squareup.anvil.plugin.AnvilExtension
 import dev.zacsweers.metro.gradle.MetroPluginExtension
@@ -6,6 +7,7 @@ import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.internal.KaptGenerateStubsTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -21,6 +23,12 @@ abstract class BuildFeaturesExtension @Inject constructor(
     ) {
         val useMetro = findProperty("com.dev.config.useMetro") == "true"
         val kspExtension = project.extensions.getByType(KspExtension::class.java)
+
+        // register useMetro buildConfig
+        val androidExtension = project.extensions.getByType(BaseExtension::class.java)
+        androidExtension.defaultConfig.apply {
+            buildConfigField("Boolean", "useMetro", useMetro.toString())
+        }
 
         if (useMetro) {
             pluginManager.apply(pluginFromVersionCatalog("metro"))
