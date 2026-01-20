@@ -6,6 +6,8 @@ import com.dev.data.misc.di.DataMiscComponent
 import com.dev.wenn.main.App
 import dagger.Component
 
+// creating another scope so that this could be included to the @MergedComponent of Anvil
+// @GraphExtension, this way we don't need to change our existing dagger implementation
 @LegacyApplicationScope
 @Component(
     dependencies = [
