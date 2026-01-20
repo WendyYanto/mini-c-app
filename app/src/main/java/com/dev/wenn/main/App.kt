@@ -1,12 +1,13 @@
 package com.dev.wenn.main
 
 import android.app.Application
+import android.widget.Toast
+import com.dev.core.BuildConfig
 import com.dev.core.ComponentHolder
+import com.dev.merged.registerDI
 import com.dev.wenn.main.di.AppComponent
 import com.dev.wenn.main.di.ComponentProvider
 import com.dev.wenn.main.di.ComponentsRegistry
-import com.dev.wenn.main.di.MetroAppComponent
-import dev.zacsweers.metro.createGraphFactory
 
 class App : Application(), ComponentProvider by ComponentsRegistry {
 
@@ -16,11 +17,22 @@ class App : Application(), ComponentProvider by ComponentsRegistry {
         appComponent.inject(this)
         ComponentHolder.components += appComponent
 
-//        registerMetroDi(appComponent)
+        registerDI(appComponent)
+        if (BuildConfig.useMetro) {
+            Toast.makeText(this, "using Metro as DI", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "using Anvil as DI", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun registerAnvilDi(
+        appComponent: AppComponent
+    ) {
+//        val mergedComponent = MergedAppComponent.init(appComponent)
+//        ComponentHolder.components += mergedComponent
     }
 
     private fun registerMetroDi(appComponent: AppComponent) {
-        ComponentHolder.components += createGraphFactory<MetroAppComponent.Factory>()
-            .create(appComponent)
+
     }
 }

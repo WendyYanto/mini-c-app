@@ -1,30 +1,18 @@
 package com.dev.wenn.main.di
 
 import com.dev.core.di.CoreComponent
-import com.dev.core.injector.FeatureInjector
-import com.dev.core.scope.AppScope
-import com.dev.core.scope.ApplicationScope
+import com.dev.core.scope.LegacyApplicationScope
 import com.dev.data.misc.di.DataMiscComponent
 import com.dev.wenn.main.App
-import com.squareup.anvil.annotations.MergeComponent
-import dagger.BindsInstance
 import dagger.Component
-import kotlin.reflect.KClass
 
-@ApplicationScope
-@MergeComponent(
-    scope = AppScope::class,
+@LegacyApplicationScope
+@Component(
     dependencies = [
         CoreComponent::class,
         DataMiscComponent::class
     ]
 )
-//@Component(
-//    dependencies = [
-//        CoreComponent::class,
-//        DataMiscComponent::class
-//    ]
-//)
 interface AppComponent :
     CoreComponent,
     DataMiscComponent {
@@ -37,7 +25,6 @@ interface AppComponent :
         fun build(
             coreComponent: CoreComponent,
             dataMiscComponent: DataMiscComponent,
-            @BindsInstance featureInjectorMap: Map<KClass<*>,  @JvmSuppressWildcards FeatureInjector<*, *>>
         ): AppComponent
     }
 
@@ -49,7 +36,6 @@ interface AppComponent :
                 .build(
                     coreComponent = app.getCoreComponent(),
                     dataMiscComponent = app.getDataMiscComponent(),
-                    featureInjectorMap = emptyMap()
                 )
         }
     }
