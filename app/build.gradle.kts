@@ -1,3 +1,5 @@
+import org.gradle.internal.declarativedsl.parsing.main
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -41,6 +43,17 @@ android {
     }
     kotlinOptions {
         jvmTarget = "21"
+    }
+
+    sourceSets {
+        val useMetro = project.findProperty("com.dev.config.useMetro")?.toString()?.toBoolean() ?: false
+        getByName("main") {
+            if (useMetro) {
+                kotlin.srcDirs("src/metro/kotlin")
+            } else {
+                kotlin.srcDirs("src/anvil/kotlin")
+            }
+        }
     }
 }
 
