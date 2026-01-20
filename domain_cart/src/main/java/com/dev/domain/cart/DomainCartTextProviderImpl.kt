@@ -1,15 +1,15 @@
 package com.dev.domain.cart
 
-import com.dev.annotation.MetroInject
 import com.dev.core.CoreTextProvider
 import com.dev.core.scope.AppScope
+import com.dev.core.scope.ApplicationScope
 import com.dev.data.order.DataOrderTextProvider
 import com.dev.data.product.DataProductTextProvider
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
+@ApplicationScope
 @ContributesBinding(AppScope::class)
-@MetroInject
 class DomainCartTextProviderImpl @Inject constructor(
     private val coreTextProvider: CoreTextProvider,
     private val dataOrderTextProvider: DataOrderTextProvider,

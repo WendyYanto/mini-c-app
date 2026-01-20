@@ -1,13 +1,13 @@
 package com.dev.data.product
 
-import com.dev.annotation.MetroInject
 import com.dev.core.CoreTextProvider
 import com.dev.core.scope.AppScope
+import com.dev.core.scope.ApplicationScope
 import com.squareup.anvil.annotations.ContributesBinding
 import javax.inject.Inject
 
+@ApplicationScope
 @ContributesBinding(AppScope::class)
-@MetroInject
 class DataProductTextProviderImpl @Inject constructor(
     private val coreTextProvider: CoreTextProvider
 ) : DataProductTextProvider {
