@@ -42,6 +42,8 @@ abstract class BuildFeaturesExtension @Inject constructor(
                     contributesTo.add("com/squareup/anvil/annotations/ContributesTo")
                     contributesBinding.add("com/squareup/anvil/annotations/ContributesBinding")
 
+                    provides.add("com/dev/annotation/MetroProvides")
+
                     // custom
                     includeJavax()
                 }

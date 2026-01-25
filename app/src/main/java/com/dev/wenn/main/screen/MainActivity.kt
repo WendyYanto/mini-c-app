@@ -3,6 +3,7 @@ package com.dev.wenn.main.screen
 import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.annotation.InjectWith
 import com.dev.core.CoreTextProvider
@@ -10,6 +11,7 @@ import com.dev.core.injector.injectComponent
 import com.dev.data.misc.DataMiscTextProvider
 import com.dev.data.order.DataOrderTextProvider
 import com.dev.data.product.DataProductTextProvider
+import com.dev.data.user.DataJavaTextProvider
 import com.dev.data.user.DataUserTextProvider
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.screen.CartActivity
@@ -40,6 +42,9 @@ class MainActivity : AppCompatActivity() {
 //    @Inject
 //    lateinit var coreTextProvidersTest: TestProvidersTest
 
+    @Inject
+    lateinit var dataJavaTextProvider: DataJavaTextProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         domainCartTextView.text = domainCartTextProvider.getDomainCartText()
 
         domainCartTextView.setOnClickListener {
-//            Toast.makeText(this, coreTextProvidersTest.getInfo(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, dataJavaTextProvider.text, Toast.LENGTH_SHORT).show()
 
             val intent = Intent(this, CartActivity::class.java)
             startActivity(intent)

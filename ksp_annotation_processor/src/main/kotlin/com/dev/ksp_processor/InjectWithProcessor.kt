@@ -178,7 +178,7 @@ class InjectWithVisitor(
         generateComponentContent(classDeclaration, fileSpec)
             .writeTo(
                 codeGenerator = codeGenerator,
-                aggregating = true,
+                aggregating = false,
                 originatingKSFiles =
                     classDeclaration.containingFile?.let {
                         listOf(it)

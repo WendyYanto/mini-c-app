@@ -9,9 +9,11 @@ import javax.inject.Inject
 @ApplicationScope
 @ContributesBinding(AppScope::class)
 class DataUserTextProviderImpl @Inject constructor(
-    private val coreTextProvider: CoreTextProvider
+    private val coreTextProvider: CoreTextProvider,
+    private val dataJavaTextProvider: DataJavaTextProvider,
 ) : DataUserTextProvider {
+
     override fun getUserText(): String {
-        return "user text with core: ${coreTextProvider.getText()}"
+        return "user text with core: ${coreTextProvider.getText()} and java text: ${dataJavaTextProvider.getText()}"
     }
 }

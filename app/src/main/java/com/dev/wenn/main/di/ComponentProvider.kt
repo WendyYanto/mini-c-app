@@ -12,4 +12,5 @@ interface ComponentProvider :
     DataProductComponentProvider,
     DataOrderComponentProvider,
     DataMiscComponentProvider,
-    DomainCartComponentProvider
+    DomainCartComponentProvider,
+    DataUserComponentProvider

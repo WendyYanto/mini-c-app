@@ -7,6 +7,8 @@ import com.dev.data.order.di.DataOrderComponent
 import com.dev.data.order.di.DataOrderComponentProvider
 import com.dev.data.product.di.DataProductComponent
 import com.dev.data.product.di.DataProductComponentProvider
+import com.dev.data.user.di.DataUserComponent
+import com.dev.data.user.di.DataUserComponentProvider
 import com.dev.domain.cart.di.DomainCartComponent
 import com.dev.domain.cart.di.DomainCartComponentProvider
 import com.dev.wenn.main.App
@@ -15,10 +17,7 @@ object ComponentsRegistry : ComponentProvider {
 
     private lateinit var app: App
     private lateinit var coreComponent: CoreComponent
-    private lateinit var dataProductComponent: DataProductComponent
-    private lateinit var dataOrderComponent: DataOrderComponent
     private lateinit var dataMiscComponent: DataMiscComponent
-    private lateinit var domainCartComponent: DomainCartComponent
 
     fun init(app: App) {
         this.app = app
@@ -37,8 +36,8 @@ object ComponentsRegistry : ComponentProvider {
     }
 
     override fun getDataOrderComponent(): DataOrderComponent {
-       return ComponentHolder.component<DataOrderComponentProvider>()
-           .getDataOrderComponent()
+        return ComponentHolder.component<DataOrderComponentProvider>()
+            .getDataOrderComponent()
     }
 
     override fun getDataMiscComponent(): DataMiscComponent {
@@ -51,5 +50,10 @@ object ComponentsRegistry : ComponentProvider {
     override fun getDomainCartComponent(): DomainCartComponent {
         return ComponentHolder.component<DomainCartComponentProvider>()
             .getDomainCartComponent()
+    }
+
+    override fun getDataUserComponent(): DataUserComponent {
+        return ComponentHolder.component<DataUserComponentProvider>()
+            .getDataUserComponent()
     }
 }
