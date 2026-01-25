@@ -44,7 +44,6 @@ dependencies {
     implementation(libs.appcompact)
     implementation(libs.dagger.core)
     implementation(libs.material.component)
-    kapt(libs.dagger.compiler)
 
     implementation(project(":core"))
     implementation(project(":data_product"))

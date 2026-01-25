@@ -29,11 +29,11 @@ class CartActivity : AppCompatActivity() {
     @Inject
     lateinit var toastLoader: ToastLoader
 
-//    @Inject
-//    lateinit var cartCallback: CartCallback
+    @Inject
+    lateinit var cartCallback: CartCallback
 
-//    @Inject
-//    lateinit var cartOtherCallback: CartOtherCallback
+    @Inject
+    lateinit var cartOtherCallback: CartOtherCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +44,8 @@ class CartActivity : AppCompatActivity() {
         domainCartTextView.text =
             "${domainCartTextProvider.getDomainCartText()} ${dataArgsProvider.loadArgs().hi} , ${dynamicTextProvider.loadText()}"
 
-//        toastLoader.show(cartCallback.loadText())
-//        toastLoader.show(cartOtherCallback.loadOtherText())
+        toastLoader.show(cartCallback.loadText())
+        toastLoader.show(cartOtherCallback.loadOtherText())
 
         findViewById<TextView>(R.id.tv_domain_cart).setOnClickListener {
             val bottomSheet = CartBottomSheet()

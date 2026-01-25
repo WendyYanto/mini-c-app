@@ -42,8 +42,6 @@ abstract class BuildFeaturesExtension @Inject constructor(
                     contributesTo.add("com/squareup/anvil/annotations/ContributesTo")
                     contributesBinding.add("com/squareup/anvil/annotations/ContributesBinding")
 
-                    mapKey.add("dagger/MapKey")
-
                     // custom
                     includeJavax()
                 }

@@ -37,6 +37,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var domainCartTextProvider: DomainCartTextProvider
 
+//    @Inject
+//    lateinit var coreTextProvidersTest: TestProvidersTest
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -60,6 +63,8 @@ class MainActivity : AppCompatActivity() {
         domainCartTextView.text = domainCartTextProvider.getDomainCartText()
 
         domainCartTextView.setOnClickListener {
+//            Toast.makeText(this, coreTextProvidersTest.getInfo(), Toast.LENGTH_SHORT).show()
+
             val intent = Intent(this, CartActivity::class.java)
             startActivity(intent)
         }
