@@ -24,12 +24,10 @@ import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toAnnotationSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
-import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.ClassKey
 import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Provides
@@ -108,14 +106,14 @@ class InjectWithVisitor(
     }
 
     // metro annotations
-    private val anvilMergeSubcomponent by lazy {
+    private val metroGraphExtension by lazy {
         ClassName(
             "dev.zacsweers.metro",
             "GraphExtension",
         )
     }
 
-    private val anvilContributesTo by lazy {
+    private val metroContributesTo by lazy {
         ClassName(
             "dev.zacsweers.metro",
             "ContributesTo"
@@ -124,7 +122,7 @@ class InjectWithVisitor(
 
     private val contributesToAppAnnotation by lazy {
         AnnotationSpec.builder(
-            anvilContributesTo
+            metroContributesTo
         )
             .addMember("scope = ${appScope.simpleName}::class")
             .build()
@@ -132,7 +130,7 @@ class InjectWithVisitor(
 
     private val contributesToSubcomponent by lazy {
         AnnotationSpec.builder(
-            anvilContributesTo
+            metroContributesTo
         )
             .addMember("scope = ${subcomponentScope.simpleName}::class")
             .build()
@@ -200,7 +198,6 @@ class InjectWithVisitor(
             .addImport("dev.zacsweers.metro", "binding")
             .addSubcomponent(classDeclaration, componentName, resolveComponent)
             .addInjectorClass(classDeclaration, componentName)
-//            .addInjectorContributor(classDeclaration, componentName)
             .addViewModelModule(classDeclaration, componentName, resolveComponent)
             .build()
     }
@@ -297,42 +294,6 @@ class InjectWithVisitor(
                             .inject(injectTarget)
                         """.trimIndent()
                         )
-                        .build()
-                )
-                .build()
-        )
-        return this
-    }
-
-    private fun FileSpec.Builder.addInjectorContributor(
-        clazz: KSClassDeclaration,
-        componentName: String
-    ): FileSpec.Builder {
-        val injectComponent = "${componentName}InjectorComponent"
-        addType(
-            TypeSpec.interfaceBuilder(injectComponent)
-                .addAnnotation(contributesToAppAnnotation)
-                .addFunction(
-                    FunSpec.builder("bind$injectComponent")
-
-                        .addAnnotation(Binds::class)
-                        .addAnnotation(dev.zacsweers.metro.IntoMap::class)
-                        .addAnnotation(
-                            AnnotationSpec.builder(ClassKey::class)
-                                .addMember("value = ${clazz.simpleName.getShortName()}::class")
-                                .build()
-                        )
-                        .receiver(
-                            ClassName(
-                                clazz.packageName.asString(),
-                                "${componentName}Injector"
-                            )
-                        )
-                        .returns(
-                            featureInjectorClass
-                                .parameterizedBy(STAR, STAR)
-                        )
-                        .addModifiers(KModifier.ABSTRACT)
                         .build()
                 )
                 .build()
@@ -479,10 +440,10 @@ class InjectWithVisitor(
                 // @MergeSubcomponent
                 .addAnnotation(
                     AnnotationSpec.builder(
-                        anvilMergeSubcomponent
+                        metroGraphExtension
                     )
                         .addMember("scope = ${subcomponentScope.simpleName}::class")
-//                        .addMember("modules = $moduleValues")
+                        .addMember("bindingContainers = $moduleValues")
                         .build()
                 )
                 .addFunction(
