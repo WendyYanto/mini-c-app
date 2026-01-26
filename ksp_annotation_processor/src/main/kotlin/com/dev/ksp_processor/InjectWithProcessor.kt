@@ -120,6 +120,20 @@ class InjectWithVisitor(
         )
     }
 
+    private val metroBindings by lazy {
+        ClassName(
+            "dev.zacsweers.metro",
+            "binding"
+        )
+    }
+
+    private val metroContributesIntoMap by lazy {
+        ClassName(
+            "dev.zacsweers.metro",
+            "ContributesIntoMap"
+        )
+    }
+
     private val contributesToAppAnnotation by lazy {
         AnnotationSpec.builder(
             metroContributesTo
@@ -195,7 +209,7 @@ class InjectWithVisitor(
             .addImport(lifecycleExtensionImport.packageName, lifecycleExtensionImport.simpleName)
             .addImport(appScope.packageName, appScope.simpleName)
             .addImport(subcomponentScope.packageName, subcomponentScope.simpleName)
-            .addImport("dev.zacsweers.metro", "binding")
+            .addImport(metroBindings.packageName, metroBindings.simpleName)
             .addSubcomponent(classDeclaration, componentName, resolveComponent)
             .addInjectorClass(classDeclaration, componentName)
             .addViewModelModule(classDeclaration, componentName, resolveComponent)
@@ -224,10 +238,7 @@ class InjectWithVisitor(
             )
                 .addAnnotation(
                     AnnotationSpec.builder(
-                        ClassName(
-                            "dev.zacsweers.metro",
-                            "ContributesIntoMap"
-                        )
+                        metroContributesIntoMap
                     )
                         .addMember("scope = ${appScope.simpleName}::class")
                         .addMember("binding = binding<FeatureInjector<*,*>>()")
