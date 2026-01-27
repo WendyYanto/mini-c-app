@@ -190,6 +190,19 @@ class InjectWithProcessor : CodeGenerator {
         componentName: String,
         resolveComponent: ClazzReference
     ): FileSpec.Builder {
+        val annotation = clazz.annotations.firstOrNull()
+        val modules = annotation
+            ?.argumentAt("modules", -1)?.value<List<ClassReference>>()
+            .orEmpty()
+
+        val moduleValues = "[" + modules.joinToString(",") { module ->
+            "${module.shortName}::class"
+        } + "]"
+
+        modules.forEach { module ->
+            addImport(module.packageFqName.asString(), module.shortName)
+        }
+
         addType(
             TypeSpec.interfaceBuilder(componentName)
                 // add @FeatureScope
@@ -204,6 +217,7 @@ class InjectWithProcessor : CodeGenerator {
                         MergeSubcomponent::class
                     )
                         .addMember("scope = ${subcomponentScope.clazzName}::class")
+                        .addMember("modules = $moduleValues")
                         .build()
                 )
                 .addFunction(
