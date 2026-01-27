@@ -12,20 +12,20 @@ import dev.zacsweers.metro.createGraphFactory
 @DependencyGraph(
     scope = AppScope::class,
 )
-interface MetroAppComponent : AppComponent {
+interface MergedAppComponent : AppComponent {
 
     @DependencyGraph.Factory
     interface Factory {
         fun create(
             @Includes appComponent: AppComponent,
-        ): MetroAppComponent
+        ): MergedAppComponent
     }
 }
 
 internal fun registerDI(
     appComponent: AppComponent
 ) {
-    ComponentHolder.components += createGraphFactory<MetroAppComponent.Factory>()
+    ComponentHolder.components += createGraphFactory<MergedAppComponent.Factory>()
         .create(appComponent)
 }
 

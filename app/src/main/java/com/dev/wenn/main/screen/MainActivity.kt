@@ -52,6 +52,12 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
+        val hiText = findViewById<TextView>(R.id.tv_hi)
+        hiText.setOnClickListener {
+            val intent = Intent(this, DaggerOnlyActivity::class.java)
+            startActivity(intent)
+        }
+
         val textView = findViewById<TextView>(R.id.tv_core_text)
         textView.text = coreTextProvider.getText()
 
