@@ -1,5 +1,6 @@
 package com.dev.core.injector
 
+import com.dev.annotation.InjectorClassKey
 import com.dev.core.scope.AppScope
 import com.squareup.anvil.annotations.ContributesTo
 import dev.zacsweers.metro.Multibinds
@@ -12,5 +13,5 @@ interface FeatureInjectorComponent {
     fun kClassFeatureInjectors(): Map<KClass<*>, FeatureInjector<*, *>>
 
     @Multibinds(allowEmpty = true)
-    fun featureInjectors(): Map<Class<*>, FeatureInjector<*, *>>
+    fun featureInjectors(): Map<InjectorClassKey, FeatureInjector<*, *>>
 }

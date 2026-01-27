@@ -1,5 +1,6 @@
 package com.dev.annotation_processor
 
+import com.dev.annotation.InjectorClassKey
 import com.google.auto.service.AutoService
 import com.squareup.anvil.annotations.ContributesTo
 import com.squareup.anvil.annotations.ExperimentalAnvilApi
@@ -410,7 +411,7 @@ class InjectWithProcessor : CodeGenerator {
                         .addAnnotation(IntoMap::class)
                         .addAnnotation(Binds::class)
                         .addAnnotation(
-                            AnnotationSpec.builder(ClassKey::class)
+                            AnnotationSpec.builder(InjectorClassKey::class)
                                 .addMember("value = ${clazz.shortName}::class")
                                 .build()
                         )

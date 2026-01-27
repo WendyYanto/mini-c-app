@@ -36,7 +36,7 @@ abstract class BuildFeaturesExtension @Inject constructor(
 
             with(metroExtension) {
                 enabled.set(true)
-                debug.set(true)
+//                debug.set(true)
 
                 interop {
                     contributesTo.add("com/squareup/anvil/annotations/ContributesTo")

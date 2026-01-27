@@ -1,5 +1,6 @@
 package com.dev.core.injector
 
+import com.dev.annotation.InjectorClassKey
 import com.dev.core.BuildConfig
 import com.dev.core.ComponentHolder
 
@@ -16,7 +17,7 @@ inline fun <reified T, reified U> T.injectComponentWithDependency(
     } else {
         val injector = ComponentHolder
             .component<FeatureInjectorComponent>()
-            .featureInjectors()[T::class.java] as? FeatureInjector<T, U>
+            .featureInjectors()[InjectorClassKey(T::class)] as? FeatureInjector<T, U>
 
         injector?.inject(this, dependencyFactory)
     }
@@ -33,7 +34,7 @@ inline fun <reified T> T.injectComponent() {
     } else {
         val injector = ComponentHolder
             .component<FeatureInjectorComponent>()
-            .featureInjectors()[T::class.java] as? FeatureInjector<T, Unit>
+            .featureInjectors()[InjectorClassKey(T::class)] as? FeatureInjector<T, Unit>
 
         injector?.inject(this) { }
     }

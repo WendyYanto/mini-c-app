@@ -4,4 +4,5 @@ plugins {
 
 dependencies {
     implementation(libs.dagger.core)
+    implementation(libs.metro.runtime)
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.annotation.InjectWith
+import com.dev.core.BaseActivity
 import com.dev.core.DynamicTextProvider
 import com.dev.core.injector.injectComponentWithDependency
 import com.dev.domain.cart.DomainCartTextProvider
@@ -17,7 +18,7 @@ import javax.inject.Inject
     dependency = CartDependency::class,
     modules = [CartModule::class]
 )
-class CartActivity : AppCompatActivity() {
+class CartActivity : BaseActivity() {
 
     @Inject
     lateinit var domainCartTextProvider: DomainCartTextProvider
@@ -48,6 +49,11 @@ class CartActivity : AppCompatActivity() {
         Log.v(
             "WEE",
             cartModuleTest.load()
+        )
+
+        Log.v(
+            "WEE",
+            loadCore()
         )
 
         val domainCartTextView = findViewById<TextView>(R.id.tv_domain_cart)

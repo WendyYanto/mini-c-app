@@ -16,13 +16,11 @@ import com.dev.data.user.DataUserTextProvider
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.screen.CartActivity
 import com.dev.wenn.R
+import com.dev.core.BaseActivity
 import javax.inject.Inject
 
 @InjectWith
-class MainActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var coreTextProvider: CoreTextProvider
+class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var dataUserTextProvider: DataUserTextProvider
@@ -59,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val textView = findViewById<TextView>(R.id.tv_core_text)
-        textView.text = coreTextProvider.getText()
+        textView.text = loadCore()
 
         val userTextView = findViewById<TextView>(R.id.tv_data_user)
         userTextView.text = dataUserTextProvider.getUserText()
