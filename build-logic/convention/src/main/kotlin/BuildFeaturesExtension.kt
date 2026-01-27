@@ -43,6 +43,7 @@ abstract class BuildFeaturesExtension @Inject constructor(
                     contributesBinding.add("com/squareup/anvil/annotations/ContributesBinding")
 
                     provides.add("com/dev/annotation/MetroProvides")
+                    bindingContainer.add("dagger/Module")
 
                     // custom
                     includeJavax()

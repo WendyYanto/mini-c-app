@@ -6,5 +6,6 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 annotation class InjectWith(
     val dependency: KClass<*> = Unit::class,
-    val viewModels: Array<KClass<*>> = []
+    val viewModels: Array<KClass<*>> = [],
+    val modules: Array<KClass<*>> = [],
 )

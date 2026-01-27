@@ -1,6 +1,7 @@
 package com.dev.feature.cart.screen
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.annotation.InjectWith
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @InjectWith(
     viewModels = [CartViewModel::class],
-    dependency = CartDependency::class
+    dependency = CartDependency::class,
+    modules = [CartModule::class]
 )
 class CartActivity : AppCompatActivity() {
 
@@ -35,10 +37,18 @@ class CartActivity : AppCompatActivity() {
     @Inject
     lateinit var cartOtherCallback: CartOtherCallback
 
+    @Inject
+    lateinit var cartModuleTest: CartModuleTest
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectComponentWithDependency { CartDependency("hi from cart dependency") }
         setContentView(R.layout.activity_cart)
+
+        Log.v(
+            "WEE",
+            cartModuleTest.load()
+        )
 
         val domainCartTextView = findViewById<TextView>(R.id.tv_domain_cart)
         domainCartTextView.text =
