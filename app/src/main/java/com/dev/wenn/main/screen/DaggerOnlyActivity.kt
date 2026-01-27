@@ -13,6 +13,7 @@ class DaggerOnlyActivity : AppCompatActivity() {
     lateinit var domainCartTextProvider: DomainCartTextProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         DaggerOnlyComponent.init(this).inject(this)
