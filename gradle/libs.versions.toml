@@ -52,7 +52,8 @@ auto-service-ksp = { group = "dev.zacsweers.autoservice", name = "auto-service-k
 kotlin-poet-ksp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref = "kotlinpoetKsp" }
 
 anvil-annotations = { group = "com.squareup.anvil", name = "annotations", version.ref = "anvilcompiler" }
-metro-runtime ={ group = "dev.zacsweers.metro", name = "runtime", version.ref = "metro" }
+metro-runtime = { group = "dev.zacsweers.metro", name = "runtime", version.ref = "metro" }
+metro-interop-dagger = { group = "dev.zacsweers.metro", name = "interop-dagger", version.ref = "metro" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

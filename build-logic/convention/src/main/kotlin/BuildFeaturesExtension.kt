@@ -39,13 +39,16 @@ abstract class BuildFeaturesExtension @Inject constructor(
                 debug.set(true)
 
                 interop {
+                    enableDaggerRuntimeInterop.value(true)
+
                     contributesTo.add("com/squareup/anvil/annotations/ContributesTo")
                     contributesBinding.add("com/squareup/anvil/annotations/ContributesBinding")
 
                     provides.add("com/dev/annotation/MetroProvides")
                     bindingContainer.add("dagger/Module")
 
-                    // custom
+                    lazy.add("dagger/Lazy")
+
                     includeJavax()
                 }
             }
@@ -58,6 +61,7 @@ abstract class BuildFeaturesExtension @Inject constructor(
                 ksp(project(":annotation_processor"))
                 // backward compatible support
                 implementation(libs.findLibrary("anvil.annotations"))
+                implementation(libs.findLibrary("metro.interop.dagger"))
             }
         } else if (buildFeatures.useAnvil) {
             pluginManager.apply(pluginFromVersionCatalog("anvil"))

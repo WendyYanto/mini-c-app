@@ -3,11 +3,11 @@ package com.dev.feature.cart.screen
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.dev.annotation.InjectWith
 import com.dev.core.BaseActivity
 import com.dev.core.DynamicTextProvider
 import com.dev.core.injector.injectComponentWithDependency
+import com.dev.domain.cart.CartModuleTest
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.R
 import com.dev.feature.cart.bottomsheet.CartBottomSheet
@@ -27,7 +27,7 @@ class CartActivity : BaseActivity() {
     lateinit var dataArgsProvider: DataArgsProvider
 
     @Inject
-    lateinit var dynamicTextProvider: DynamicTextProvider
+    lateinit var dynamicTextProvider: dagger.Lazy<DynamicTextProvider>
 
     @Inject
     lateinit var toastLoader: ToastLoader
@@ -58,7 +58,7 @@ class CartActivity : BaseActivity() {
 
         val domainCartTextView = findViewById<TextView>(R.id.tv_domain_cart)
         domainCartTextView.text =
-            "${domainCartTextProvider.getDomainCartText()} ${dataArgsProvider.loadArgs().hi} , ${dynamicTextProvider.loadText()}"
+            "${domainCartTextProvider.getDomainCartText()} ${dataArgsProvider.loadArgs().hi} , ${dynamicTextProvider.get().loadText()}"
 
         toastLoader.show(cartCallback.loadText())
         toastLoader.show(cartOtherCallback.loadOtherText())
