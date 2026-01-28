@@ -2,6 +2,7 @@ package com.dev.wenn.main.screen
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,9 @@ import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.screen.CartActivity
 import com.dev.wenn.R
 import com.dev.core.BaseActivity
+import com.dev.core.TextLoaderProvider
+import com.dev.wenn.main.loaders.CoreTextLoader
+import com.dev.wenn.main.loaders.DataUserTextLoader
 import javax.inject.Inject
 
 @InjectWith
@@ -43,12 +47,25 @@ class MainActivity : BaseActivity() {
     @Inject
     lateinit var dataJavaTextProvider: DataJavaTextProvider
 
+    @Inject
+    lateinit var textLoaderMap: Map<Class<*>, @JvmSuppressWildcards TextLoaderProvider<*>>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         injectComponent()
 
         setContentView(R.layout.activity_main)
+
+        Log.v(
+            "WEE",
+            textLoaderMap[CoreTextLoader::class.java]?.create()?.loadMergedText().orEmpty(),
+        )
+
+        Log.v(
+            "WEE",
+            textLoaderMap[DataUserTextLoader::class.java]?.create()?.loadMergedText().orEmpty(),
+        )
 
         val hiText = findViewById<TextView>(R.id.tv_hi)
         hiText.setOnClickListener {

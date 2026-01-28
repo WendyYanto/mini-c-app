@@ -6,6 +6,7 @@ import android.widget.TextView
 import com.dev.annotation.InjectWith
 import com.dev.core.BaseActivity
 import com.dev.core.DynamicTextProvider
+import com.dev.core.TextLoaderProvider
 import com.dev.core.injector.injectComponentWithDependency
 import com.dev.domain.cart.CartModuleTest
 import com.dev.domain.cart.DomainCartTextProvider
@@ -58,7 +59,9 @@ class CartActivity : BaseActivity() {
 
         val domainCartTextView = findViewById<TextView>(R.id.tv_domain_cart)
         domainCartTextView.text =
-            "${domainCartTextProvider.getDomainCartText()} ${dataArgsProvider.loadArgs().hi} , ${dynamicTextProvider.get().loadText()}"
+            "${domainCartTextProvider.getDomainCartText()} ${dataArgsProvider.loadArgs().hi} , ${
+                dynamicTextProvider.get().loadText()
+            }"
 
         toastLoader.show(cartCallback.loadText())
         toastLoader.show(cartOtherCallback.loadOtherText())
