@@ -21,7 +21,6 @@ interface MergedAppComponent: AppComponent {
     interface Factory {
         fun build(
             appComponent: AppComponent,
-            @BindsInstance featureInjectorMap: Map<KClass<*>,  @JvmSuppressWildcards FeatureInjector<*, *>>
         ): MergedAppComponent
     }
 
@@ -31,7 +30,6 @@ interface MergedAppComponent: AppComponent {
             return DaggerMergedAppComponent.factory()
                 .build(
                     appComponent = appComponent,
-                    featureInjectorMap = emptyMap()
                 )
         }
     }

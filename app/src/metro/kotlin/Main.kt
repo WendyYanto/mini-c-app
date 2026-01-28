@@ -19,9 +19,7 @@ interface MergedAppComponent : AppComponent {
     @DependencyGraph.Factory
     interface Factory {
         fun create(
-            @Includes appComponent: AppComponent,
-            // empty bindings
-//            @Includes classMap: Map<Class<*>, FeatureInjector<*, *>>
+            @Includes appComponent: AppComponent
         ): MergedAppComponent
     }
 }

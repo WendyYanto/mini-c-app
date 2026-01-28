@@ -1,6 +1,7 @@
 package com.dev.ksp_processor
 
 import com.dev.annotation.InjectWith
+import com.dev.annotation.InjectorClassKey
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.getDeclaredFunctions
 import com.google.devtools.ksp.isAnnotationPresent
@@ -28,7 +29,6 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toAnnotationSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
-import dev.zacsweers.metro.ClassKey
 import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Provides
 
@@ -245,7 +245,7 @@ class InjectWithVisitor(
                         .build()
                 )
                 .addAnnotation(
-                    AnnotationSpec.builder(ClassKey::class)
+                    AnnotationSpec.builder(InjectorClassKey::class)
                         .addMember("value = ${clazz.simpleName.getShortName()}::class")
                         .build()
                 )

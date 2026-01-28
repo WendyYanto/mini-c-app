@@ -10,8 +10,5 @@ import kotlin.reflect.KClass
 interface FeatureInjectorComponent {
 
     @Multibinds
-    fun kClassFeatureInjectors(): Map<KClass<*>, FeatureInjector<*, *>>
-
-    @Multibinds(allowEmpty = true)
     fun featureInjectors(): Map<InjectorClassKey, FeatureInjector<*, *>>
 }
