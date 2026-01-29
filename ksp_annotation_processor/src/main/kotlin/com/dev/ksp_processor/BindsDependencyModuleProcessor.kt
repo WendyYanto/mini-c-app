@@ -16,6 +16,9 @@ import com.google.devtools.ksp.visitor.KSDefaultVisitor
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toTypeName
@@ -105,18 +108,43 @@ class BindsDependencyModuleProcessorVisitor(
             fileSpec.addImport(daggerBindingsPackageName, "IntKey")
         }
 
+        // Copy all imports from the original file
+        val fileContent = try {
+            val containingFile = classDeclaration.containingFile
+            val sourceFile = containingFile?.filePath.orEmpty()
+            java.io.File(sourceFile).readText()
+        } catch (_: Exception) {
+            ""
+        }
+
+        if (fileContent.isNotEmpty()) {
+            val imports = extractImportsFromFile(fileContent)
+            imports.forEach { (packageName, simpleName) ->
+                fileSpec.addImport(packageName, simpleName)
+            }
+        }
+
         // Get all properties from the interface
         val properties = classDeclaration.getAllProperties()
             .filter { it.parentDeclaration == classDeclaration }
             .filter { it.extensionReceiver != null } // Only extension properties
             .toList()
 
-        // Generate the interface with extension properties
+        // Generate the interface with extension properties or functions
         val interfaceSpec = TypeSpec.interfaceBuilder("${className}Generated")
 
-        properties.forEach { property ->
-            val generatedProperty = generateProperty(property)
-            interfaceSpec.addProperty(generatedProperty)
+        if (useMetro) {
+            // Generate extension properties for Metro
+            properties.forEach { property ->
+                val generatedProperty = generateProperty(property)
+                interfaceSpec.addProperty(generatedProperty)
+            }
+        } else {
+            // Generate abstract functions for Dagger
+            properties.forEach { property ->
+                val generatedFunction = generateFunction(property)
+                interfaceSpec.addFunction(generatedFunction)
+            }
         }
 
         val annotation = classDeclaration.annotations.firstOrNull()
@@ -218,6 +246,68 @@ class BindsDependencyModuleProcessorVisitor(
         }
 
         return propertySpec.build()
+    }
+
+    private fun generateFunction(
+        property: KSPropertyDeclaration,
+    ): FunSpec {
+        val propertyName = property.simpleName.asString()
+        val propertyType = property.type.resolve().toTypeName()
+        val extensionReceiver = property.extensionReceiver?.resolve()
+            ?: throw IllegalArgumentException("Property $propertyName must be an extension property")
+
+        val extensionReceiverTypeName = extensionReceiver.toTypeName()
+
+        // Extract the simple name from the extension receiver type for the function name
+        val extensionReceiverSimpleName = extensionReceiver.declaration.simpleName.asString()
+
+        // Generate function name: binds + capitalized extension receiver type name
+        val functionName = "${propertyName}${extensionReceiverSimpleName}"
+
+        val funSpec = FunSpec.builder(functionName)
+            .addModifiers(KModifier.ABSTRACT)
+            .addParameter(
+                ParameterSpec.builder("binder", extensionReceiverTypeName).build()
+            )
+            .returns(propertyType)
+
+        // Extract annotations from doc comments
+        val docString = property.docString
+
+        if (docString != null) {
+            val annotations = extractAnnotationsFromDoc(docString, useMetro)
+            annotations.forEach { annotation ->
+                funSpec.addAnnotation(annotation)
+            }
+
+            funSpec.addAnnotation(
+                AnnotationSpec.builder(
+                    ClassName("dagger", "Binds")
+                )
+                    .build()
+            )
+            funSpec.addAnnotation(
+                AnnotationSpec.builder(
+                    ClassName("dagger.multibindings", "IntoMap")
+                )
+                    .build()
+            )
+        }
+
+        return funSpec.build()
+    }
+
+    private fun extractImportsFromFile(fileContent: String): List<Pair<String, String>> {
+        val imports = mutableListOf<Pair<String, String>>()
+        val importPattern = """import\s+([\w.]+)\.([\w]+)""".toRegex()
+
+        importPattern.findAll(fileContent).forEach { match ->
+            val packageName = match.groupValues[1]
+            val simpleName = match.groupValues[2]
+            imports.add(packageName to simpleName)
+        }
+
+        return imports
     }
 
     private fun extractAnnotationsFromDoc(
