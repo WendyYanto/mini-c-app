@@ -48,7 +48,12 @@ class DependencyModuleProcessor(
             .forEach {
                 println("working TextLoaderModuleCodeGenVisitor")
                 it.accept(
-                    TextLoaderModuleCodeGenVisitor(codeGenerator, logger, visitedSymbols),
+                    DependencyModuleProcessorVisitor(
+                        codeGenerator,
+                        logger,
+                        visitedSymbols,
+                        useMetro
+                    ),
                     null
                 )
             }
@@ -57,10 +62,11 @@ class DependencyModuleProcessor(
     }
 }
 
-class TextLoaderModuleCodeGenVisitor(
+class DependencyModuleProcessorVisitor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
-    private val visitedSymbols: MutableSet<Any>
+    private val visitedSymbols: MutableSet<Any>,
+    private val useMetro: Boolean
 ) : KSDefaultVisitor<FileSpec.Builder?, Unit>() {
 
     private fun isVisited(symbol: KSNode): Boolean {
@@ -68,14 +74,6 @@ class TextLoaderModuleCodeGenVisitor(
         visitedSymbols.add(symbol)
         return false
     }
-
-    override fun defaultHandler(
-        node: KSNode,
-        data: FileSpec.Builder?
-    ) {
-        // No Implementation
-    }
-
 
     @OptIn(KspExperimental::class)
     override fun visitClassDeclaration(
@@ -138,12 +136,35 @@ class TextLoaderModuleCodeGenVisitor(
 
         // Extract annotations from doc comments
         val docString = function.docString
-        println("DOC String")
-        println(docString.orEmpty())
+
         if (docString != null) {
             val annotations = extractAnnotationsFromDoc(docString)
             annotations.forEach { annotation ->
                 funSpec.addAnnotation(annotation)
+            }
+
+            if (useMetro) {
+                funSpec.addAnnotation(
+                    AnnotationSpec.builder(dev.zacsweers.metro.Provides::class)
+                        .build()
+                )
+                funSpec.addAnnotation(
+                    AnnotationSpec.builder(dev.zacsweers.metro.IntoMap::class)
+                        .build()
+                )
+            } else {
+                funSpec.addAnnotation(
+                    AnnotationSpec.builder(
+                        ClassName("dagger", "Provides")
+                    )
+                        .build()
+                )
+                funSpec.addAnnotation(
+                    AnnotationSpec.builder(
+                        ClassName("dagger.multibindings", "IntoMap")
+                    )
+                        .build()
+                )
             }
         }
 
@@ -155,7 +176,8 @@ class TextLoaderModuleCodeGenVisitor(
 
     private fun extractAnnotationsFromDoc(docString: String): List<AnnotationSpec> {
         val annotations = mutableListOf<AnnotationSpec>()
-        val annotationPattern = """@(\w+)\((.*?)\)""".toRegex()
+        // Updated regex to handle annotations like @Key("value") or @Key(Class::class)
+        val annotationPattern = """@([\w.]+)\(([^)]+)\)""".toRegex()
 
         println("ASDASd")
         println(docString)
@@ -165,7 +187,7 @@ class TextLoaderModuleCodeGenVisitor(
             println(match)
 
             val annotationName = match.groupValues[1]
-            val annotationParams = match.groupValues[2]
+            val annotationParams = match.groupValues[2].trim()
 
             // Parse the annotation parameters
             val annotationSpec = when {
@@ -173,6 +195,13 @@ class TextLoaderModuleCodeGenVisitor(
                     // Handle KClass parameters like @TextLoaderKey(CoreTextLoader::class)
                     AnnotationSpec.builder(ClassName.bestGuess(annotationName))
                         .addMember("%L", annotationParams)
+                        .build()
+                }
+
+                annotationParams.startsWith("\"") && annotationParams.endsWith("\"") -> {
+                    // Handle string parameters like @Key("value")
+                    AnnotationSpec.builder(ClassName.bestGuess(annotationName))
+                        .addMember("%S", annotationParams.removeSurrounding("\""))
                         .build()
                 }
 
@@ -195,4 +224,12 @@ class TextLoaderModuleCodeGenVisitor(
 
         return annotations
     }
+
+    override fun defaultHandler(
+        node: KSNode,
+        data: FileSpec.Builder?
+    ) {
+        // No Implementation
+    }
+
 }
