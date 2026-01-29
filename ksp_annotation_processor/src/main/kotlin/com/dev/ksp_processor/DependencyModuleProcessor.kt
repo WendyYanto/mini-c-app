@@ -221,12 +221,8 @@ class DependencyModuleProcessorVisitor(
             annotations.forEach { annotation ->
                 funSpec.addAnnotation(annotation)
             }
-
+            // add @IntoMap
             if (useMetro) {
-                funSpec.addAnnotation(
-                    AnnotationSpec.builder(dev.zacsweers.metro.Provides::class)
-                        .build()
-                )
                 funSpec.addAnnotation(
                     AnnotationSpec.builder(dev.zacsweers.metro.IntoMap::class)
                         .build()
@@ -234,17 +230,26 @@ class DependencyModuleProcessorVisitor(
             } else {
                 funSpec.addAnnotation(
                     AnnotationSpec.builder(
-                        ClassName("dagger", "Provides")
-                    )
-                        .build()
-                )
-                funSpec.addAnnotation(
-                    AnnotationSpec.builder(
                         ClassName("dagger.multibindings", "IntoMap")
                     )
                         .build()
                 )
             }
+        }
+
+        // add @Provides
+        if (useMetro) {
+            funSpec.addAnnotation(
+                AnnotationSpec.builder(dev.zacsweers.metro.Provides::class)
+                    .build()
+            )
+        } else {
+            funSpec.addAnnotation(
+                AnnotationSpec.builder(
+                    ClassName("dagger", "Provides")
+                )
+                    .build()
+            )
         }
 
         // Extract and add function body from source code

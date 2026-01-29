@@ -100,14 +100,6 @@ class BindsDependencyModuleProcessorVisitor(
 
         val fileSpec = FileSpec.builder(packageName, "${className}Generated")
 
-        if (useMetro) {
-            fileSpec.addImport(metroPackageName, "StringKey")
-            fileSpec.addImport(metroPackageName, "IntKey")
-        } else {
-            fileSpec.addImport(daggerBindingsPackageName, "StringKey")
-            fileSpec.addImport(daggerBindingsPackageName, "IntKey")
-        }
-
         // Copy all imports from the original file
         val fileContent = try {
             val containingFile = classDeclaration.containingFile
@@ -134,12 +126,16 @@ class BindsDependencyModuleProcessorVisitor(
         val interfaceSpec = TypeSpec.interfaceBuilder("${className}Generated")
 
         if (useMetro) {
+            fileSpec.addImport(metroPackageName, "StringKey")
+            fileSpec.addImport(metroPackageName, "IntKey")
             // Generate extension properties for Metro
             properties.forEach { property ->
                 val generatedProperty = generateProperty(property)
                 interfaceSpec.addProperty(generatedProperty)
             }
         } else {
+            fileSpec.addImport(daggerBindingsPackageName, "StringKey")
+            fileSpec.addImport(daggerBindingsPackageName, "IntKey")
             // Generate abstract functions for Dagger
             properties.forEach { property ->
                 val generatedFunction = generateFunction(property)
@@ -331,7 +327,7 @@ class BindsDependencyModuleProcessorVisitor(
                         .build()
                 }
 
-                // its stringkey
+                // its StringKey
                 annotationParams.startsWith("\"") && annotationParams.endsWith("\"") -> {
                     // Handle string parameters like @Key("value")
                     val annotationSpec = if (useMetro) {
