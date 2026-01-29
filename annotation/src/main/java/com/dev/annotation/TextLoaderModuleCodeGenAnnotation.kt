@@ -1,4 +1,5 @@
 package com.dev.annotation
 
-class TextLoaderModuleCodeGen {
-}
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class TextLoaderModuleCodeGenAnnotation
