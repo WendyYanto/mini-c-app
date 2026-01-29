@@ -11,6 +11,7 @@ plugins {
 buildFeatures {
     include {
         useAnvil = true
+        generateDaggerFactories = true
     }
 }
 

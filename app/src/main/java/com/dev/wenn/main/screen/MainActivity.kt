@@ -7,6 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dev.annotation.InjectWith
+import com.dev.annotation.TextLoaderKey
 import com.dev.core.CoreTextProvider
 import com.dev.core.injector.injectComponent
 import com.dev.data.misc.DataMiscTextProvider
@@ -18,10 +19,15 @@ import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.screen.CartActivity
 import com.dev.wenn.R
 import com.dev.core.BaseActivity
+import com.dev.core.ComponentHolder
 import com.dev.core.TextLoaderProvider
 import com.dev.wenn.main.loaders.CoreTextLoader
 import com.dev.wenn.main.loaders.DataUserTextLoader
+import com.dev.wenn.main.loaders.TextLoaderMapContributor
+import com.dev.wenn.main.loaders.TextLoaderModule
 import javax.inject.Inject
+import javax.inject.Provider
+import kotlin.reflect.KClass
 
 @InjectWith
 class MainActivity : BaseActivity() {
@@ -45,10 +51,8 @@ class MainActivity : BaseActivity() {
 //    lateinit var coreTextProvidersTest: TestProvidersTest
 
     @Inject
-    lateinit var dataJavaTextProvider: DataJavaTextProvider
+    lateinit var dataJavaTextProvider: Provider<DataJavaTextProvider>
 
-    @Inject
-    lateinit var textLoaderMap: Map<Class<*>, @JvmSuppressWildcards TextLoaderProvider<*>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,15 +61,8 @@ class MainActivity : BaseActivity() {
 
         setContentView(R.layout.activity_main)
 
-        Log.v(
-            "WEE",
-            textLoaderMap[CoreTextLoader::class.java]?.create()?.loadMergedText().orEmpty(),
-        )
-
-        Log.v(
-            "WEE",
-            textLoaderMap[DataUserTextLoader::class.java]?.create()?.loadMergedText().orEmpty(),
-        )
+        val item = ComponentHolder.component<TextLoaderMapContributor>()
+        Log.v("ASDA", item.textLoaders().toString())
 
         val hiText = findViewById<TextView>(R.id.tv_hi)
         hiText.setOnClickListener {
@@ -89,7 +86,7 @@ class MainActivity : BaseActivity() {
         domainCartTextView.text = domainCartTextProvider.getDomainCartText()
 
         domainCartTextView.setOnClickListener {
-            Toast.makeText(this, dataJavaTextProvider.text, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, dataJavaTextProvider.get().text, Toast.LENGTH_SHORT).show()
 
             val intent = Intent(this, CartActivity::class.java)
             startActivity(intent)
