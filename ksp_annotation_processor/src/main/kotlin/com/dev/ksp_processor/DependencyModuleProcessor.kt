@@ -114,6 +114,13 @@ class DependencyModuleProcessorVisitor(
             throw Exception("")
         }
 
+        if (fileContent.isNotEmpty()) {
+            val imports = extractImportsFromFile(fileContent)
+            imports.forEach { (packageName, simpleName) ->
+                fileSpec.addImport(packageName, simpleName)
+            }
+        }
+
         functions.forEach { function ->
             val functionName = function.simpleName.asString()
             if (visitedFunctions.contains(functionName)) {
@@ -324,6 +331,19 @@ class DependencyModuleProcessorVisitor(
         } else {
             throw IllegalArgumentException("cannot find end of '{' of the current function $functionName, please always wrap with enclosing braces {}")
         }
+    }
+
+    private fun extractImportsFromFile(fileContent: String): List<Pair<String, String>> {
+        val imports = mutableListOf<Pair<String, String>>()
+        val importPattern = """import\s+([\w.]+)\.([\w]+)""".toRegex()
+
+        importPattern.findAll(fileContent).forEach { match ->
+            val packageName = match.groupValues[1]
+            val simpleName = match.groupValues[2]
+            imports.add(packageName to simpleName)
+        }
+
+        return imports
     }
 
     override fun defaultHandler(
