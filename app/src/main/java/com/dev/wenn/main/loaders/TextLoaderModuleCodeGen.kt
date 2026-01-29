@@ -1,18 +1,31 @@
 package com.dev.wenn.main.loaders
 
-import com.dev.annotation.DependencyModule
+import com.dev.annotation.ProvidesDependencyModule
 import com.dev.core.CoreTextProvider
 import com.dev.core.TextLoaderProvider
 import com.dev.core.scope.AppScope
 import com.dev.data.user.DataUserTextProvider
 
-@DependencyModule(scope = AppScope::class)
+@ProvidesDependencyModule(scope = AppScope::class)
 interface TextLoaderModuleCodeGen {
 
     /**
      * @com.dev.annotation.TextLoaderKey(CoreTextLoader::class)
      */
     fun provideCoreTextLoader(
+        coreTextProvider: CoreTextProvider
+    ): TextLoaderProvider<*> {
+        return object : TextLoaderProvider<CoreTextLoader>() {
+            override fun create(): CoreTextLoader {
+                return CoreTextLoader(coreTextProvider)
+            }
+        }
+    }
+
+    /**
+     * @dagger.multibindings.StringKey("asdfad")
+     */
+    fun provideCoreTextLoadeASdasr(
         coreTextProvider: CoreTextProvider
     ): TextLoaderProvider<*> {
         return object : TextLoaderProvider<CoreTextLoader>() {

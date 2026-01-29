@@ -1,6 +1,6 @@
 package com.dev.ksp_processor
 
-import com.dev.annotation.DependencyModule
+import com.dev.annotation.ProvidesDependencyModule
 import com.google.devtools.ksp.KspExperimental
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
@@ -33,7 +33,7 @@ class DependencyModuleProcessor(
 ) : SymbolProcessor {
 
     private val visitedSymbols = mutableSetOf<Any>()
-    private val annotationName = DependencyModule::class.qualifiedName.toString()
+    private val annotationName = ProvidesDependencyModule::class.qualifiedName.toString()
 
     private val visitedFunctions = mutableSetOf<String>()
 
@@ -41,8 +41,6 @@ class DependencyModuleProcessor(
         visitedSymbols.clear()
         val (resolvedSymbols, unresolvedSymbols) = resolver.getSymbolsWithAnnotation(annotationName)
             .partition { it.validate() }
-
-        println("working process - $annotationName ")
 
         resolvedSymbols
             .mapNotNull { ksAnnotated ->
