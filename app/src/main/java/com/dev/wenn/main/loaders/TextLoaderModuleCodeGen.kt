@@ -3,9 +3,10 @@ package com.dev.wenn.main.loaders
 import com.dev.annotation.DependencyModule
 import com.dev.core.CoreTextProvider
 import com.dev.core.TextLoaderProvider
+import com.dev.core.scope.AppScope
 import com.dev.data.user.DataUserTextProvider
 
-@DependencyModule
+@DependencyModule(scope = AppScope::class)
 interface TextLoaderModuleCodeGen {
 
     /**
@@ -29,6 +30,7 @@ interface TextLoaderModuleCodeGen {
     ): TextLoaderProvider<*> {
         return object : TextLoaderProvider<DataUserTextLoader>() {
             override fun create(): DataUserTextLoader {
+                println("created from code gen")
                 return DataUserTextLoader(dataUserTextProvider)
             }
         }
