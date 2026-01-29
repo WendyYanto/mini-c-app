@@ -6,10 +6,10 @@ import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 
 @AutoService(SymbolProcessorProvider::class)
-class TextLoaderModuleCodeGenProcessorProvider : SymbolProcessorProvider {
+class DependencyModuleProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
         val useMetro = environment.options["useMetro"]?.toBoolean() ?: false
-        return TextLoaderModuleCodeGenProcessor(
+        return DependencyModuleProcessor(
             codeGenerator = environment.codeGenerator,
             logger = environment.logger,
             useMetro = useMetro,
