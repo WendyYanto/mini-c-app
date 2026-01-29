@@ -7,25 +7,12 @@ import com.dev.core.scope.AppScope
 import com.dev.data.user.DataUserTextProvider
 
 @ProvidesDependencyModule(scope = AppScope::class)
-interface TextLoaderModuleCodeGen {
+interface TextLoaderModule {
 
     /**
      * @com.dev.annotation.TextLoaderKey(CoreTextLoader::class)
      */
     fun provideCoreTextLoader(
-        coreTextProvider: CoreTextProvider
-    ): TextLoaderProvider<*> {
-        return object : TextLoaderProvider<CoreTextLoader>() {
-            override fun create(): CoreTextLoader {
-                return CoreTextLoader(coreTextProvider)
-            }
-        }
-    }
-
-    /**
-     * @dagger.multibindings.StringKey("asdfad")
-     */
-    fun provideCoreTextLoadeASdasr(
         coreTextProvider: CoreTextProvider
     ): TextLoaderProvider<*> {
         return object : TextLoaderProvider<CoreTextLoader>() {
