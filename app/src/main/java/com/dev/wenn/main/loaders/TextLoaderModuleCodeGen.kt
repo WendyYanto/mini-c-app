@@ -13,12 +13,24 @@ interface TextLoaderModuleCodeGen {
      */
     fun provideCoreTextLoader(
         coreTextProvider: CoreTextProvider
-    ): TextLoaderProvider<*>
+    ): TextLoaderProvider<*> {
+        return object : TextLoaderProvider<CoreTextLoader>() {
+            override fun create(): CoreTextLoader {
+                return CoreTextLoader(coreTextProvider)
+            }
+        }
+    }
 
     /**
      * @com.dev.annotation.TextLoaderKey(DataUserTextLoader::class)
      */
     fun provideDataUserTextLoader(
         dataUserTextProvider: DataUserTextProvider
-    ): TextLoaderProvider<*>
+    ): TextLoaderProvider<*> {
+        return object : TextLoaderProvider<DataUserTextLoader>() {
+            override fun create(): DataUserTextLoader {
+                return DataUserTextLoader(dataUserTextProvider)
+            }
+        }
+    }
 }
