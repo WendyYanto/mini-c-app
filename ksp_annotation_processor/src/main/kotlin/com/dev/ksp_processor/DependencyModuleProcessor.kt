@@ -35,6 +35,8 @@ class DependencyModuleProcessor(
     private val visitedSymbols = mutableSetOf<Any>()
     private val annotationName = DependencyModule::class.qualifiedName.toString()
 
+    private val visitedFunctions = mutableSetOf<String>()
+
     override fun process(resolver: Resolver): List<KSAnnotated> {
         visitedSymbols.clear()
         val (resolvedSymbols, unresolvedSymbols) = resolver.getSymbolsWithAnnotation(annotationName)
@@ -44,20 +46,19 @@ class DependencyModuleProcessor(
 
         resolvedSymbols
             .mapNotNull { ksAnnotated ->
-                println("working ksAnnotated - $ksAnnotated")
                 when (ksAnnotated) {
                     is KSClassDeclaration -> ksAnnotated
                     else -> null
                 }
             }
             .forEach {
-                println("working TextLoaderModuleCodeGenVisitor")
                 it.accept(
                     DependencyModuleProcessorVisitor(
                         codeGenerator,
                         logger,
                         visitedSymbols,
                         useMetro,
+                        visitedFunctions
                     ),
                     null
                 )
@@ -72,7 +73,15 @@ class DependencyModuleProcessorVisitor(
     private val logger: KSPLogger,
     private val visitedSymbols: MutableSet<Any>,
     private val useMetro: Boolean,
+    private val visitedFunctions: MutableSet<String>
 ) : KSDefaultVisitor<FileSpec.Builder?, Unit>() {
+
+    private val anvilContributesTo by lazy {
+        ClassName(
+            "com.squareup.anvil.annotations",
+            "ContributesTo"
+        )
+    }
 
     private fun isVisited(symbol: KSNode): Boolean {
         if (visitedSymbols.contains(symbol)) return true
@@ -108,8 +117,15 @@ class DependencyModuleProcessorVisitor(
         }
 
         functions.forEach { function ->
+            val functionName = function.simpleName.asString()
+            if (visitedFunctions.contains(functionName)) {
+                throw IllegalArgumentException(
+                    "duplicated function is not allowed even though different parameters, functionName: $functionName"
+                )
+            }
             val generatedFunction = generateFunction(function, fileContent)
             companionObject.addFunction(generatedFunction)
+            visitedFunctions.add(functionName)
         }
 
         // Generate the extended interface with companion object
@@ -146,10 +162,7 @@ class DependencyModuleProcessorVisitor(
             )
             interfaceSpec.addAnnotation(
                 AnnotationSpec.builder(
-                    ClassName(
-                        "com.squareup.anvil.annotations",
-                        ".ContributesTo"
-                    )
+                    anvilContributesTo
                 )
                     .addMember("scope = ${scope.clazzName}::class")
                     .build()

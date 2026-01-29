@@ -31,7 +31,6 @@ import dagger.BindsInstance
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
-import dagger.multibindings.ClassKey
 import dagger.multibindings.IntoMap
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.name.FqName

@@ -30,7 +30,6 @@ interface TextLoaderModuleCodeGen {
     ): TextLoaderProvider<*> {
         return object : TextLoaderProvider<DataUserTextLoader>() {
             override fun create(): DataUserTextLoader {
-                println("created from code gen")
                 return DataUserTextLoader(dataUserTextProvider)
             }
         }

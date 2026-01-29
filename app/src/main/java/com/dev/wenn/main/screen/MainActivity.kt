@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.dev.annotation.InjectWith
 import com.dev.annotation.TextLoaderKey
-import com.dev.core.CoreTextProvider
+import com.dev.core.BaseActivity
+import com.dev.core.ComponentHolder
 import com.dev.core.injector.injectComponent
 import com.dev.data.misc.DataMiscTextProvider
 import com.dev.data.order.DataOrderTextProvider
@@ -18,16 +18,10 @@ import com.dev.data.user.DataUserTextProvider
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.screen.CartActivity
 import com.dev.wenn.R
-import com.dev.core.BaseActivity
-import com.dev.core.ComponentHolder
-import com.dev.core.TextLoaderProvider
-import com.dev.wenn.main.loaders.CoreTextLoader
 import com.dev.wenn.main.loaders.DataUserTextLoader
 import com.dev.wenn.main.loaders.TextLoaderMapContributor
-import com.dev.wenn.main.loaders.TextLoaderModule
 import javax.inject.Inject
 import javax.inject.Provider
-import kotlin.reflect.KClass
 
 @InjectWith
 class MainActivity : BaseActivity() {
@@ -63,6 +57,7 @@ class MainActivity : BaseActivity() {
 
         val item = ComponentHolder.component<TextLoaderMapContributor>()
         Log.v("ASDA", item.textLoaders().toString())
+        item.textLoaders()[TextLoaderKey(DataUserTextLoader::class)]?.create()
 
         val hiText = findViewById<TextView>(R.id.tv_hi)
         hiText.setOnClickListener {
