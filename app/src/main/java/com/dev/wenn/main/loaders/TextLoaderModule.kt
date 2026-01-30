@@ -26,7 +26,7 @@ interface TextLoaderModule {
      * @com.dev.annotation.TextLoaderKey(DataUserTextLoader::class)
      */
     fun provideDataUserTextLoader(
-        dataUserTextProvider: DataUserTextProvider,
+        dataUserTextProvider: DataUserTextProvider
     ): TextLoaderProvider<*> {
         return object : TextLoaderProvider<DataUserTextLoader>() {
             override fun create(): DataUserTextLoader {
