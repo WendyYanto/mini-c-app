@@ -216,30 +216,20 @@ class BindsDependencyModuleProcessorVisitor(
                 propertySpec.addAnnotation(annotation)
             }
 
-            if (useMetro) {
-                propertySpec.addAnnotation(
-                    AnnotationSpec.builder(dev.zacsweers.metro.Binds::class)
-                        .build()
+            propertySpec.addAnnotation(
+                AnnotationSpec.builder(
+                    dev.zacsweers.metro.IntoMap::class
                 )
-                propertySpec.addAnnotation(
-                    AnnotationSpec.builder(dev.zacsweers.metro.IntoMap::class)
-                        .build()
-                )
-            } else {
-                propertySpec.addAnnotation(
-                    AnnotationSpec.builder(
-                        ClassName("dagger", "Binds")
-                    )
-                        .build()
-                )
-                propertySpec.addAnnotation(
-                    AnnotationSpec.builder(
-                        ClassName("dagger.multibindings", "IntoMap")
-                    )
-                        .build()
-                )
-            }
+                    .build()
+            )
         }
+
+        propertySpec.addAnnotation(
+            AnnotationSpec.builder(
+                dev.zacsweers.metro.Binds::class
+            )
+                .build()
+        )
 
         return propertySpec.build()
     }
@@ -278,17 +268,18 @@ class BindsDependencyModuleProcessorVisitor(
 
             funSpec.addAnnotation(
                 AnnotationSpec.builder(
-                    ClassName("dagger", "Binds")
-                )
-                    .build()
-            )
-            funSpec.addAnnotation(
-                AnnotationSpec.builder(
                     ClassName("dagger.multibindings", "IntoMap")
                 )
                     .build()
             )
         }
+
+        funSpec.addAnnotation(
+            AnnotationSpec.builder(
+                ClassName("dagger", "Binds")
+            )
+                .build()
+        )
 
         return funSpec.build()
     }
