@@ -1,11 +1,14 @@
 package com.dev.core.injector
 
+import com.dev.annotation.InjectorClassKey
 import com.dev.core.scope.AppScope
 import com.squareup.anvil.annotations.ContributesTo
-import javax.inject.Provider
+import dev.zacsweers.metro.Multibinds
+import kotlin.reflect.KClass
 
 @ContributesTo(AppScope::class)
 interface FeatureInjectorComponent {
 
-    fun featureInjectors(): Map<Class<*>, Provider<FeatureInjector<*, *>>>
+    @Multibinds
+    fun featureInjectors(): Map<InjectorClassKey, FeatureInjector<*, *>>
 }

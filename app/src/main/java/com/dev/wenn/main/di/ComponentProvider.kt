@@ -9,8 +9,8 @@ import com.dev.domain.cart.di.DomainCartComponentProvider
 
 interface ComponentProvider :
     CoreComponentProvider,
-    DataUserComponentProvider,
     DataProductComponentProvider,
     DataOrderComponentProvider,
     DataMiscComponentProvider,
-    DomainCartComponentProvider
+    DomainCartComponentProvider,
+    DataUserComponentProvider

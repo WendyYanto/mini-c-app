@@ -9,13 +9,13 @@ import com.squareup.anvil.annotations.ContributesTo
 import dagger.Binds
 import dagger.Module
 
-@ContributesTo(AppScope::class)
-@Module
-interface DataProductModule {
-
-    @Binds
-    @ApplicationScope
-    fun bindDataProductTextProvider(
-        impl: DataProductTextProviderImpl
-    ): DataProductTextProvider
-}
+//@ContributesTo(AppScope::class)
+//@Module
+//interface DataProductModule {
+//
+//    @Binds
+//    @ApplicationScope
+//    fun bindDataProductTextProvider(
+//        impl: DataProductTextProviderImpl
+//    ): DataProductTextProvider
+//}

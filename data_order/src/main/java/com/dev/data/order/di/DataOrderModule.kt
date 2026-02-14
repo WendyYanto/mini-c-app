@@ -2,19 +2,27 @@ package com.dev.data.order.di
 
 import com.dev.core.scope.AppScope
 import com.dev.core.scope.ApplicationScope
-import com.dev.data.order.DataOrderTextProvider
-import com.dev.data.order.DataOrderTextProviderImpl
+import com.dev.data.order.DataOrderTextDependency
 import com.squareup.anvil.annotations.ContributesTo
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 
 @ContributesTo(AppScope::class)
 @Module
 interface DataOrderModule {
 
-    @Binds
-    @ApplicationScope
-    fun bindDataOrderTextProvider(
-        impl: DataOrderTextProviderImpl
-    ): DataOrderTextProvider
+    companion object {
+
+        @Provides
+        @ApplicationScope
+        fun provideDataOrderTextDependency(): DataOrderTextDependency {
+            return DataOrderTextDependency()
+        }
+    }
+
+//    @Binds
+//    @ApplicationScope
+//    fun bindDataOrderTextProvider(
+//        impl: DataOrderTextProviderImpl
+//    ): DataOrderTextProvider
 }

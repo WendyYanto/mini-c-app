@@ -2,23 +2,31 @@ package com.dev.wenn.main.screen
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
+import com.dev.annotation.InjectWith
+import com.dev.annotation.TextLoaderKey
+import com.dev.core.BaseActivity
 import com.dev.core.ComponentHolder
-import com.dev.core.CoreTextProvider
+import com.dev.core.TextLoaderProvider
+import com.dev.core.injector.injectComponent
 import com.dev.data.misc.DataMiscTextProvider
 import com.dev.data.order.DataOrderTextProvider
 import com.dev.data.product.DataProductTextProvider
+import com.dev.data.user.DataJavaTextProvider
 import com.dev.data.user.DataUserTextProvider
 import com.dev.domain.cart.DomainCartTextProvider
 import com.dev.feature.cart.screen.CartActivity
 import com.dev.wenn.R
+import com.dev.wenn.main.binders.TextBinder
+import com.dev.wenn.main.loaders.DataUserTextLoader
+import com.dev.wenn.main.loaders.TextLoaderMapContributor
 import javax.inject.Inject
+import javax.inject.Provider
 
-class MainActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var coreTextProvider: CoreTextProvider
+@InjectWith
+class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var dataUserTextProvider: DataUserTextProvider
@@ -35,17 +43,32 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var domainCartTextProvider: DomainCartTextProvider
 
+//    @Inject
+//    lateinit var coreTextProvidersTest: TestProvidersTest
+
+    @Inject
+    lateinit var dataJavaTextProvider: Provider<DataJavaTextProvider>
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ComponentHolder.component<MainComponent.ParentComponent>()
-            .createMainComponent()
-            .inject(this)
+        injectComponent()
 
         setContentView(R.layout.activity_main)
 
+        val item = ComponentHolder.component<TextLoaderMapContributor>()
+        Log.v("ASDA", item.textLoaders().toString())
+        item.textLoaders()[TextLoaderKey(DataUserTextLoader::class)]?.create()
+
+        val hiText = findViewById<TextView>(R.id.tv_hi)
+        hiText.setOnClickListener {
+            val intent = Intent(this, DaggerOnlyActivity::class.java)
+            startActivity(intent)
+        }
+
         val textView = findViewById<TextView>(R.id.tv_core_text)
-        textView.text = coreTextProvider.getText()
+        textView.text = loadCore()
 
         val userTextView = findViewById<TextView>(R.id.tv_data_user)
         userTextView.text = dataUserTextProvider.getUserText()
@@ -60,6 +83,8 @@ class MainActivity : AppCompatActivity() {
         domainCartTextView.text = domainCartTextProvider.getDomainCartText()
 
         domainCartTextView.setOnClickListener {
+            Toast.makeText(this, dataJavaTextProvider.get().text, Toast.LENGTH_SHORT).show()
+
             val intent = Intent(this, CartActivity::class.java)
             startActivity(intent)
         }

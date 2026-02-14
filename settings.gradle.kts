@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
@@ -30,3 +31,4 @@ include(":feature_cart")
 include(":feature_cart_app")
 include(":annotation")
 include(":annotation_processor")
+include(":ksp_annotation_processor")

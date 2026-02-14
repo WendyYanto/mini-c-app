@@ -2,6 +2,7 @@ package com.dev.feature.cart.screen
 
 import com.dev.core.scope.ActivityScope
 import com.squareup.anvil.annotations.ContributesBinding
+import dev.zacsweers.metro.SingleIn
 import javax.inject.Inject
 
 data class DataInnerArgs(

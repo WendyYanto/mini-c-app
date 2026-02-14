@@ -8,13 +8,13 @@ import com.squareup.anvil.annotations.ContributesTo
 import dagger.Binds
 import dagger.Module
 
-@Module
-@ContributesTo(AppScope::class)
-interface DomainCartModule {
-
-    @Binds
-    @ApplicationScope
-    fun bindDomainCartTextProvider (
-        impl: DomainCartTextProviderImpl
-    ): DomainCartTextProvider
-}
+//@Module
+//@ContributesTo(AppScope::class)
+//interface DomainCartModule {
+//
+//    @Binds
+//    @ApplicationScope
+//    fun bindDomainCartTextProvider (
+//        impl: DomainCartTextProviderImpl
+//    ): DomainCartTextProvider
+//}

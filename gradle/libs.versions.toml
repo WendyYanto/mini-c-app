@@ -1,23 +1,34 @@
 [versions]
-agp = "8.2.1"
+agp = '8.11.1'
 appcompact = "1.7.0"
 
 autoService = "1.1.1"
-anvilcompiler = "2.5.0-beta11"
-kotlin = "1.9.22"
+autoServiceKsp = "1.2.0"
+anvilcompiler = "2.7.0"
+ksp = "2.2.21-2.0.4"
+
+kotlin = "2.2.21"
 kotlinpoet = "1.18.1"
+kotlinpoetKsp = "2.2.0"
 ktx = "1.13.1"
+metro = "0.8.0"
 
 materialComponent = "1.12.0"
 
 #Dependency Injection
-dagger = "2.48"
+dagger = "2.58"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 
 [libraries]
-auto-service = { module = "com.google.auto.service:auto-service", version.ref = "autoService" }
+# Gradle Plugins (for build-logic)
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+anvil-gradle-plugin = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvilcompiler" }
+ksp-gradle-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
+metro-gradle-plugin = { module = "dev.zacsweers.metro:gradle-plugin", version.ref = "metro" }
+
 compiler-api = { module = "com.squareup.anvil:compiler-api", version.ref = "anvilcompiler" }
 compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "anvilcompiler" }
 kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
@@ -34,9 +45,22 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 
+# KSP libraries
+ksp-api = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+google-auto-service = { group = "com.google.auto.service", name = "auto-service", version.ref = "autoService" }
+auto-service-ksp = { group = "dev.zacsweers.autoservice", name = "auto-service-ksp", version.ref = "autoServiceKsp" }
+kotlin-poet-ksp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref = "kotlinpoetKsp" }
+
+anvil-annotations = { group = "com.squareup.anvil", name = "annotations", version.ref = "anvilcompiler" }
+metro-runtime = { group = "dev.zacsweers.metro", name = "runtime", version.ref = "metro" }
+metro-interop-dagger = { group = "dev.zacsweers.metro", name = "interop-dagger", version.ref = "metro" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
+anvil = { id = "com.squareup.anvil", version.ref = "anvilcompiler" }

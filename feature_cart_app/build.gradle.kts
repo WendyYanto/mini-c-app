@@ -3,7 +3,14 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
 //    id("scabbard.gradle") version "0.5.0"
-    id("com.squareup.anvil") version "2.5.0-beta11"
+    id("minicapp.common")
+    id("minicapp.ksp")
+}
+
+buildFeatures {
+    include {
+        useAnvil = true
+    }
 }
 
 android {
@@ -30,11 +37,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
 }
 

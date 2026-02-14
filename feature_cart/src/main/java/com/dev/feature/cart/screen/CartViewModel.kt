@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.dev.core.CoreTextProvider
 import com.dev.core.scope.ActivityScope
 import com.squareup.anvil.annotations.ContributesBinding
+import javax.inject.Inject
 
 @ContributesBinding(
     scope = ActivityScope::class,
@@ -13,9 +14,9 @@ import com.squareup.anvil.annotations.ContributesBinding
     scope = ActivityScope::class,
     boundType = CartOtherCallback::class
 )
-class CartViewModel(
+class CartViewModel @Inject constructor(
     private val coreTextProvider: CoreTextProvider,
-    private val dataArgsProvider: DataArgsProvider
+    private val dataArgsProvider: DataArgsProvider,
 ) : ViewModel(), CartCallback, CartOtherCallback {
 
     override val loadText: () -> String = {

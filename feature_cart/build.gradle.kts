@@ -1,7 +1,15 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("com.squareup.anvil") version "2.5.0-beta11"
+    id("minicapp.common")
+    id("minicapp.ksp")
+}
+
+buildFeatures {
+    include {
+        useAnvil = true
+        generateDaggerFactories = true
+    }
 }
 
 android {
@@ -22,20 +30,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
-}
-
-anvil {
-    generateDaggerFactories = true // default is false
 }
 
 dependencies {
-
     implementation(libs.ktx)
     implementation(libs.appcompact)
     implementation(libs.dagger.core)
@@ -46,7 +49,4 @@ dependencies {
 
     implementation(project(":data_product"))
     implementation(project(":data_order"))
-
-    implementation(project(":annotation"))
-    anvil(project(":annotation_processor"))
 }
